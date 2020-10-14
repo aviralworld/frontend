@@ -1,6 +1,7 @@
 dependencies:
   axios: 0.20.0
   compression: 1.7.4
+  dotenv-safe: 8.2.0
   polka: 1.0.0-next.11
   sirv: 1.0.6
 devDependencies:
@@ -16,6 +17,7 @@ devDependencies:
   '@rollup/plugin-typescript': 6.0.0_cdbdda34bbbc534f7b00e9e97d2f15aa
   '@tsconfig/svelte': 1.0.10
   '@types/compression': 1.7.0
+  '@types/dotenv-safe': 8.1.1
   '@types/node': 14.11.2
   '@types/polka': 0.5.1
   '@typescript-eslint/eslint-plugin': 4.3.0_60de305021300fed1989a0be1a9284d2
@@ -1144,6 +1146,12 @@ packages:
     dev: true
     resolution:
       integrity: sha512-2+FrkXY4zllzTNfJth7jOqEHC+enpLeGslEhpnTAkg21GkRrWV4SsAtqchtT4YS9/nODBU2/ZfsBY2X4J/dX7A==
+  /@types/dotenv-safe/8.1.1:
+    dependencies:
+      dotenv: 8.2.0
+    dev: true
+    resolution:
+      integrity: sha512-JOJuWwYaRinKl3UdmTivWgXO66dKpGW67NaYRMSMjKsNjF+MTsnc/T656I8eNGokIHVLihkY1kx96Ho3l8vfqQ==
   /@types/estree/0.0.39:
     dev: true
     resolution:
@@ -1749,6 +1757,17 @@ packages:
       node: '>=6.0.0'
     resolution:
       integrity: sha512-yS+Q5i3hBf7GBkd4KG8a7eBNNWNGLTaEwwYWUijIYM7zrlYDM0BFXHjjPWlWZ1Rg7UaddZeIDmi9jF3HmqiQ2w==
+  /dotenv-safe/8.2.0:
+    dependencies:
+      dotenv: 8.2.0
+    dev: false
+    resolution:
+      integrity: sha512-uWwWWdUQkSs5a3mySDB22UtNwyEYi0JtEQu+vDzIqr9OjbDdC2Ip13PnSpi/fctqlYmzkxCeabiyCAOROuAIaA==
+  /dotenv/8.2.0:
+    engines:
+      node: '>=8'
+    resolution:
+      integrity: sha512-8sJ78ElpbDJBHNeBzUbUVLsqKdccaa/BXF1uPTw3GrvQTBgrQrtObr2mUrE38vzYd8cEv+m/JBfDLioYcfXoaw==
   /electron-to-chromium/1.3.576:
     dev: true
     resolution:
@@ -3718,12 +3737,14 @@ specifiers:
   '@rollup/plugin-typescript': ^6.0.0
   '@tsconfig/svelte': ^1.0.10
   '@types/compression': ^1.7.0
+  '@types/dotenv-safe': ^8.1.1
   '@types/node': ^14.11.1
   '@types/polka': ^0.5.1
   '@typescript-eslint/eslint-plugin': ^4.3.0
   '@typescript-eslint/parser': ^4.3.0
   axios: ^0.20.0
   compression: ^1.7.1
+  dotenv-safe: ^8.2.0
   eslint: ^7.10.0
   eslint-config-prettier: ^6.12.0
   eslint-plugin-eslint-comments: ^3.2.0

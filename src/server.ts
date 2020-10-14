@@ -1,7 +1,10 @@
+import dotenvSafe from "dotenv-safe";
 import sirv from "sirv";
 import polka from "polka";
 import compression from "compression";
 import * as sapper from "@sapper/server";
+
+dotenvSafe.config();
 
 const { PORT, NODE_ENV } = process.env;
 const dev = NODE_ENV === "development";
@@ -17,5 +20,5 @@ polka()
   });
 
 export const SETTINGS = {
-  apiUrl: new URL(process.env.API_URL),
+  apiUrl: new URL(process.env.FRONTEND_API_URL),
 };
