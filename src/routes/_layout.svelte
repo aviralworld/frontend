@@ -16,4 +16,4 @@
 
 <Nav {segment} />
 
-<slot></slot>
+<slot />
