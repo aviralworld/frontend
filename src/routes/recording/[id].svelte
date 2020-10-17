@@ -32,6 +32,7 @@
   let supportedFormat;
 
   let unlisted = "false";
+  let showLink = false;
 
   $: completedRecording = !currentlyRecording && blob !== undefined;
 
@@ -44,13 +45,15 @@
   <title>A story by {recording.name} ({recording.location})</title>
 </svelte:head>
 
+(TODO: parent link)
+
 <!-- TODO fix details -->
 <h2>Listen</h2>
 <p>
   Listening to the story of
   {recording.name}
   from
-  {recording.location}. Thank you for taking the time to become part of a shared
+  {recording.location}. Thank you for taking the time to become part of this shared
   story.
 </p>
 
@@ -67,11 +70,14 @@
 <p>Who should be able to listen to it? Please list up to two people who will be prompted to share their thoughts on your story.</p>
 <p>(TODO: e-mail invitees)</p>
 <form>
-  <label for="unlisted-false"><input type="radio" name="unlisted" value="false" id="unlisted-false" bind:group={unlisted}> This is a public story. Everyone can listen and reply to it.</label><br/>
-  <label for="unlisted-true"><input type="radio" name="unlisted" value="true" id="unlisted-true" bind:group={unlisted}> This is an unlisted story. Only people I share the link with can listen to it.</label>
+<p>(TODO: public)</p>
+  <button on:click|preventDefault={() => {showLink = true}}>Publish and share my story</button>
+  {#if showLink}
+  <p>(this is a link to the story)</p>
+  {/if}
 </form>
 <h2>Remember</h2>
-<p>Would you like to be able to access your story later? Please share an e-mail address to which we can send a permanent link to access this story. This is completely optional.</p>
+<p>We’d like to save your e-mail address to share a very special gift with you later. This is completely optional.</p>
 <form>(TODO: e-mail form)</form>
 <p>Thank you for participating!</p>
 {:else}
