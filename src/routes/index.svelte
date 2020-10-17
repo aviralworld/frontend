@@ -22,9 +22,6 @@
   .invitation {
     grid-area: 1 / 2 / auto / auto;
     text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     padding: 2rem;
   }
 
@@ -40,18 +37,6 @@
     }
   }
 
-  .listen {
-    position: absolute;
-    right: 0;
-    top: 0;
-    text-decoration: none;
-    background: orange;
-    color: white;
-    padding: 0.5rem 1rem;
-    display: block;
-    font-weight: bold;
-  }
-
   h2 {
     font-size: 1.4rem;
   }
@@ -64,8 +49,6 @@
 <svelte:head>
   <title>A Viral World</title>
 </svelte:head>
-
-<a href="#todo" class="listen">Listen to other stories</a>
 
 <main>
   <section class="intro p">
@@ -81,8 +64,9 @@
   </section>
 
   <section class="invitation p">
-    <!-- TODO add play icon -->
-    <h2>Linda invited YOU to tell a story</h2>
+    <h2>Randomly-curated stories</h2>
+
+    <p>(three random stories)</p>
   </section>
 
   <section class="about p">
