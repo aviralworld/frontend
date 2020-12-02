@@ -10,16 +10,12 @@
     right: 0;
     top: 0;
     text-decoration: none;
-    background: orange;
-    color: white;
-    padding: 0.5rem 1rem;
-    display: block;
-    font-weight: bold;
+    display: flex;
   }
 </style>
 
 <nav>
   <h1><a href="/">A Viral World</a></h1>
 
-<a href="#todo" class="listen">Listen to other stories</a>
+<a href="#todo" class="listen button">Listen to other stories</a>
 </nav>

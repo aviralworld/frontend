@@ -6,8 +6,6 @@
       / 1fr 1fr;
     gap: 1em;
     font-size: 1.2rem;
-    max-width: 56em;
-    margin: 0 auto;
   }
 
   .p {

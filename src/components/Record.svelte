@@ -86,15 +86,34 @@
   }
 </script>
 
+<style>
+  .record {
+    margin-top: 1rem;
+  }
+
+  /* https://moderncss.dev/css-button-styling-guide/ */
+  .record-button {
+    font-size: 1.1em;
+    display: flex;
+    margin: 0 auto;
+  }
+
+  @media screen and (-ms-high-contrast: active) {
+    .record-button {
+      border: 2px solid currentcolor;
+    }
+  }
+</style>
+
 <!-- TODO add polyfill: https://github.com/ai/audio-recorder-polyfill -->
 {#if supportedFormat === undefined}
-  <p>Your browser does not support recording audio in any supported formats.</p>
+  <p>Your browser does not allow recording audio in any supported formats.</p>
 {:else}
   {#await permissionQuery then result}
     {#if !canAccessMicrophone}
-      <p>You will need to grant access to your microphone (when prompted) to record a story.</p>
+      <p>You will need to grant access to your microphone when prompted to record a story.</p>
     {/if}
-    <form><button on:click|preventDefault={handleRecording}>
+    <form class="record"><button on:click|preventDefault={handleRecording} class="button record-button">
         {#if inProgress}
           Stop recording ({asMinutesAndSeconds(currentTime)}/{asMinutesAndSeconds(maxRecordingLengthSeconds)})
         {:else}
