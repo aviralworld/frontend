@@ -45,7 +45,9 @@
   <title>A story by {recording.name} ({recording.location})</title>
 </svelte:head>
 
-(TODO: parent link)
+{#if recording.parent}
+<a href="/recording/{recording.parent}">See this recording’s parent</a>
+{/if}
 
 <!-- TODO fix details -->
 <h2>Listen</h2>
