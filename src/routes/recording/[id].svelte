@@ -31,7 +31,6 @@
   let invitees;
   let supportedFormat;
 
-  let unlisted = "false";
   let showLink = false;
 
   $: completedRecording = !currentlyRecording && blob !== undefined;
@@ -62,8 +61,6 @@
 <!-- TODO custom pause/play buttons and scrubber -->
 <audio controls="controls" src="{recording.url}">Your browser does not support embedded audio!</audio>
 
-<!-- TODO show parent; include unlisted recordings? -->
-
 {#if completedRecording}
 <h2>Share</h2>
 <p>Thank you for recording your story. You can listen to it below:</p>
@@ -72,7 +69,7 @@
 <p>Who should be able to listen to it? Please list up to two people who will be prompted to share their thoughts on your story.</p>
 <p>(TODO: e-mail invitees)</p>
 <form>
-<p>(TODO: public)</p>
+  <p>Your story will be published on the website and will be visible to all visitors. If you share your e-mail address below, you can choose to delete it at any time.</p>
   <button on:click|preventDefault={() => {showLink = true}}>Publish and share my story</button>
   {#if showLink}
   <p>(this is a link to the story)</p>
