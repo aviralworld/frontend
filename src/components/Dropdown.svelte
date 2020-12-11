@@ -3,11 +3,13 @@
   export let name;
   export let options;
   export let optional;
+
+  export let value = undefined;
 </script>
 
-<select id={id} name={name} required={!optional}>
+<select id={id} name={name} required={!optional} bind:value>
   {#if optional}
-    <option>Prefer not to say</option>
+    <option value={undefined}>Prefer not to say</option>
   {/if}
   {#each options as [value, label] (value)}
     <option value={value}>{label}</option>
