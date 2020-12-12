@@ -42,7 +42,9 @@
 
   export let recording: IRecording;
 
-  export let published;
+  let publishedName;
+  let publishedLink;
+  let publishedLocation;
 
   let currentlyRecording;
   let blob;
@@ -78,22 +80,18 @@
 
 <h2>Listen</h2>
   <p>
-    Listening to the story of
-    {recording.name}
-    from
-    {recording.location}. Thank you for taking the time to become part of this shared
+    Listening to the story of {recording.name} {#if recording.location !== undefined}from {recording.location}{/if}. Thank you for taking the time to become part of this shared
     story.
   </p>
 
   <!-- TODO custom pause/play buttons and scrubber -->
   <audio controls="controls" src="{recording.url}">Your browser does not support embedded audio!</audio>
 
-  {#if completedRecording}
-    <Publish ages={ages} blob={blob} categories={categories} genders={genders} bind:published={published} />
 
-    {#if published}
-      <Remember />
-    {/if}
+  {#if publishedLink !== undefined}
+      <Remember username={publishedName} link={publishedLink} location={publishedLocation} />
+    {:else if completedRecording}
+      <Publish ages={ages} blob={blob} categories={categories} genders={genders} bind:storyLink={publishedLink} bind:username={publishedName} bind:location={publishedLocation} />
   {:else}
       <section class="after reply">
         <h2>Reply</h2>
