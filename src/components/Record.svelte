@@ -17,8 +17,8 @@
   // these are for the parent's use
   export let inProgress: boolean;
   $: inProgress = $recorder?.state === "recording";
-  export let supportedFormat: string;
-  export let blob: Blob;
+  export let supportedFormat: string = undefined;
+  export let blob: Blob = undefined;
 
   const TIME_SLICE_MS = 1000;
 
