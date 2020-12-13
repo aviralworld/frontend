@@ -49,7 +49,7 @@ export class Logger {
   }
 }
 
-export function createLogger(errorIfSuppressed = false) {
+export function createLogger(errorIfSuppressed = false): Logger {
   if (process.env.ROARR_LOG !== "true" && errorIfSuppressed) {
     throw new Error(`ROARR_LOG must be set to \`true\``);
   }

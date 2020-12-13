@@ -1,6 +1,9 @@
 const ENDPOINT = "/api/recordings/";
 
-export async function publish(blob: Blob, details: object): Promise<String> {
+export async function publish(
+  blob: Blob,
+  details: Record<string, unknown>,
+): Promise<string> {
   const xhr = new XMLHttpRequest();
   xhr.open("POST", ENDPOINT, true);
 
