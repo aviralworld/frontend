@@ -73,6 +73,10 @@
     categoryId = undefined;
     currentlyRecording = undefined;
   }
+
+  export let title;
+
+  $: title = `A story by ${recording.name}` + ((recording.location !== null) ? ` from ${recording.location}` : "");
 </script>
 
 <style>
@@ -104,7 +108,7 @@
 </style>
 
 <svelte:head>
-  <title>A story by {recording.name} ({recording.location})</title>
+  <title>{title}</title>
 </svelte:head>
 
 <main>
