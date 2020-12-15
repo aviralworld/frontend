@@ -17,5 +17,5 @@
 <nav>
   <h1><a href="/">A Viral World</a></h1>
 
-<a href="#todo" class="listen button">Listen to other stories</a>
+  <a href="/listen" class="listen button">Listen to other stories</a>
 </nav>

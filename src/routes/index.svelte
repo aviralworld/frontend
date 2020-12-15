@@ -67,12 +67,13 @@
   }
 
   li > a {
-    color: var(--button-background);
     text-decoration: none;
   }
 </style>
 
 <script lang="ts">
+  import RecordingSummary from "../components/RecordingSummary.svelte";
+
   export let recordings;
 </script>
 
@@ -98,7 +99,7 @@
 
     <ul>
       {#each recordings as recording}
-        <li><a href={`/recording/${recording.id}/`}>{recording.name}{#if recording.location !== null}{" "}from {recording.location}{/if}</a></li>
+        <li><a href={`/recording/${recording.id}/`}><RecordingSummary recording={recording} /></a></li>
       {/each}
     </ul>
   </section>
