@@ -126,7 +126,7 @@ Listening to the story of {recording.name}{#if recording.location !== null}{" "}
   <audio controls="controls" src="{recording.url}">Your browser does not support embedded audio!</audio>
 
   {#if publishedRecording !== undefined && document.location.href !== publishedLink}
-    <Remember username={username} link={publishedLink} location={publishedLocation} forget={forget} />
+    <Remember username={username} link={publishedLink} location={publishedLocation} forget={forget} recording={publishedRecording} />
     {:else if completedRecording}
     <Publish ages={ages} blob={blob} genders={genders} token={token} bind:publishedLink={publishedLink} username={username} categoryId={categoryId} bind:location={publishedLocation} bind:publishedRecording={publishedRecording} />
   {:else if token !== undefined}
