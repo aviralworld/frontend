@@ -27,6 +27,7 @@ devDependencies:
   '@types/express-http-proxy': 1.6.1
   '@types/mocha': 8.2.0
   '@types/node': 14.11.2
+  '@types/pg': 7.14.7
   '@types/puppeteer': 5.4.2
   '@types/roarr': 2.14.2
   '@typescript-eslint/eslint-plugin': 4.3.0_60de305021300fed1989a0be1a9284d2
@@ -40,6 +41,7 @@ devDependencies:
   eslint-plugin-svelte3: 2.7.3_eslint@7.10.0+svelte@3.29.0
   mocha: 8.2.1
   npm-run-all: 4.1.5
+  pg: 8.5.1
   prettier: 2.1.2
   prettier-plugin-svelte: 1.4.0_prettier@2.1.2+svelte@3.29.0
   puppeteer: 5.5.0
@@ -1233,6 +1235,17 @@ packages:
     dev: true
     resolution:
       integrity: sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==
+  /@types/pg-types/1.11.5:
+    dev: true
+    resolution:
+      integrity: sha512-L8ogeT6vDzT1vxlW3KITTCt+BVXXVkLXfZ/XNm6UqbcJgxf+KPO7yjWx7dQQE8RW07KopL10x2gNMs41+IkMGQ==
+  /@types/pg/7.14.7:
+    dependencies:
+      '@types/node': 14.14.13
+      '@types/pg-types': 1.11.5
+    dev: true
+    resolution:
+      integrity: sha512-ZnMOUidTP6Lwsb0bxHL6PVIL1lVC2CYNQWlA79kQ6nn0rK1/ynvkyN1wsR9pVZaP4WcCNioKT/2aU5UuLIQy2w==
   /@types/pug/2.0.4:
     dev: true
     resolution:
@@ -1621,6 +1634,12 @@ packages:
     dev: true
     resolution:
       integrity: sha512-MQcXEUbCKtEo7bhqEs6560Hyd4XaovZlO/k9V3hjVUF/zwW7KBVdSK4gIt/bzwS9MbR5qob+F5jusZsb0YQK2A==
+  /buffer-writer/2.0.0:
+    dev: true
+    engines:
+      node: '>=4'
+    resolution:
+      integrity: sha512-a7ZpuTZU1TRtnwyCNW3I5dc0wWNC3VR9S++Ewyk2HHZdrO3CQJqSpd+95Us590V6AL7JqUAH2IwZ/398PmNFgw==
   /buffer/5.7.1:
     dependencies:
       base64-js: 1.5.1
@@ -3535,6 +3554,10 @@ packages:
       node: '>=6'
     resolution:
       integrity: sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==
+  /packet-reader/1.0.0:
+    dev: true
+    resolution:
+      integrity: sha512-HAKu/fG3HpHFO0AA8WE8q2g+gBJaZ9MG7fcKk+IJPLTGAD6Psw4443l+9DGRbOIh3/aXr7Phy0TjilYivJo5XQ==
   /param-case/2.1.1:
     dependencies:
       no-case: 2.3.2
@@ -3658,6 +3681,65 @@ packages:
     dev: true
     resolution:
       integrity: sha1-elfrVQpng/kRUzH89GY9XI4AelA=
+  /pg-connection-string/2.4.0:
+    dev: true
+    resolution:
+      integrity: sha512-3iBXuv7XKvxeMrIgym7njT+HlZkwZqqGX4Bu9cci8xHZNT+Um1gWKqCsAzcC0d95rcKMU5WBg6YRUcHyV0HZKQ==
+  /pg-int8/1.0.1:
+    dev: true
+    engines:
+      node: '>=4.0.0'
+    resolution:
+      integrity: sha512-WCtabS6t3c8SkpDBUlb1kjOs7l66xsGdKpIPZsg4wR+B3+u9UAum2odSsF9tnvxg80h4ZxLWMy4pRjOsFIqQpw==
+  /pg-pool/3.2.2_pg@8.5.1:
+    dependencies:
+      pg: 8.5.1
+    dev: true
+    peerDependencies:
+      pg: '>=8.0'
+    resolution:
+      integrity: sha512-ORJoFxAlmmros8igi608iVEbQNNZlp89diFVx6yV5v+ehmpMY9sK6QgpmgoXbmkNaBAx8cOOZh9g80kJv1ooyA==
+  /pg-protocol/1.4.0:
+    dev: true
+    resolution:
+      integrity: sha512-El+aXWcwG/8wuFICMQjM5ZSAm6OWiJicFdNYo+VY3QP+8vI4SvLIWVe51PppTzMhikUJR+PsyIFKqfdXPz/yxA==
+  /pg-types/2.2.0:
+    dependencies:
+      pg-int8: 1.0.1
+      postgres-array: 2.0.0
+      postgres-bytea: 1.0.0
+      postgres-date: 1.0.7
+      postgres-interval: 1.2.0
+    dev: true
+    engines:
+      node: '>=4'
+    resolution:
+      integrity: sha512-qTAAlrEsl8s4OiEQY69wDvcMIdQN6wdz5ojQiOy6YRMuynxenON0O5oCpJI6lshc6scgAY8qvJ2On/p+CXY0GA==
+  /pg/8.5.1:
+    dependencies:
+      buffer-writer: 2.0.0
+      packet-reader: 1.0.0
+      pg-connection-string: 2.4.0
+      pg-pool: 3.2.2_pg@8.5.1
+      pg-protocol: 1.4.0
+      pg-types: 2.2.0
+      pgpass: 1.0.4
+    dev: true
+    engines:
+      node: '>= 8.0.0'
+    peerDependencies:
+      pg-native: '>=2.0.0'
+    peerDependenciesMeta:
+      pg-native:
+        optional: true
+    resolution:
+      integrity: sha512-9wm3yX9lCfjvA98ybCyw2pADUivyNWT/yIP4ZcDVpMN0og70BUWYEGXPCTAQdGTAqnytfRADb7NERrY1qxhIqw==
+  /pgpass/1.0.4:
+    dependencies:
+      split2: 3.2.2
+    dev: true
+    resolution:
+      integrity: sha512-YmuA56alyBq7M59vxVBfPJrGSozru8QAdoNlWuW3cz8l+UX3cWge0vTvjKhsSHSJpo3Bom8/Mm6hf0TR5GY0+w==
   /picomatch/2.2.2:
     dev: true
     engines:
@@ -3699,6 +3781,32 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-HRDzbaKjC+AOWVXxAU/x54COGeIv9eb+6CkDSQoNTt4XyWoIJvuPsXizxu/Fr23EiekbtZwmh1IcIG/l/a10GQ==
+  /postgres-array/2.0.0:
+    dev: true
+    engines:
+      node: '>=4'
+    resolution:
+      integrity: sha512-VpZrUqU5A69eQyW2c5CA1jtLecCsN2U/bD6VilrFDWq5+5UIEVO7nazS3TEcHf1zuPYO/sqGvUvW62g86RXZuA==
+  /postgres-bytea/1.0.0:
+    dev: true
+    engines:
+      node: '>=0.10.0'
+    resolution:
+      integrity: sha1-AntTPAqokOJtFy1Hz5zOzFIazTU=
+  /postgres-date/1.0.7:
+    dev: true
+    engines:
+      node: '>=0.10.0'
+    resolution:
+      integrity: sha512-suDmjLVQg78nMK2UZ454hAG+OAW+HQPZ6n++TNDUX+L0+uUlLywnoxJKDou51Zm+zTCjrCl0Nq6J9C5hP9vK/Q==
+  /postgres-interval/1.2.0:
+    dependencies:
+      xtend: 4.0.2
+    dev: true
+    engines:
+      node: '>=0.10.0'
+    resolution:
+      integrity: sha512-9ZhXKM/rw350N1ovuWHbGxnGh/SNJ4cnxHiM0rxE4VN41wsg8P8zWn9hv/buK00RP4WvlOyr/RBDiptyxVbkZQ==
   /prelude-ls/1.2.1:
     dev: true
     engines:
@@ -4259,6 +4367,12 @@ packages:
     dev: true
     resolution:
       integrity: sha512-U+MTEOO0AiDzxwFvoa4JVnMV6mZlJKk2sBLt90s7G0Gd0Mlknc7kxEn3nuDPNZRta7O2uy8oLcZLVT+4sqNZHQ==
+  /split2/3.2.2:
+    dependencies:
+      readable-stream: 3.6.0
+    dev: true
+    resolution:
+      integrity: sha512-9NThjpgZnifTkJpzTZ7Eue85S49QwpNhZTq6GRJwObb6jnLFNGB7Qm73V5HewTROPyxD0C29xqmaI68bQtV+hg==
   /sprintf-js/1.0.3:
     dev: true
     resolution:
@@ -4948,6 +5062,12 @@ packages:
         optional: true
     resolution:
       integrity: sha512-pTsP8UAfhy3sk1lSk/O/s4tjD0CRwvMnzvwr4OKGX7ZvqZtUyx4KIJB5JWbkykPoc55tixMGgTNoh3k4FkNGFQ==
+  /xtend/4.0.2:
+    dev: true
+    engines:
+      node: '>=0.4'
+    resolution:
+      integrity: sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==
   /y18n/4.0.1:
     dev: true
     resolution:
@@ -5030,6 +5150,7 @@ specifiers:
   '@types/express-http-proxy': ^1.6.1
   '@types/mocha': ^8.2.0
   '@types/node': ^14.11.1
+  '@types/pg': ^7.14.7
   '@types/puppeteer': ^5.4.2
   '@types/roarr': ^2.14.2
   '@typescript-eslint/eslint-plugin': ^4.3.0
@@ -5048,6 +5169,7 @@ specifiers:
   express-http-proxy: ^1.6.2
   mocha: ^8.2.1
   npm-run-all: ^4.1.5
+  pg: ^8.5.1
   prettier: ^2.1.2
   prettier-plugin-svelte: ^1.4.0
   puppeteer: ^5.5.0
