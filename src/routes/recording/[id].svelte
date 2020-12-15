@@ -5,7 +5,7 @@
     const res = await this.fetch(`/api/recordings/id/${id}`);
     const promises = Promise.all(["formats", "ages", "categories", "genders"].map((s) => this.fetch(`/api/recordings/${s}`)));
 
-    if (res.status === 404) {
+    if (res.status === 400 || res.status === 404) {
       this.error(404, `Could not find recording with ID ${id}`);
       return;
     }
