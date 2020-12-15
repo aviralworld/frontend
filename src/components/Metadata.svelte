@@ -2,7 +2,6 @@
   import Choices from "./Choices.svelte";
 
   export let ages;
-  export let categories;
   export let genders;
 
   export let occupation = undefined;

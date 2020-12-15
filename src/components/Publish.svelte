@@ -1,5 +1,6 @@
 <script lang="ts">
   import Metadata from "./Metadata.svelte";
+  import RequiredMetadata from "./RequiredMetadata.svelte";
 
   import { publish as _publish } from "../routes/_publish";
 
@@ -11,6 +12,7 @@
   export let username;
   export let categoryId;
 
+  export let categories;
   export let token;
 
   let form;
@@ -68,6 +70,7 @@
     <p>Please list up to two e-mail addresses of people who will be prompted to share their thoughts on your story:</p>
     <p>(TODO: e-mail invitees)</p>
     <p>Your story will be published on the website and will be visible to all visitors. If you share your e-mail address below, you can choose to delete the story at any time.</p>
+    <RequiredMetadata name={username} categoryId={categoryId} categories={categories} />
     <Metadata ages={ages} genders={genders} bind:details bind:location showErrors={showErrors} />
     <button on:click|preventDefault={publish} class="button publish-button" type="submit" disabled={uploading}>
       {#if uploading}

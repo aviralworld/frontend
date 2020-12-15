@@ -128,7 +128,7 @@ Listening to the story of {recording.name}{#if recording.location !== null}{" "}
   {#if publishedRecording !== undefined && document.location.href !== publishedLink}
     <Remember username={username} link={publishedLink} location={publishedLocation} forget={forget} recording={publishedRecording} />
     {:else if completedRecording}
-    <Publish ages={ages} blob={blob} genders={genders} token={token} bind:publishedLink={publishedLink} username={username} categoryId={categoryId} bind:location={publishedLocation} bind:publishedRecording={publishedRecording} />
+    <Publish categories={categories} ages={ages} blob={blob} genders={genders} token={token} bind:publishedLink={publishedLink} username={username} categoryId={categoryId} bind:location={publishedLocation} bind:publishedRecording={publishedRecording} />
   {:else if token !== undefined}
       <section class="after reply">
         <h2>Reply</h2>
