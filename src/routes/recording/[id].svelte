@@ -10,8 +10,14 @@
       return;
     }
 
+    if (res.status === 410) {
+      this.error(410, "This recording has been deleted.");
+      return;
+    }
+
     if (res.status !== 200) {
       this.error(res.status, `Could not fetch recording with ID ${id}: ${await res.text()}`);
+      return;
     }
 
     const responses = await promises;
