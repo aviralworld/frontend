@@ -5,8 +5,6 @@
   export let categories;
   export let genders;
 
-  export let name = undefined;
-  export let category_id = undefined;
   export let occupation = undefined;
   export let age_id = undefined;
   export let gender_id = undefined;
@@ -14,7 +12,7 @@
 
   export let details;
 
-  $: details = { name, category_id, occupation, age_id, gender_id, location };
+  $: details = { occupation, age_id, gender_id, location };
 </script>
 
 <style type="text/css">
@@ -42,12 +40,6 @@
     border-color: red;
   }
 </style>
-
-<!-- TODO these should come before the recording -->
-<label for="user-name">What is your name? <input type="text" name="name" id="user-name" bind:value={name} required /></label>
-
-<!-- TODO use radio buttons with descriptions -->
-<p>What is your story about? <Choices options={categories} id="user-category" name="category" optional={false} bind:selection={category_id} /></p>
 
 <section>
   <p class="note">The following fields are optional. They will only be used for research purposes and will never be shared publicly.</p>

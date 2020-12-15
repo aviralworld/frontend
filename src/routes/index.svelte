@@ -61,6 +61,15 @@
   ul, li {
     list-style: none;
   }
+
+  li {
+    margin-top: 1rem;
+  }
+
+  li > a {
+    color: var(--button-background);
+    text-decoration: none;
+  }
 </style>
 
 <script lang="ts">
@@ -89,7 +98,7 @@
 
     <ul>
       {#each recordings as recording}
-        <li><a href={`/recording/${recording.id}/`}>{recording.name} {#if recording.location !== null}from {recording.location}{/if}</a></li>
+        <li><a href={`/recording/${recording.id}/`}>{recording.name}{#if recording.location !== null}{" "}from {recording.location}{/if}</a></li>
       {/each}
     </ul>
   </section>

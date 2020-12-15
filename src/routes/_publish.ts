@@ -8,7 +8,6 @@ export async function publish(
   xhr.open("POST", ENDPOINT, true);
 
   const fd = new FormData();
-  console.log(JSON.stringify(details));
   fd.append("audio", blob);
   fd.append("metadata", JSON.stringify(details));
 

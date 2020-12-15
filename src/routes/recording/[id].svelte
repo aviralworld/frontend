@@ -1,5 +1,5 @@
 <script context="module" lang="ts">
-  export async function preload({ params }) {
+  export async function preload({ params, query }) {
     const { id } = params;
 
     const res = await this.fetch(`/api/recordings/id/${id}`);
@@ -31,7 +31,7 @@
 
     const [formats, ages, categories, genders] = await Promise.all(responses.map(async (r) => r.json()));
 
-    return { ages, categories, genders, formats, recording: await res.json() };
+    return { ages, categories, genders, formats, recording: await res.json(), token: query.token };
   }
 </script>
 
@@ -45,10 +45,12 @@
   export let categories;
   export let formats;
   export let genders;
+  export let token;
 
   export let recording: IRecording;
 
-  let publishedName;
+  let username;
+  let categoryId;
   let publishedLink;
   let publishedLocation;
 
@@ -73,6 +75,19 @@
   :global(section) {
     margin-top: 1rem;
   }
+
+  .listen {
+    margin-top: 1rem;
+  }
+
+  .parent {
+    text-align: center;
+    font-size: 1.1em;
+  }
+
+  .parent > a {
+    text-decoration: none;
+  }
 </style>
 
 <svelte:head>
@@ -81,29 +96,28 @@
 
 <main>
   {#if recording.parent}
-    <a href="/recording/{recording.parent}">See this recording’s parent</a>
+    <p class="parent"><a href="/recording/{recording.parent}">See this recording’s parent</a></p>
   {/if}
 
-<h2>Listen</h2>
+<h2 class="listen">Listen</h2>
   <p>
-    Listening to the story of {recording.name} {#if recording.location !== undefined}from {recording.location}{/if}. Thank you for taking the time to become part of this shared
+Listening to the story of {recording.name}{#if recording.location !== null}{" "}from {recording.location}{/if}. Thank you for taking the time to become part of this shared
     story.
   </p>
 
   <!-- TODO custom pause/play buttons and scrubber -->
   <audio controls="controls" src="{recording.url}">Your browser does not support embedded audio!</audio>
 
-
   {#if publishedLink !== undefined}
-      <Remember username={publishedName} link={publishedLink} location={publishedLocation} />
+    <Remember username={username} link={publishedLink} location={publishedLocation} />
     {:else if completedRecording}
-      <Publish ages={ages} blob={blob} categories={categories} genders={genders} bind:storyLink={publishedLink} bind:username={publishedName} bind:location={publishedLocation} />
-  {:else}
+    <Publish ages={ages} blob={blob} genders={genders} token={token} bind:storyLink={publishedLink} username={username} categoryId={categoryId} bind:location={publishedLocation} />
+  {:else if token !== undefined}
       <section class="after reply">
         <h2>Reply</h2>
         <p>Tap the record button to send {recording.name} a reply.</p>
 
-        <Record parent={recording} formats={formats} bind:inProgress={currentlyRecording} bind:blob bind:supportedFormat maxRecordingLengthSeconds={5 * 60} />
+        <Record categories={categories} formats={formats} bind:inProgress={currentlyRecording} bind:blob bind:supportedFormat maxRecordingLengthSeconds={5 * 60} bind:name={username} bind:categoryId={categoryId} />
       </section>
     {/if}
   </main>

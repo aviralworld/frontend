@@ -4,15 +4,19 @@
 
   import type { MediaRecorder } from "dom-mediacapture-record";
 
+  import Choices from "./Choices.svelte";
   import { asMinutesAndSeconds } from "../time";
 
   let recorder = writable(undefined);
   let currentTime: number;
 
+  export let name;
+  export let categoryId;
+
   // these are provided by the parent component
   export let formats;
-  export let parent;
   export let maxRecordingLengthSeconds = 20;
+  export let categories;
 
   // these are for the parent's use
   export let inProgress: boolean;
@@ -113,7 +117,14 @@
     {#if !canAccessMicrophone}
       <p>You will need to grant access to your microphone when prompted to record a story.</p>
     {/if}
-    <form class="record"><button on:click|preventDefault={handleRecording} class="button record-button">
+    <form class="record">
+      <p>Before you record your story, please let us know a few details:</p>
+
+      <label for="user-name">What is your name? <input type="text" name="name" id="user-name" bind:value={name} required /></label>
+
+      <!-- TODO use radio buttons with descriptions -->
+      <p>What is your story about? <Choices options={categories} id="user-category" name="category" optional={false} bind:selection={categoryId} /></p>
+      <button on:click|preventDefault={handleRecording} class="button record-button" disabled={name === undefined || name.trim() === "" || categoryId === undefined}>
         {#if inProgress}
           Stop recording ({asMinutesAndSeconds(currentTime)}/{asMinutesAndSeconds(maxRecordingLengthSeconds)})
         {:else}

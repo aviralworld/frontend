@@ -5,11 +5,13 @@
 
   export let ages;
   export let blob;
-  export let categories;
   export let genders;
-  export let parentId;
-  export let username;
   export let location;
+
+  export let username;
+  export let categoryId;
+
+  export let token;
 
   let form;
 
@@ -35,11 +37,7 @@
     storyLink = undefined;
     uploading = true;
 
-    const merged = { ...details };
-
-    if (parentId !== undefined) {
-      merged.parent_id = parentId;
-    }
+    const merged = { ...details, category_id: categoryId, name: username, token };
 
     try {
       const id = await _publish(blob, merged);
@@ -69,7 +67,7 @@
     <p>Please list up to two e-mail addresses of people who will be prompted to share their thoughts on your story:</p>
     <p>(TODO: e-mail invitees)</p>
     <p>Your story will be published on the website and will be visible to all visitors. If you share your e-mail address below, you can choose to delete the story at any time.</p>
-    <Metadata ages={ages} categories={categories} genders={genders} bind:details bind:name={username} bind:location showErrors={showErrors} />
+    <Metadata ages={ages} genders={genders} bind:details bind:location showErrors={showErrors} />
     <button on:click|preventDefault={publish} class="button publish-button" type="submit" disabled={uploading}>
       {#if uploading}
         Publishing your story…

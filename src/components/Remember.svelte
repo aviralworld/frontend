@@ -1,5 +1,5 @@
 <script lang="ts">
-  export let username;
+  export let name;
   export let link;
   export let location;
 </script>
