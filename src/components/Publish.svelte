@@ -17,7 +17,8 @@
 
   export let details = undefined;
 
-  export let storyLink = undefined;
+  export let publishedLink = undefined;
+  export let publishedRecording = undefined;
   let uploading = false;
 
   let showErrors = false;
@@ -34,14 +35,14 @@
       }
     }
 
-    storyLink = undefined;
+    publishedLink = undefined;
     uploading = true;
 
     const merged = { ...details, category_id: categoryId, name: username, token };
 
     try {
-      const id = await _publish(blob, merged);
-      storyLink = `/recording/${id}/`;
+      publishedRecording = await _publish(blob, merged);
+      publishedLink = `/recording/${publishedRecording.id}/`;
       published = true;
     } catch (e) {
     }
@@ -76,8 +77,5 @@
       Publish and share my story
     {/if}
   </button>
-    {#if storyLink !== undefined}
-      <p>(this is a link to the story)</p>
-    {/if}
   </form>
 </section>

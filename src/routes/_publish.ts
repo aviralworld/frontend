@@ -3,7 +3,7 @@ const ENDPOINT = "/api/recordings/";
 export async function publish(
   blob: Blob,
   details: Record<string, unknown>,
-): Promise<string> {
+): Promise<unknown> {
   const xhr = new XMLHttpRequest();
   xhr.open("POST", ENDPOINT, true);
 
@@ -17,7 +17,7 @@ export async function publish(
     xhr.onreadystatechange = () => {
       if (xhr.readyState === XMLHttpRequest.DONE) {
         if (xhr.status === 201) {
-          resolve(JSON.parse(xhr.responseText).id);
+          resolve(JSON.parse(xhr.responseText));
         } else {
           reject(xhr.status);
         }

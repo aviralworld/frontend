@@ -49,10 +49,12 @@
 
   export let recording: IRecording;
 
-  let username;
+  export let username;
+  export let publishedLink;
+  export let publishedLocation;
+  export let publishedRecording;
+
   let categoryId;
-  let publishedLink;
-  let publishedLocation;
 
   let currentlyRecording;
   let blob;
@@ -60,6 +62,17 @@
   let supportedFormat;
 
   $: completedRecording = !currentlyRecording && blob !== undefined;
+
+  // TODO why is this necessary?
+  function forget() {
+    publishedLink = undefined;
+    publishedLocation = undefined;
+    publishedRecording = undefined;
+    blob = undefined;
+    username = undefined;
+    categoryId = undefined;
+    currentlyRecording = undefined;
+  }
 </script>
 
 <style>
@@ -108,10 +121,10 @@ Listening to the story of {recording.name}{#if recording.location !== null}{" "}
   <!-- TODO custom pause/play buttons and scrubber -->
   <audio controls="controls" src="{recording.url}">Your browser does not support embedded audio!</audio>
 
-  {#if publishedLink !== undefined}
-    <Remember username={username} link={publishedLink} location={publishedLocation} />
+  {#if publishedRecording !== undefined && document.location.href !== publishedLink}
+    <Remember username={username} link={publishedLink} location={publishedLocation} forget={forget} />
     {:else if completedRecording}
-    <Publish ages={ages} blob={blob} genders={genders} token={token} bind:storyLink={publishedLink} username={username} categoryId={categoryId} bind:location={publishedLocation} />
+    <Publish ages={ages} blob={blob} genders={genders} token={token} bind:publishedLink={publishedLink} username={username} categoryId={categoryId} bind:location={publishedLocation} bind:publishedRecording={publishedRecording} />
   {:else if token !== undefined}
       <section class="after reply">
         <h2>Reply</h2>
