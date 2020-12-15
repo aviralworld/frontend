@@ -1,3 +1,18 @@
+<script context="module" lang="ts">
+  const STORIES_TO_SHOW = 3;
+
+  export async function preload() {
+    const res = await this.fetch(`/api/recordings/random/${STORIES_TO_SHOW}/`);
+
+    if (res.status !== 200) {
+      return { recordings: [] };
+    }
+
+    const json = await res.json();
+    return { recordings: json.recordings };
+  }
+</script>
+
 <style>
   main {
     display: grid;
@@ -42,7 +57,15 @@
   h2 + p {
     margin-top: 1rem;
   }
+
+  ul, li {
+    list-style: none;
+  }
 </style>
+
+<script lang="ts">
+  export let recordings;
+</script>
 
 <svelte:head>
   <title>A Viral World</title>
@@ -64,7 +87,11 @@
   <section class="invitation p">
     <h2>Randomly-curated stories</h2>
 
-    <p>(three random stories)</p>
+    <ul>
+      {#each recordings as recording}
+        <li><a href={`/recording/${recording.id}/`}>{recording.name} {#if recording.location !== null}from {recording.location}{/if}</a></li>
+      {/each}
+    </ul>
   </section>
 
   <section class="about p">
