@@ -1,4 +1,6 @@
 <script context="module" lang="ts">
+  import { verifyToken } from "./_token";
+
   export async function preload({ params, query }) {
     const { id } = params;
 
@@ -31,7 +33,14 @@
 
     const [formats, ages, categories, genders] = await Promise.all(responses.map(async (r) => r.json()));
 
-    return { ages, categories, genders, formats, recording: await res.json(), token: query.token };
+    const verificationResult = await verifyToken(this, query.token);
+
+    if (verificationResult?.status !== undefined) {
+      this.error(verificationResult.status, verificationResult.message);
+      return;
+    }
+
+    return { ages, categories, genders, formats, recording: await res.json(), token: verificationResult?.token };
   }
 </script>
 
@@ -39,7 +48,6 @@
   import Publish from "../../components/Publish.svelte";
   import Record from "../../components/Record.svelte";
   import Remember from "../../components/Remember.svelte";
-  import type { IRecording } from "../_common";
 
   export let ages;
   export let categories;
