@@ -1,8 +1,8 @@
 <script context="module" lang="ts">
-  const STORIES_TO_SHOW = 3;
+  export async function preload(page: any, session: any) {
+    const { randomStoryCount } = session.frontendSettings;
 
-  export async function preload() {
-    const res = await this.fetch(`/api/recordings/random/${STORIES_TO_SHOW}/`);
+    const res = await this.fetch(`/api/recordings/random/${randomStoryCount}/`);
 
     if (res.status !== 200) {
       return { recordings: [] };

@@ -4,6 +4,7 @@ import proxy from "express-http-proxy";
 import compression from "compression";
 import * as sapper from "@sapper/server";
 
+import type { IFrontendSettings } from "./frontendSettings";
 import type { Logger } from "../logger";
 import type { ISettings } from "./settings";
 
@@ -12,6 +13,7 @@ export function createServer(
   port: number,
   settings: ISettings,
   dev: boolean,
+  frontendSettings: IFrontendSettings,
 ): express.Express {
   logger.info({ port, settings }, "Starting server on port %s...", port);
 
@@ -21,7 +23,7 @@ export function createServer(
 
   server.use(async (req, _res, next) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (req as any).frontendSettings = settings;
+    (req as any).settings = settings;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (req as any).logger = logger;
     logger.info({ path: req.path, params: req.params }, "Received request");
@@ -56,7 +58,13 @@ export function createServer(
     }),
   );
 
-  server.use(sapper.middleware());
+  server.use(
+    sapper.middleware({
+      session: () => ({
+        frontendSettings,
+      }),
+    }),
+  );
 
   server.listen(port);
 
