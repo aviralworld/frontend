@@ -33,7 +33,7 @@
 
     const [formats, ages, categories, genders] = await Promise.all(responses.map(async (r) => r.json()));
 
-    const verificationResult = await verifyToken(this, query.token);
+    const verificationResult = await verifyToken(this, query.token, id);
 
     if (verificationResult?.status !== undefined) {
       this.error(verificationResult.status, verificationResult.message);
@@ -45,44 +45,17 @@
 </script>
 
 <script lang="ts">
-  import Publish from "../../components/Publish.svelte";
-  import Record from "../../components/Record.svelte";
-  import Remember from "../../components/Remember.svelte";
+  import Reply from "../../components/Reply.svelte";
 
   export let ages;
   export let categories;
   export let formats;
   export let genders;
+
+  export let recording;
   export let token;
 
-  export let recording: IRecording;
-
-  export let username;
-  export let publishedLink;
-  export let publishedLocation;
-  export let publishedRecording;
-
-  let categoryId;
-
-  let currentlyRecording;
-  let blob;
-  let invitees;
-  let supportedFormat;
-
-  $: completedRecording = !currentlyRecording && blob !== undefined;
-
-  // TODO why is this necessary?
-  function forget() {
-    publishedLink = undefined;
-    publishedLocation = undefined;
-    publishedRecording = undefined;
-    blob = undefined;
-    username = undefined;
-    categoryId = undefined;
-    currentlyRecording = undefined;
-  }
-
-  export let title;
+  let title;
 
   $: title = `A story by ${recording.name}` + ((recording.location !== null) ? ` from ${recording.location}` : "");
 </script>
@@ -133,16 +106,5 @@ Listening to the story of {recording.name}{#if recording.location !== null}{" "}
   <!-- TODO custom pause/play buttons and scrubber -->
   <audio controls="controls" src="{recording.url}">Your browser does not support embedded audio!</audio>
 
-  {#if publishedRecording !== undefined && document.location.href !== publishedLink}
-    <Remember username={username} link={publishedLink} location={publishedLocation} forget={forget} recording={publishedRecording} />
-    {:else if completedRecording}
-    <Publish categories={categories} ages={ages} blob={blob} genders={genders} token={token} bind:publishedLink={publishedLink} username={username} categoryId={categoryId} bind:location={publishedLocation} bind:publishedRecording={publishedRecording} />
-  {:else if token !== undefined}
-      <section class="after reply">
-        <h2>Reply</h2>
-        <p>Tap the record button to send {recording.name} a reply.</p>
-
-        <Record categories={categories} formats={formats} bind:inProgress={currentlyRecording} bind:blob bind:supportedFormat maxRecordingLengthSeconds={5 * 60} bind:name={username} bind:categoryId={categoryId} />
-      </section>
-    {/if}
+  <Reply ages={ages} categories={categories} formats={formats} genders={genders} token={token} recording={recording} />
   </main>
