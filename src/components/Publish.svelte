@@ -19,6 +19,7 @@
 
   export let details = undefined;
 
+  export let publishedName = undefined;
   export let publishedLink = undefined;
   export let publishedRecording = undefined;
   let uploading = false;
@@ -45,6 +46,7 @@
     try {
       publishedRecording = await _publish(blob, merged);
       publishedLink = `/recording/${publishedRecording.id}/`;
+      publishedName = username;
       published = true;
     } catch (e) {
     }

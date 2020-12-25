@@ -13,9 +13,10 @@
 
   let publishedLink;
   let publishedLocation;
+  let publishedName;
   let publishedRecording;
 
-  export let username;
+  let initialName;
 
   let categoryId;
 
@@ -38,15 +39,15 @@
   }
 </script>
 
-  {#if publishedRecording !== undefined && document.location.href !== publishedLink}
-    <Remember username={username} link={publishedLink} location={publishedLocation} forget={forget} recording={publishedRecording} />
-    {:else if completedRecording}
-    <Publish categories={categories} ages={ages} blob={blob} genders={genders} token={token} bind:publishedLink={publishedLink} username={username} categoryId={categoryId} bind:location={publishedLocation} bind:publishedRecording={publishedRecording} />
-  {:else if token !== undefined}
-      <section class="after reply">
-        <h2>Reply</h2>
-        <p>Tap the record button to send {recording.name} a reply.</p>
+{#if publishedRecording !== undefined && document.location.href !== publishedLink}
+  <Remember username={publishedName} link={publishedLink} location={publishedLocation} forget={forget} recording={publishedRecording} />
+{:else if completedRecording}
+  <Publish categories={categories} ages={ages} blob={blob} genders={genders} token={token} bind:publishedLink={publishedLink} username={initialName} categoryId={categoryId} bind:location={publishedLocation} bind:publishedRecording={publishedRecording} bind:publishedName={publishedName} />
+{:else if token !== undefined}
+  <section class="after reply">
+    <h2>Reply</h2>
+    <p>Tap the record button to send {recording.name} a reply.</p>
 
-        <Record categories={categories} formats={formats} bind:inProgress={currentlyRecording} bind:blob bind:supportedFormat maxRecordingLengthSeconds={5 * 60} bind:name={username} bind:categoryId={categoryId} />
-      </section>
-    {/if}
+    <Record categories={categories} formats={formats} bind:inProgress={currentlyRecording} bind:blob bind:supportedFormat maxRecordingLengthSeconds={5 * 60} bind:name={initialName} bind:categoryId={categoryId} />
+  </section>
+{/if}
