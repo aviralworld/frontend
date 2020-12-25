@@ -46,7 +46,7 @@
 {:else if token !== undefined}
   <section class="after reply">
     <h2>Reply</h2>
-    <p>Tap the record button to send {recording.name} a reply.</p>
+    <p>You can record a story of your own to share with {recording.name}.</p>
 
     <Record categories={categories} formats={formats} bind:inProgress={currentlyRecording} bind:blob bind:supportedFormat maxRecordingLengthSeconds={5 * 60} bind:name={initialName} bind:categoryId={categoryId} />
   </section>
