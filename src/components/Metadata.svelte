@@ -27,7 +27,7 @@
   }
 
   .note {
-    font-weight: bold;
+    font-style: italic;
   }
 
   p {
@@ -41,7 +41,7 @@
 </style>
 
 <section>
-  <p class="note">The following fields are optional. They will only be used for research purposes and will never be shared publicly.</p>
+  <p class="note">The remaining fields are optional. They will only be used for research purposes and will never be shared publicly.</p>
 
   <label for="user-occupation">What is your occupation? <input type="text" name="occupation" id="user-occupation" bind:value={occupation} /></label>
 
