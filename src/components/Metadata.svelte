@@ -5,13 +5,27 @@
   export let genders;
 
   export let occupation = undefined;
-  export let age_id = undefined;
-  export let gender_id = undefined;
+  export let ageId = undefined;
+  export let genderId = undefined;
   export let location = undefined;
 
   export let details;
 
-  $: details = { occupation, age_id, gender_id, location };
+  $: details = { occupation: trim(occupation), age_id: ageId, gender_id: genderId, location: trim(location) };
+
+  function trim(v: string | undefined): string | undefined {
+    if (v === undefined) {
+      return v;
+    }
+
+    const trimmed = v.trim();
+
+    if (trimmed === "") {
+      return undefined;
+    }
+
+    return trimmed;
+  }
 </script>
 
 <style type="text/css">
@@ -27,7 +41,7 @@
   }
 
   .note {
-    font-weight: bold;
+    font-style: italic;
   }
 
   p {
@@ -41,13 +55,13 @@
 </style>
 
 <section>
-  <p class="note">The following fields are optional. They will only be used for research purposes and will never be shared publicly.</p>
+  <p class="note">The remaining fields are optional. They will only be used for research purposes and will never be shared publicly.</p>
 
   <label for="user-occupation">What is your occupation? <input type="text" name="occupation" id="user-occupation" bind:value={occupation} /></label>
 
-  <p>What is your age? <Choices options={ages} id="user-age" name="age" optional={true} bind:selection={age_id} /></p>
+  <p>What is your age? <Choices options={ages} id="user-age" name="age" optional={true} bind:selection={ageId} /></p>
 
-  <p>What gender do you identify as? <Choices options={genders} id="user-gender" name="gender" optional={true} bind:selection={gender_id} /></p>
+  <p>What gender do you identify as? <Choices options={genders} id="user-gender" name="gender" optional={true} bind:selection={genderId} /></p>
 
   <label for="user-location">Where do you live? <input type="text" name="location" id="user-location" bind:value={location} /></label>
 </section>

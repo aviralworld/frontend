@@ -11,8 +11,11 @@
   let recorder = writable(undefined);
   let currentTime: number;
 
+  let rawName;
   export let name;
   export let categoryId;
+
+  $: name = rawName === undefined ? "" : rawName.trim();
 
   // these are provided by the parent component
   export let formats;
@@ -119,10 +122,10 @@
       <p>You will need to grant access to your microphone when prompted to record a story.</p>
     {/if}
     <form class="record">
-      <p>Before you record your story, please let us know a few details:</p>
+      <p>First, please let us know a few details:</p>
 
-      <RequiredMetadata bind:name bind:categoryId categories={categories} />
-      <button on:click|preventDefault={handleRecording} class="button record-button" disabled={name === undefined || name.trim() === "" || categoryId === undefined}>
+      <RequiredMetadata bind:name={rawName} bind:categoryId categories={categories} />
+      <button on:click|preventDefault={handleRecording} class="button record-button" disabled={name === "" || categoryId === undefined}>
         {#if inProgress}
           Stop recording ({asMinutesAndSeconds(currentTime)}/{asMinutesAndSeconds(maxRecordingLengthSeconds)})
         {:else}

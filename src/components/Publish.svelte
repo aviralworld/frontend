@@ -19,6 +19,7 @@
 
   export let details = undefined;
 
+  export let publishedName = undefined;
   export let publishedLink = undefined;
   export let publishedRecording = undefined;
   let uploading = false;
@@ -45,6 +46,7 @@
     try {
       publishedRecording = await _publish(blob, merged);
       publishedLink = `/recording/${publishedRecording.id}/`;
+      publishedName = username;
       published = true;
     } catch (e) {
     }
@@ -67,10 +69,10 @@
   <!-- TODO custom pause/play buttons and scrubber -->
   <audio controls="controls" src="{makeRecordingUrl()}">Your browser does not support embedded audio!</audio>
   <form bind:this={form} enctype="multipart/form-data">
-    <p>Please list up to two e-mail addresses of people who will be prompted to share their thoughts on your story:</p>
-    <p>(TODO: e-mail invitees)</p>
-    <p>Your story will be published on the website and will be visible to all visitors. If you share your e-mail address below, you can choose to delete the story at any time.</p>
-    <RequiredMetadata name={username} categoryId={categoryId} categories={categories} />
+    <!--<p>Please list up to two e-mail addresses of people who will be prompted to share their thoughts on your story:</p>
+    <p>(TODO: e-mail invitees)</p> -->
+    <p>Your story will be published on the website and will be visible to all visitors.<!-- If you share your e-mail address below, you can choose to delete the story at any time.--></p>
+    <RequiredMetadata name={username} categoryId={categoryId} categories={categories} categoryIsReadonly={true} />
     <Metadata ages={ages} genders={genders} bind:details bind:location showErrors={showErrors} />
     <button on:click|preventDefault={publish} class="button publish-button" type="submit" disabled={uploading}>
       {#if uploading}
