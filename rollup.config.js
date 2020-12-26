@@ -11,13 +11,13 @@ import pkg from "./package.json";
 import dotenvSafe from "dotenv-safe";
 dotenvSafe.config();
 
-const TYPESCRIPT_SETTINGS = {
-  tsconfigDirectory: ".",
-};
-
 const mode = process.env.NODE_ENV;
 const dev = mode === "development";
 const legacy = !!process.env.SAPPER_LEGACY_BUILD;
+
+const TYPESCRIPT_SETTINGS = {
+  tsconfigFile: dev ? "./tsconfig.json" : "./tsconfig.production.json",
+};
 
 const onwarn = (warning, onwarn) =>
   (warning.code === "MISSING_EXPORT" && /'preload'/.test(warning.message)) ||
