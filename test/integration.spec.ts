@@ -168,6 +168,13 @@ describe("The server", function () {
   before(async () => {
     browser = await puppeteer.launch({
       headless: SHOW_PUPPETEER_BROWSER !== "1",
+      args: [
+        "--use-fake-ui-for-media-stream",
+        "--use-fake-device-for-media-stream",
+        "--use-file-for-fake-audio-capture=./test/example.wav",
+        "--allow-file-access",
+        "--no-sandbox",
+      ],
     });
   });
 
@@ -222,5 +229,87 @@ describe("The server", function () {
     const document = await page.getDocument();
     const element = await document.queryByText("Reply");
     assert.equal(element, null);
+  });
+
+  describe("handles recording tokens correctly when they", () => {
+    it("are malformed", async () => {
+      const page = await browser.newPage();
+
+      const url = new URL(
+        "/recording/14b68be1-08d8-4d74-afdf-1da226b821ff/",
+        baseUrl,
+      );
+
+      for (const val of [" ", "abcd", "14b68be1-08d8-4d74-afdf-1da226b821f"]) {
+        url.searchParams.set("token", val);
+        await page.goto(url.toString());
+        assert.equal(await page.title(), "400");
+      }
+    });
+
+    it("don't exist", async () => {
+      const page = await browser.newPage();
+
+      const url = new URL(
+        "/recording/14b68be1-08d8-4d74-afdf-1da226b821ff/?token=14b68be1-08d8-4d74-afdf-1da226b821ff",
+        baseUrl,
+      );
+
+      await page.goto(url.toString());
+      assert.equal(await page.title(), "400");
+    });
+
+    it("don't match the recording", async () => {
+      const page = await browser.newPage();
+
+      const url = new URL(
+        "/recording/091b2ecd-f1a2-48db-a1c4-d050c74986ed/?token=0802bf94-a784-4826-8e50-9f43a00104e3",
+        baseUrl,
+      );
+
+      await page.goto(url.toString());
+      assert.equal(await page.title(), "400");
+    });
+  });
+
+  it("correctly handles valid recording tokens", async () => {
+    const page = await browser.newPage();
+    await page.setDefaultTimeout(100);
+    const url = new URL(
+      "/recording/6bff43d4-66b1-44a1-9970-c0896f778578/?token=0802bf94-a784-4826-8e50-9f43a00104e3",
+      baseUrl,
+    );
+
+    await page.goto(url.toString());
+    assert.equal(await page.title(), "A story by Car from payment Steel Bike");
+
+    const document = await page.getDocument();
+    const recordButton = await document.getByText("Record");
+
+    const nameInput = await document.getByLabelText("What is your name?");
+    await nameInput.type("something");
+
+    const categoryOption = await document.getByText("Forward yellow haptic");
+    await categoryOption.click();
+
+    await recordButton.click();
+    await page.waitForFunction(
+      () =>
+        (document as any).querySelector("button").textContent.indexOf("0:00") >
+        -1,
+      {
+        timeout: 2000,
+      },
+    );
+
+    const stopRecordingButton = await document.getByText("Stop recording", {
+      exact: false,
+    });
+    await stopRecordingButton.click();
+
+    assert.notEqual(
+      await document.queryByText("recording your story", { exact: false }),
+      null,
+    );
   });
 });
