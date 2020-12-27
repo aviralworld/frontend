@@ -6,6 +6,7 @@ import "mocha";
 import { assert } from "chai";
 import { Client } from "pg";
 import puppeteer from "puppeteer";
+import "pptr-testing-library/extend";
 
 dotenvSafe.config();
 
@@ -217,5 +218,9 @@ describe("The server", function () {
       await page.title(),
       "A story by Avon Boliviano Cotton from cyan",
     );
+
+    const document = await page.getDocument();
+    const element = await document.queryByText("Reply");
+    assert.equal(element, null);
   });
 });
