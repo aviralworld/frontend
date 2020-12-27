@@ -8,20 +8,50 @@ stages:
 
 test:
   stage: test
-  image: node:14.7.0-slim@sha256:684feb573d3e0433f05e2ca9d71c46997f6f9a9610ccb46705a0385c46d8c427
+  image: "shivjm/node-chromium-alpine:node14.15.3-chromium81.0.4044.113"
   services:
-    - $API_IMAGE:$API_IMAGE_TAG
-    - postgres:12.3-alpine@sha256:4c5db602c06b811737746e4564040e554ba68cd2ded46a736cbe1af3a638ed0a
     - adobe/s3mock:2.1.24@sha256:f444c12e38050dcf339e8784cacfa40d14a4876503d2818982acb7f117ef03df
+    - name: $CI_REGISTRY/$API_IMAGE/db:$API_IMAGE_TAG
+      alias: db
+    - $CI_REGISTRY/$API_IMAGE:$API_IMAGE_TAG
+  variables:
+    POSTGRES_PASSWORD: "1234"
+    POSTGRES_DB: aviralworld
+    POSTGRES_HOST_AUTH_METHOD: trust
+    POSTGRES_USER: postgres
+
+    BACKEND_DB_CONNECTION_STRING: "postgresql://postgres@db:5432/aviralworld"
+    BACKEND_S3_ACL: "public-read"
+    BACKEND_S3_CACHE_CONTROL: "public, max-age=604800, immutable"
+    BACKEND_BASE_URL: "https://www.example.com/"
+    BACKEND_RECORDINGS_PATH: "recordings"
+    BACKEND_PORT: "3030"
+    BACKEND_ADMIN_PORT: "3031"
+    BACKEND_TOKENS_PER_RECORDING: "2"
+
+    FRONTEND_API_URL: "http://127.0.0.1:3030/"
+
+    S3_ACCESS_KEY: something
+    S3_SECRET_ACCESS_KEY: something_else
+    S3_REGION_NAME: fake
+    S3_BUCKET_NAME: test
+    S3_ENDPOINT: "http://adobe-s3mock/"
+    S3_BASE_URL: "http://adobe-s3mock/"
+
+    PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: "1"
+    PUPPETEER_EXECUTABLE_PATH: "/usr/bin/chromium-browser"
+
+    # for the test script
+    PG_CONNECTION_STRING: "postgresql://postgres@db:5432/aviralworld"
   before_script:
+    - apk add -q curl
     - npm i -g pnpm
     - pnpm i --frozen-lockfile
   script:
     - pnpm run lint
-    # TODO add test data
     - pnpm test
-  only: []
-  # TODO implement testing
+  only:
+    - merge_requests
   interruptible: yes
 
 docker:

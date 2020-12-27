@@ -1,4 +1,4 @@
-import { fork } from "child_process";
+import { ChildProcess, fork } from "child_process";
 import { readFileSync } from "fs";
 
 import dotenvSafe from "dotenv-safe";
@@ -10,7 +10,11 @@ import "pptr-testing-library/extend";
 
 dotenvSafe.config();
 
-const { PG_CONNECTION_STRING, SHOW_PUPPETEER_BROWSER } = process.env;
+const {
+  PG_CONNECTION_STRING,
+  SHOW_PUPPETEER_BROWSER,
+  FRONTEND_API_URL,
+} = process.env;
 
 const SEED = 0.7;
 
@@ -22,15 +26,18 @@ function randomInt(min: number, max: number): number {
 }
 
 const serverPort = randomInt(START_PORT, END_PORT);
-const apiPort = serverPort + 1;
 
-describe("The server", function () {
-  this.timeout(process.env.MOCHA_TIMEOUT);
+let server: ChildProcess;
 
-  const server = fork("./__sapper__/build", [], {
+const exitListener = () => {
+  throw new Error("child process exited");
+};
+
+before(() => {
+  server = fork("./__sapper__/build", [], {
     env: {
       PORT: serverPort.toString(),
-      FRONTEND_API_URL: `http://127.0.0.1:3030/`,
+      FRONTEND_API_URL: FRONTEND_API_URL,
       ROARR_LOG: "true",
       DEBUG: "express-http-proxy",
     },
@@ -41,34 +48,36 @@ describe("The server", function () {
     throw new Error(e.toString());
   });
 
-  const exitListener = () => {
-    throw new Error("child process exited");
-  };
-
   server.on("exit", exitListener);
+});
 
+describe("The server", function () {
+  this.timeout(process.env.MOCHA_TIMEOUT);
   let baseUrl: URL;
 
-  const urlPromise = new Promise((resolve) => {
-    server.stdout.on("data", (line: Buffer) => {
-      try {
-        const string = line.toString();
-        const parsed = JSON.parse(string);
-        const { port } = parsed.context;
-        if (port !== undefined) {
-          baseUrl = new URL(`http://127.0.0.1:${port}/`);
-          resolve();
-          return;
-        }
-      } catch (e) {}
-    });
-  });
+  let urlPromise: Promise<unknown>;
 
   let browser: puppeteer.Browser;
 
   before(async () => {
+    urlPromise = new Promise((resolve) => {
+      server.stdout.on("data", (line: Buffer) => {
+        try {
+          const string = line.toString();
+          const parsed = JSON.parse(string);
+          const { port } = parsed.context;
+          if (port !== undefined) {
+            baseUrl = new URL(`http://127.0.0.1:${port}/`);
+            resolve();
+            return;
+          }
+        } catch (e) {}
+      });
+    });
+
     const client = new Client({ connectionString: PG_CONNECTION_STRING });
     await client.connect();
+
     const data = JSON.parse(
       readFileSync("./test/data.json", { encoding: "utf-8" }),
     );
@@ -180,7 +189,7 @@ describe("The server", function () {
 
   after(async () => {
     try {
-      await browser.close();
+      await browser?.close();
 
       server.off("exit", exitListener);
       server.kill();
@@ -274,7 +283,7 @@ describe("The server", function () {
 
   it("correctly handles valid recording tokens", async () => {
     const page = await browser.newPage();
-    await page.setDefaultTimeout(100);
+    page.setDefaultTimeout(400);
     const url = new URL(
       "/recording/6bff43d4-66b1-44a1-9970-c0896f778578/?token=0802bf94-a784-4826-8e50-9f43a00104e3",
       baseUrl,
@@ -298,7 +307,7 @@ describe("The server", function () {
         (document as any).querySelector("button").textContent.indexOf("0:00") >
         -1,
       {
-        timeout: 2000,
+        timeout: 500,
       },
     );
 
@@ -312,4 +321,17 @@ describe("The server", function () {
       null,
     );
   });
+});
+
+describe("When replying to a recording", function () {
+  // const browser = await puppeteer.launch({
+  //   args: [
+  //     '--no-sandbox',
+  //     '--use-fake-ui-for-media-stream',
+  //     '--use-fake-device-for-media-stream',
+  //     '--use-file-for-fake-audio-capture=/path/example.wav',
+  //     '--allow-file-access',
+  //   ],
+  //   ignoreDefaultArgs: ['--mute-audio'],
+  // });
 });
