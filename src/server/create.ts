@@ -1,3 +1,5 @@
+import type { AddressInfo } from "net";
+
 import sirv from "sirv";
 import express from "express";
 import proxy from "express-http-proxy";
@@ -15,8 +17,6 @@ export function createServer(
   dev: boolean,
   frontendSettings: IFrontendSettings,
 ): express.Express {
-  logger.info({ port, settings }, "Starting server on port %s...", port);
-
   const server = express();
 
   server.use(compression({ threshold: 0 }));
@@ -66,7 +66,16 @@ export function createServer(
     }),
   );
 
-  server.listen(port);
+  const app = server.listen(port);
+
+  const address = app.address() as AddressInfo;
+  const listeningPort = address.port;
+  const listeningAddress = address.address;
+  logger.info(
+    { address: listeningAddress, port: listeningPort, settings },
+    "Server listening on port %s...",
+    listeningPort,
+  );
 
   return server;
 }

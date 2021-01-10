@@ -12,7 +12,7 @@
     "lint": "eslint src --ext=js,jsx,ts",
     "lint:fix": "eslint src --ext=js,jsx,ts --fix",
     "start": "node __sapper__/build",
-    "test": "npm run build && run-p --race start test:integration",
+    "test": "npm run build && npm run test:integration",
     "test:integration": "mocha -r ts-node/register test/**/*.spec.ts",
     "validate": "svelte-check --ignore src/node_modules/@sapper"
   },
@@ -61,8 +61,8 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-svelte3": "^2.7.3",
     "mocha": "^8.2.1",
-    "npm-run-all": "^4.1.5",
     "pg": "^8.5.1",
+    "pptr-testing-library": "^0.6.4",
     "prettier": "^2.1.2",
     "prettier-plugin-svelte": "^1.4.0",
     "puppeteer": "^5.5.0",

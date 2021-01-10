@@ -21,7 +21,16 @@ RUN npm i -g pnpm && pnpm i --prod
 
 FROM node:14.7.0-slim
 
+ARG NODE_ENV=production
+ENV NODE_ENV=$NODE_ENV
+ARG REVISION
+ENV REVISION=$REVISION
+ARG TIMESTAMP
+ENV TIMESTAMP=$TIMESTAMP
+
 WORKDIR /app
+
+LABEL timestamp=$TIMESTAMP revision=$REVISION
 
 COPY --from=build /app/__sapper__ ./__sapper__
 
