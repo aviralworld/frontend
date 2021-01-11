@@ -54,7 +54,6 @@ test:
 
     ROARR_LOG: "true"
   before_script:
-    - apk add -q curl
     - npm i -g pnpm
     - pnpm i -s --frozen-lockfile
   script:
