@@ -22,6 +22,7 @@ function parseFrontendSettings(
   const getValue = (k) => env[`${prefix}${k}`];
 
   return {
+    debounceDelayMs: parseInt(getValue("DEBOUNCE_DELAY_MS"), 10),
     enableAdminMode: getValue("ENABLE_ADMIN_MODE") === "1",
     randomStoryCount: parseInt(getValue("RANDOM_STORY_COUNT"), 10),
   };
