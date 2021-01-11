@@ -26,6 +26,8 @@
 
   let showErrors = false;
 
+  let publishError;
+
   function makeRecordingUrl() {
     return URL.createObjectURL(blob);
   }
@@ -49,6 +51,8 @@
       publishedName = username;
       published = true;
     } catch (e) {
+      publishError = e;
+      console.error("Failed to publish with status", e);
     }
 
     uploading = false;
@@ -60,6 +64,12 @@
     margin: 1rem auto 0 auto;
     font-size: 1.1em;
     display: flex;
+  }
+
+  .error {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-top: 1rem;
   }
 </style>
 
@@ -74,6 +84,9 @@
     <p>Your story will be published on the website and will be visible to all visitors.<!-- If you share your e-mail address below, you can choose to delete the story at any time.--></p>
     <RequiredMetadata name={username} categoryId={categoryId} categories={categories} categoryIsReadonly={true} />
     <Metadata ages={ages} genders={genders} bind:details bind:location showErrors={showErrors} />
+    {#if publishError !== undefined}
+      <p class="error">Your story could not be published. Please try again.</p>
+    {/if}
     <button on:click|preventDefault={publish} class="button publish-button" type="submit" disabled={uploading}>
       {#if uploading}
         Publishing your story…
