@@ -13,7 +13,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN npm i -g pnpm && pnpm install && pnpm run build
+RUN npm i -g pnpm && pnpm i -s --frozen-lockfile && pnpm run build
 
 FROM node:$NODE_VERSION-slim AS deps
 
@@ -23,7 +23,7 @@ COPY package.json .
 
 COPY pnpm-lock.yaml .
 
-RUN npm i -g pnpm && pnpm i --prod
+RUN npm i -g pnpm && pnpm i -s --frozen-lockfile --prod
 
 FROM node:$NODE_VERSION-slim
 
