@@ -1,6 +1,6 @@
 <script lang="ts">
   import Choices from "./Choices.svelte";
-  import debounce from "lodash/debounce";
+  import { normalizeName } from "../routes/_publish";
 
   export let categories;
   export let categoryIsReadonly;
@@ -10,6 +10,12 @@
 
   let currentCategory;
   $: currentCategory = categories.find(([id]) => id === categoryId);
+
+  function updateName() {
+    if (name !== undefined) {
+      name = normalizeName(name);
+    }
+  }
 </script>
 
 <style>
