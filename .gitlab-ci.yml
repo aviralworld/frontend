@@ -56,9 +56,9 @@ test:
   before_script:
     - apk add -q curl
     - npm i -g pnpm
-    - pnpm i --frozen-lockfile
+    - pnpm i -s --frozen-lockfile
   script:
-    - pnpm run lint
+    - pnpm run lint --silent
     - pnpm test
   only:
     - merge_requests
