@@ -1,4 +1,6 @@
 <script lang="ts">
+  import Link from "./Link.svelte";
+
   export let username;
   export let link;
   export let location;
@@ -33,7 +35,7 @@
   <p>You can invite people to listen and reply to your story using the following links (one each):</p>
   <ul>
     {#each links as link}
-      <li><a href={link}><code>{link}</code></a></li>
+      <li><Link href={link} /></li>
     {/each}
   </ul>
   <p>Thank you for participating!</p>
