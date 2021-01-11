@@ -65,12 +65,6 @@
   li {
     margin-top: 1rem;
   }
-
-  li > a {
-    text-decoration: none;
-    padding: 0.25rem;
-    border-bottom: 1px dashed;
-  }
 </style>
 
 <script lang="ts">
