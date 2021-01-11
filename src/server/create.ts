@@ -21,13 +21,18 @@ export function createServer(
 
   server.use(compression({ threshold: 0 }));
 
-  server.use(async (req, _res, next) => {
+  server.use(async (req, res, next) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (req as any).settings = settings;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (req as any).logger = logger;
     logger.info({ path: req.path, params: req.params }, "Received request");
-    next();
+
+    if (req.path.indexOf("/admin") === 0 && !frontendSettings.enableAdminMode) {
+      res.status(403).send();
+    } else {
+      next();
+    }
   });
 
   if (settings.serveStatic) {
@@ -47,6 +52,12 @@ export function createServer(
         switch (err && err.code) {
           case "ECONNRESET":
           case "ECONNREFUSED": {
+            const { req } = res;
+            logger.warn(
+              { path: req.path, params: req.params, err },
+              "Error communicating with backend: %s",
+              err,
+            );
             res.status(502).send("Unable to communicate with backend");
             break;
           }
