@@ -19,6 +19,7 @@ const {
   FRONTEND_ENABLE_ADMIN_MODE,
   FRONTEND_RANDOM_STORY_COUNT,
   FRONTEND_SERVE_STATIC,
+  FRONTEND_TEST_SHOW_SERVER_OUTPUT,
 } = process.env;
 
 const FRONTEND_TEST_NAVIGATION_TIMEOUT = parseInt(
@@ -72,6 +73,11 @@ before(() => {
     server.stdout.on("data", (line: Buffer) => {
       try {
         const string = line.toString();
+
+        if (FRONTEND_TEST_SHOW_SERVER_OUTPUT === "1") {
+          process.stdout.write(string);
+        }
+
         const parsed = JSON.parse(string);
         const { port } = parsed.context;
         if (port !== undefined) {
