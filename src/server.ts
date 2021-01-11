@@ -6,7 +6,7 @@ import type { IFrontendSettings } from "./server/frontendSettings";
 
 dotenvSafe.config();
 
-const { PORT, NODE_ENV } = process.env;
+const { PORT, NODE_ENV, REVISION, TIMESTAMP } = process.env;
 const dev = NODE_ENV === "development";
 
 const SETTINGS = {
@@ -34,4 +34,6 @@ createServer(
   SETTINGS,
   dev,
   parseFrontendSettings("FRONTEND_", process.env),
+  REVISION,
+  TIMESTAMP,
 );

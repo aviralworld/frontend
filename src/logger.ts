@@ -49,7 +49,10 @@ export class Logger {
   }
 }
 
-export function createLogger(errorIfSuppressed = false): Logger {
+export function createLogger(
+  values: Record<string, unknown> = {},
+  errorIfSuppressed = false,
+): Logger {
   if (process.env.ROARR_LOG !== "true" && errorIfSuppressed) {
     throw new Error(`ROARR_LOG must be set to \`true\``);
   }
@@ -57,7 +60,8 @@ export function createLogger(errorIfSuppressed = false): Logger {
   return new Logger(
     log
       .child({
-        application: "marketplace",
+        application: "frontend",
+        ...values,
       })
       .child((message) => {
         const { context } = message;
@@ -70,5 +74,3 @@ export function createLogger(errorIfSuppressed = false): Logger {
       }),
   );
 }
-
-export const LOGGER: Logger = createLogger();

@@ -16,6 +16,8 @@ export function createServer(
   settings: ISettings,
   dev: boolean,
   frontendSettings: IFrontendSettings,
+  revision: string,
+  timestamp: string,
 ): express.Express {
   const server = express();
 
@@ -83,7 +85,13 @@ export function createServer(
   const listeningPort = address.port;
   const listeningAddress = address.address;
   logger.info(
-    { address: listeningAddress, port: listeningPort, settings },
+    {
+      address: listeningAddress,
+      port: listeningPort,
+      settings,
+      revision,
+      timestamp,
+    },
     "Server listening on port %s...",
     listeningPort,
   );
