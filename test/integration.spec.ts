@@ -390,12 +390,10 @@ describe("The server", function () {
           null,
         );
 
-        const publishButton = await document.getByText(
-          "Publish and share my story",
-          {
-            exact: false,
-          },
+        const publishButtons = await page.$x(
+          "//button[contains(., 'Publish and share')]",
         );
+        const publishButton = publishButtons[0];
 
         await publishButton.click();
 
