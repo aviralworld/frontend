@@ -15,6 +15,8 @@
   export let name;
   export let categoryId;
 
+  export let nameInput;
+
   export let parentName;
 
   $: name = rawName === undefined ? "" : rawName.trim();
@@ -133,7 +135,7 @@
     <form class="record">
       <p>First, please let us know a few details:</p>
 
-      <RequiredMetadata bind:name={rawName} bind:categoryId categories={categories} />
+      <RequiredMetadata bind:name={rawName} bind:categoryId categories={categories} bind:nameInput={nameInput} />
       <button on:click|preventDefault={handleRecording} class="button record-button" disabled={name === "" || categoryId === undefined}>
         {#if inProgress}
           Stop recording ({asMinutesAndSeconds(currentTime)}/{asMinutesAndSeconds(maxRecordingLengthSeconds)})

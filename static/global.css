@@ -32,6 +32,8 @@
   --button-background: orange;
   --button-foreground: white;
   --button-padding: 0.5rem 1rem;
+
+  --error-foreground: red;
 }
 
 * {
