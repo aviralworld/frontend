@@ -51,6 +51,8 @@ test:
 
     # for the test script
     PG_CONNECTION_STRING: "postgresql://postgres@db:5432/aviralworld"
+
+    ROARR_LOG: "true"
   before_script:
     - apk add -q curl
     - npm i -g pnpm
