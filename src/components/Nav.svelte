@@ -2,20 +2,29 @@
   nav {
     border-bottom: 1px solid rgba(255, 62, 0, 0.1);
     font-weight: 300;
-    padding: 0 1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
   }
 
-  .listen {
-    position: absolute;
-    right: 0;
-    top: 0;
-    text-decoration: none;
+  img {
+    width: 100%;
+  }
+
+  h1 {
+    height: 3.25rem;
+    padding: var(--button-padding);
+  }
+
+  h1, a {
     display: flex;
+    align-items: center;
+    justify-content: center;
   }
 </style>
 
 <nav>
-  <h1><a href="/">A Viral World</a></h1>
+  <h1><a href="/"><img src="/logo.svg" alt="A Viral World"></a></h1>
 
   <a href="/listen" class="listen button">Listen to other stories</a>
 </nav>
