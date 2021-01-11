@@ -76,7 +76,7 @@ before(() => {
         const { port } = parsed.context;
         if (port !== undefined) {
           baseUrl = new URL(`http://127.0.0.1:${port}/`);
-          resolve();
+          resolve(null);
           return;
         }
       } catch (e) {}
