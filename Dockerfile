@@ -1,4 +1,6 @@
-FROM node:14.7.0-slim AS build
+ARG NODE_VERSION
+
+FROM node:$NODE_VERSION-slim AS build
 
 # workaround for build issues
 ENV FRONTEND_API_URL=1
@@ -13,7 +15,7 @@ COPY . .
 
 RUN npm i -g pnpm && pnpm install && pnpm run build
 
-FROM node:14.7.0-slim AS deps
+FROM node:$NODE_VERSION-slim AS deps
 
 WORKDIR /app
 
@@ -23,7 +25,7 @@ COPY pnpm-lock.yaml .
 
 RUN npm i -g pnpm && pnpm i --prod
 
-FROM node:14.7.0-slim
+FROM node:$NODE_VERSION-slim
 
 ARG NODE_ENV=production
 ENV NODE_ENV=$NODE_ENV
