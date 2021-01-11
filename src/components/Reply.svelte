@@ -46,8 +46,6 @@
 {:else if token !== undefined}
   <section class="after reply">
     <h2>Reply</h2>
-    <p>You can record a story of your own to share with {recording.name}.</p>
-
-    <Record categories={categories} formats={formats} bind:inProgress={currentlyRecording} bind:blob bind:supportedFormat maxRecordingLengthSeconds={5 * 60} bind:name={initialName} bind:categoryId={categoryId} />
+    <Record categories={categories} formats={formats} bind:inProgress={currentlyRecording} bind:blob bind:supportedFormat maxRecordingLengthSeconds={5 * 60} bind:name={initialName} bind:categoryId={categoryId} parentName={recording.name} />
   </section>
 {/if}
