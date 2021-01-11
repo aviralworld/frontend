@@ -1,7 +1,11 @@
 FROM node:14.7.0-slim AS build
 
-# workaround for a build issue
-ENV FRONTEND_API_URL=http://www.stub.com/
+# workaround for build issues
+ENV FRONTEND_API_URL=1
+ENV FRONTEND_DEBOUNCE_DELAY_MS=1
+ENV FRONTEND_ENABLE_ADMIN_MODE=1
+ENV FRONTEND_RANDOM_STORY_COUNT=1
+ENV FRONTEND_SERVE_STATIC=1
 
 WORKDIR /app
 
