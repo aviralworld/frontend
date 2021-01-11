@@ -7,7 +7,7 @@ const NORMALIZE = typeof String.prototype.normalize === "function";
 export function normalizeName(name: string): string {
   const trimmed = name.trim();
   const normalized = NORMALIZE ? trimmed.normalize() : trimmed;
-  return normalized.replaceAll(WHITESPACE_RE, " ");
+  return normalized.replace(WHITESPACE_RE, " ");
 }
 
 export async function publish(
