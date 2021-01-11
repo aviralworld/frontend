@@ -68,6 +68,8 @@
 
   li > a {
     text-decoration: none;
+    padding: 0.25rem;
+    border-bottom: 1px dashed;
   }
 </style>
 
@@ -99,7 +101,7 @@
 
     <ul>
       {#each recordings as recording}
-        <li><a href={`/recording/${recording.id}/`}><RecordingSummary recording={recording} /></a></li>
+        <li><RecordingSummary recording={recording} /></li>
       {/each}
     </ul>
   </section>

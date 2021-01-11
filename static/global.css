@@ -33,7 +33,11 @@
   --button-foreground: white;
   --button-padding: 0.5rem 1rem;
 
-  --error-foreground: red;
+  --error-foreground: #d43900;
+
+  /*--link-hover: #d50000;*/
+  --link-foreground: #0000e0;
+  --link-hover: #ed1c24;
 }
 
 * {

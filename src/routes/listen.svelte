@@ -19,12 +19,15 @@
   export let recordings;
 </script>
 
+<style>
+</style>
+
 <main>
   <h2>Randomly-curated stories</h2>
 
     <ul>
       {#each recordings as recording}
-        <li><a href={`/recording/${recording.id}/`}><RecordingSummary recording={recording} /></a></li>
+        <li><RecordingSummary recording={recording} /></li>
       {/each}
     </ul>
 </main>
