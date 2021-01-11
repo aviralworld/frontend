@@ -1,8 +1,14 @@
+<script lang="ts" context="module">
+  export async function preload(_request, session) {
+    return { dev: session.frontendSettings.dev };
+  }
+</script>
+
 <script lang="ts">
   export let status: number;
   export let error: Error;
 
-  const dev = process.env.NODE_ENV === "development";
+  export let dev;
 </script>
 
 <style>
