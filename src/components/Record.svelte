@@ -15,6 +15,10 @@
   export let name;
   export let categoryId;
 
+  export let nameInput;
+
+  export let parentName;
+
   $: name = rawName === undefined ? "" : rawName.trim();
 
   // these are provided by the parent component
@@ -111,20 +115,27 @@
       border: 2px solid currentcolor;
     }
   }
+
+  .error {
+    font-weight: bold;
+  }
 </style>
 
 <!-- TODO add polyfill: https://github.com/ai/audio-recorder-polyfill -->
 {#if supportedFormat === undefined}
-  <p>Your browser does not allow recording audio in any supported formats.</p>
+  <p>You can record a story of your own to share with {parentName}.</p>
+<p class="error">Your browser does not allow recording audio in any supported formats.</p>
 {:else}
   {#await permissionQuery then result}
+    <p>You can record a story of your own to share with {parentName}.
     {#if !canAccessMicrophone}
-      <p>You will need to grant access to your microphone when prompted to record a story.</p>
+      You will need to grant access to your microphone when prompted.
     {/if}
+    </p>
     <form class="record">
       <p>First, please let us know a few details:</p>
 
-      <RequiredMetadata bind:name={rawName} bind:categoryId categories={categories} />
+      <RequiredMetadata bind:name={rawName} bind:categoryId categories={categories} bind:nameInput={nameInput} />
       <button on:click|preventDefault={handleRecording} class="button record-button" disabled={name === "" || categoryId === undefined}>
         {#if inProgress}
           Stop recording ({asMinutesAndSeconds(currentTime)}/{asMinutesAndSeconds(maxRecordingLengthSeconds)})

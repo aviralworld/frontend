@@ -1,15 +1,24 @@
 <script lang="ts">
   import Choices from "./Choices.svelte";
-  import debounce from "lodash/debounce";
+  import { normalizeName } from "../routes/_publish";
 
   export let categories;
   export let categoryIsReadonly;
 
-  export let name;
+  export let initialName;
+  export let name = initialName;
   export let categoryId;
+
+  export let nameInput;
 
   let currentCategory;
   $: currentCategory = categories.find(([id]) => id === categoryId);
+
+  function updateName() {
+    if (name !== undefined) {
+      name = normalizeName(name);
+    }
+  }
 </script>
 
 <style>
@@ -32,7 +41,7 @@
   }
 </style>
 
-<label class="required-metadata-item name" for="user-name">What is your name? <input type="text" name="name" id="user-name" bind:value={name} required /></label>
+<label class="required-metadata-item name" for="user-name">What is your name? <input type="text" name="name" id="user-name" bind:value={name} pattern=".*\S.*" on:change={updateName} bind:this={nameInput} /></label>
 
 <!-- TODO use radio buttons with descriptions -->
 <p class="required-metadata-item">What is your story about?

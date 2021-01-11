@@ -1,3 +1,5 @@
+// TODO this causes what seems to be an extraneous error (cannot use a namespace
+// as a type)
 import type { Preload } from "@sapper/common";
 
 export type IVerificationResult =

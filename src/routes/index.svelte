@@ -65,10 +65,6 @@
   li {
     margin-top: 1rem;
   }
-
-  li > a {
-    text-decoration: none;
-  }
 </style>
 
 <script lang="ts">
@@ -99,7 +95,7 @@
 
     <ul>
       {#each recordings as recording}
-        <li><a href={`/recording/${recording.id}/`}><RecordingSummary recording={recording} /></a></li>
+        <li><RecordingSummary recording={recording} /></li>
       {/each}
     </ul>
   </section>

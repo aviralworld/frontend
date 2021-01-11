@@ -24,6 +24,7 @@ const onwarn = (warning, onwarn) =>
   (warning.code === "CIRCULAR_DEPENDENCY" &&
     /[/\\]@sapper[/\\]/.test(warning.message)) ||
   warning.code === "THIS_IS_UNDEFINED" ||
+  warning.pluginCode === "a11y-media-has-caption" || // there won't be captions on user-submitted audio
   onwarn(warning);
 
 export default {

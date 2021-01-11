@@ -6,7 +6,7 @@ import type { IFrontendSettings } from "./server/frontendSettings";
 
 dotenvSafe.config();
 
-const { PORT, NODE_ENV } = process.env;
+const { PORT, NODE_ENV, REVISION, TIMESTAMP } = process.env;
 const dev = NODE_ENV === "development";
 
 const SETTINGS = {
@@ -22,6 +22,8 @@ function parseFrontendSettings(
   const getValue = (k) => env[`${prefix}${k}`];
 
   return {
+    dev,
+    debounceDelayMs: parseInt(getValue("DEBOUNCE_DELAY_MS"), 10),
     enableAdminMode: getValue("ENABLE_ADMIN_MODE") === "1",
     randomStoryCount: parseInt(getValue("RANDOM_STORY_COUNT"), 10),
   };
@@ -33,4 +35,6 @@ createServer(
   SETTINGS,
   dev,
   parseFrontendSettings("FRONTEND_", process.env),
+  REVISION,
+  TIMESTAMP,
 );

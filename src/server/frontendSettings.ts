@@ -1,4 +1,6 @@
 export interface IFrontendSettings {
-  randomStoryCount: number;
+  debounceDelayMs: number;
+  dev: boolean;
   enableAdminMode: boolean;
+  randomStoryCount: number;
 }
