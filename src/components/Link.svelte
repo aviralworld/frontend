@@ -32,15 +32,15 @@
     flex: 1 0 1ch;
     margin-left: -1px; /* hide the doubled border */
     transition: color 0.5s;
-    color: rgba(0, 0, 0, 1);
+    color: rgba(255, 255, 255, 1);
   }
 
   .copied {
-    color: rgba(0, 0, 0, 0.75);
+    color: rgba(255, 255, 255, 0.75);
   }
 </style>
 
 <form>
   <input type="text" readonly value={href} on:click={() => input.setSelectionRange(0, input.value.length)} bind:this={input} />
-  <button on:click|preventDefault={copy} class:copied>{#if copied}Copied!{:else}Copy{/if}</button>
+  <button on:click|preventDefault={copy} class:copied class="button">{#if copied}Copied!{:else}Copy{/if}</button>
 </form>
