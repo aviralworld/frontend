@@ -8,6 +8,7 @@ import * as sapper from "@sapper/server";
 
 import type { Logger } from "../logger";
 import type { IFrontendSettings } from "./frontendSettings";
+import healthCheck from "./healthCheck";
 import createProxy from "./proxy";
 import type { ISettings } from "./settings";
 
@@ -68,9 +69,23 @@ export function createServer(
   logger.debug("Getting address...");
   const [listeningAddress, listeningPort] = getAddress(app);
 
+  const adminServer = express();
+  adminServer.use(
+    "/healthz",
+    healthCheck(
+      revision,
+      timestamp,
+      `${settings.apiUrl}recordings/random/1`,
+      settings.healthCheckTimeoutMs,
+    ),
+  );
+
+  adminServer.listen(settings.adminPort);
+
   logger.info(
     {
       address: listeningAddress,
+      adminPort: settings.adminPort,
       port: listeningPort,
       settings,
       revision,

@@ -3,6 +3,7 @@ import dotenvSafe from "dotenv-safe";
 import { createLogger } from "./logger";
 import { createServer } from "./server/create";
 import type { IFrontendSettings } from "./server/frontendSettings";
+import type { ISettings } from "./server/settings";
 
 const logger = createLogger();
 
@@ -14,11 +15,16 @@ const { PORT, NODE_ENV, REVISION, TIMESTAMP } = process.env;
 const dev = NODE_ENV === "development";
 
 logger.debug("Initializing settings...");
-const SETTINGS = {
+const SETTINGS: ISettings = {
+  adminPort: parseInt(process.env.FRONTEND_ADMIN_PORT, 10),
   apiUrl: new URL(process.env.FRONTEND_API_URL),
   compression: process.env.FRONTEND_COMPRESSION === "1",
   dev,
   enableAdminMode: process.env.FRONTEND_ENABLE_ADMIN_MODE === "1",
+  healthCheckTimeoutMs: parseInt(
+    process.env.FRONTEND_HEALTH_CHECK_TIMEOUT_MS,
+    10,
+  ),
   serveStatic: process.env.FRONTEND_SERVE_STATIC !== "0",
 };
 

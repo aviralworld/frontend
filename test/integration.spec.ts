@@ -59,6 +59,8 @@ before(() => {
       FRONTEND_ENABLE_ADMIN_MODE,
       FRONTEND_RANDOM_STORY_COUNT,
       FRONTEND_SERVE_STATIC,
+      FRONTEND_ADMIN_PORT: (serverPort + 1).toString(),
+      FRONTEND_HEALTH_CHECK_TIMEOUT_MS: "1",
       ROARR_LOG: "true",
     },
     stdio: "pipe",
