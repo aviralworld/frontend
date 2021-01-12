@@ -5,6 +5,7 @@
     display: flex;
     justify-content: space-between;
     align-items: stretch;
+    width: 100%;
   }
 
   img {
