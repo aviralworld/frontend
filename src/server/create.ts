@@ -23,9 +23,11 @@ export function createServer(
   const server = express();
 
   if (settings.compression) {
+    logger.debug("Adding compression...");
     server.use(compression({ threshold: 0 }));
   }
 
+  logger.debug("Adding logging and settings middleware...");
   server.use((req, _res, next) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (req as any).settings = settings;
@@ -37,17 +39,21 @@ export function createServer(
   });
 
   if (!settings.enableAdminMode) {
+    logger.debug("Adding guard for /admin...");
     server.use("/admin", (_req, res) => {
       res.status(403).send();
     });
   }
 
   if (settings.serveStatic) {
+    logger.debug("Adding sirv...");
     server.use("/static", sirv("static", { dev }));
   }
 
+  logger.debug("Adding API proxy...");
   server.use("/api", createProxy(logger, settings));
 
+  logger.debug("Adding Sapper...");
   server.use(
     sapper.middleware({
       session: () => ({
@@ -56,7 +62,10 @@ export function createServer(
     }),
   );
 
+  logger.debug("Binding to port %s...", port);
   const app = server.listen(port);
+
+  logger.debug("Getting address...");
   const [listeningAddress, listeningPort] = getAddress(app);
 
   logger.info(
