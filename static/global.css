@@ -1,8 +1,8 @@
 @font-face {
     font-family: "Futura Std";
     src: local("Futura Std Book Oblique"), local("FuturaStd-BookOblique"),
-        url("/fonts/FuturaStd-BookOblique.woff2") format("woff2"),
-        url("/fonts/FuturaStd-BookOblique.woff") format("woff");
+        url("/static/fonts/FuturaStd-BookOblique.woff2") format("woff2"),
+        url("/static/fonts/FuturaStd-BookOblique.woff") format("woff");
     font-weight: normal;
     font-style: italic;
     font-display: swap;
@@ -11,8 +11,8 @@
 @font-face {
     font-family: "Futura Std";
     src: local("Futura Std Bold"), local("FuturaStd-Bold"),
-        url("/fonts/FuturaStd-Bold.woff2") format("woff2"),
-        url("/fonts/FuturaStd-Bold.woff") format("woff");
+        url("/static/fonts/FuturaStd-Bold.woff2") format("woff2"),
+        url("/static/fonts/FuturaStd-Bold.woff") format("woff");
     font-weight: bold;
     font-style: normal;
     font-display: swap;
@@ -21,8 +21,8 @@
 @font-face {
     font-family: "Futura Std";
     src: local("Futura Std Book"), local("FuturaStd-Book"),
-        url("/fonts/FuturaStd-Book.woff2") format("woff2"),
-        url("/fonts/FuturaStd-Book.woff") format("woff");
+        url("/static/fonts/FuturaStd-Book.woff2") format("woff2"),
+        url("/static/fonts/FuturaStd-Book.woff") format("woff");
     font-weight: normal;
     font-style: normal;
     font-display: swap;
