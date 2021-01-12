@@ -11,6 +11,7 @@ const dev = NODE_ENV === "development";
 
 const SETTINGS = {
   apiUrl: new URL(process.env.FRONTEND_API_URL),
+  compression: process.env.FRONTEND_COMPRESSION === "1",
   dev,
   enableAdminMode: process.env.FRONTEND_ENABLE_ADMIN_MODE === "1",
   serveStatic: process.env.FRONTEND_SERVE_STATIC !== "0",

@@ -22,7 +22,9 @@ export function createServer(
 ): express.Express {
   const server = express();
 
-  server.use(compression({ threshold: 0 }));
+  if (settings.compression) {
+    server.use(compression({ threshold: 0 }));
+  }
 
   server.use((req, _res, next) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
