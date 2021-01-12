@@ -60,7 +60,6 @@ before(() => {
       FRONTEND_RANDOM_STORY_COUNT,
       FRONTEND_SERVE_STATIC,
       ROARR_LOG: "true",
-      DEBUG: "express-http-proxy",
     },
     stdio: "pipe",
   });
