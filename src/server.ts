@@ -12,6 +12,7 @@ const dev = NODE_ENV === "development";
 const SETTINGS = {
   apiUrl: new URL(process.env.FRONTEND_API_URL),
   dev,
+  enableAdminMode: process.env.FRONTEND_ENABLE_ADMIN_MODE === "1",
   serveStatic: process.env.FRONTEND_SERVE_STATIC !== "0",
 };
 
@@ -24,7 +25,6 @@ function parseFrontendSettings(
   return {
     dev,
     debounceDelayMs: parseInt(getValue("DEBOUNCE_DELAY_MS"), 10),
-    enableAdminMode: getValue("ENABLE_ADMIN_MODE") === "1",
     randomStoryCount: parseInt(getValue("RANDOM_STORY_COUNT"), 10),
   };
 }
