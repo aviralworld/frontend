@@ -1,4 +1,5 @@
 import type { AddressInfo } from "net";
+import type { Server } from "http";
 
 import sirv from "sirv";
 import express from "express";
@@ -54,10 +55,8 @@ export function createServer(
   );
 
   const app = server.listen(port);
+  const [listeningAddress, listeningPort] = getAddress(app);
 
-  const address = app.address() as AddressInfo;
-  const listeningPort = address.port;
-  const listeningAddress = address.address;
   logger.info(
     {
       address: listeningAddress,
@@ -71,4 +70,12 @@ export function createServer(
   );
 
   return server;
+}
+
+function getAddress(app: Server): [string, number] {
+  const address = app.address() as AddressInfo;
+  const listeningPort = address.port;
+  const listeningAddress = address.address;
+
+  return [listeningAddress, listeningPort];
 }
