@@ -71,14 +71,15 @@ before(() => {
 
   server.on("exit", exitListener);
 
+  if (FRONTEND_TEST_SHOW_SERVER_OUTPUT === "1") {
+    server.stdout.pipe(process.stdout);
+    server.stderr.pipe(process.stderr);
+  }
+
   urlPromise = new Promise((resolve) => {
     server.stdout.on("data", (line: Buffer) => {
       try {
         const string = line.toString();
-
-        if (FRONTEND_TEST_SHOW_SERVER_OUTPUT === "1") {
-          process.stdout.write(string);
-        }
 
         const parsed = JSON.parse(string);
         const { port } = parsed.context;
