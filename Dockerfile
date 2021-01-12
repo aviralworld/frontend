@@ -13,7 +13,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN npm i -g pnpm && pnpm i -s --frozen-lockfile && pnpm run build
+RUN npm i -g pnpm && pnpm i -s --frozen-lockfile && pnpm run build && pnpm run hash
 
 FROM node:$NODE_VERSION-slim AS deps
 

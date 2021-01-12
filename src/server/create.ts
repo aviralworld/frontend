@@ -38,7 +38,7 @@ export function createServer(
   });
 
   if (settings.serveStatic) {
-    server.use(sirv("static", { dev }));
+    server.use("/static", sirv("static", { dev }));
   }
 
   server.use(

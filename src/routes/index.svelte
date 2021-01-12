@@ -15,32 +15,23 @@
 
 <style>
   main {
-    display: grid;
-    grid-template:
-      max-content auto
-      / 1fr 1fr;
-    gap: 1em;
     font-size: 1.2rem;
+    padding: 2rem;
   }
 
   .p {
-    padding: 1rem;
   }
 
   .intro {
     grid-area: 1 / 1 / auto / auto;
-    padding: 2rem;
   }
 
   .invitation {
     grid-area: 1 / 2 / auto / auto;
     text-align: center;
-    padding: 2rem;
   }
 
   .about {
-    grid-area: 2 / 1 / 2 / 3;
-    padding: 2rem 10rem;
   }
 
   @supports (hyphens: auto) {
@@ -64,6 +55,31 @@
 
   li {
     margin-top: 1rem;
+  }
+
+  @media not all and (min-width: 40em) {
+    .p + .p {
+      margin-top: 2rem;
+    }
+  }
+
+  @media (min-width: 40em) {
+    main {
+      display: grid;
+      grid-template:
+        max-content auto
+        / 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .about {
+      grid-area: 2 / 1 / 2 / 3;
+      padding: 2rem 10rem;
+    }
+
+    .p {
+      padding: 0 1rem 1rem 1rem;
+    }
   }
 </style>
 
