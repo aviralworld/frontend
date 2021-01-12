@@ -1,21 +1,9 @@
 ARG NODE_VERSION
+ARG BASE_IMAGE
 
-FROM node:$NODE_VERSION-slim AS build
+FROM $BASE_IMAGE AS build
 
-# workaround for build issues
-ENV FRONTEND_API_URL=1
-ENV FRONTEND_DEBOUNCE_DELAY_MS=1
-ENV FRONTEND_ENABLE_ADMIN_MODE=1
-ENV FRONTEND_RANDOM_STORY_COUNT=1
-ENV FRONTEND_SERVE_STATIC=1
-
-WORKDIR /app
-
-COPY . .
-
-RUN npm i -g pnpm && pnpm i -s --frozen-lockfile && pnpm run build && pnpm run hash
-
-FROM node:$NODE_VERSION-slim AS deps
+FROM node:$NODE_VERSION AS deps
 
 WORKDIR /app
 
@@ -25,18 +13,19 @@ COPY pnpm-lock.yaml .
 
 RUN npm i -g pnpm && pnpm i -s --frozen-lockfile --prod
 
-FROM node:$NODE_VERSION-slim
+FROM node:$NODE_VERSION
 
 ARG NODE_ENV=production
 ENV NODE_ENV=$NODE_ENV
+
 ARG REVISION
-ENV REVISION=$REVISION
 ARG TIMESTAMP
+LABEL timestamp=$TIMESTAMP revision=$REVISION
+
+ENV REVISION=$REVISION
 ENV TIMESTAMP=$TIMESTAMP
 
 WORKDIR /app
-
-LABEL timestamp=$TIMESTAMP revision=$REVISION
 
 COPY --from=build /app/__sapper__ ./__sapper__
 
