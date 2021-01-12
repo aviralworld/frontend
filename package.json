@@ -9,6 +9,7 @@
     "format:prettier": "npx prettier --write --plugin-search-dir=. src/**/*.ts src/**/*.js src/**/*.svelte",
     "format:eslint": "npm run lint:fix",
     "format": "npm run format:prettier && npm run format:eslint",
+    "hash": "node -r ts-node/register tools/hashCss.ts",
     "lint": "eslint src --ext=js,jsx,ts",
     "lint:fix": "eslint src --ext=js,jsx,ts --fix",
     "start": "node __sapper__/build",
