@@ -14,6 +14,7 @@ const {
   PG_CONNECTION_STRING,
   SHOW_PUPPETEER_BROWSER,
   FRONTEND_API_URL,
+  FRONTEND_COMPRESSION,
   FRONTEND_DEBOUNCE_DELAY_MS,
   FRONTEND_TEST_NAVIGATION_TIMEOUT: _FRONTEND_TEST_NAVIGATION_TIMEOUT,
   FRONTEND_ENABLE_ADMIN_MODE,
@@ -53,12 +54,12 @@ before(() => {
     env: {
       PORT: serverPort.toString(),
       FRONTEND_API_URL,
+      FRONTEND_COMPRESSION,
       FRONTEND_DEBOUNCE_DELAY_MS,
       FRONTEND_ENABLE_ADMIN_MODE,
       FRONTEND_RANDOM_STORY_COUNT,
       FRONTEND_SERVE_STATIC,
       ROARR_LOG: "true",
-      DEBUG: "express-http-proxy",
     },
     stdio: "pipe",
   });
@@ -69,14 +70,15 @@ before(() => {
 
   server.on("exit", exitListener);
 
+  if (FRONTEND_TEST_SHOW_SERVER_OUTPUT === "1") {
+    server.stdout.pipe(process.stdout);
+    server.stderr.pipe(process.stderr);
+  }
+
   urlPromise = new Promise((resolve) => {
     server.stdout.on("data", (line: Buffer) => {
       try {
         const string = line.toString();
-
-        if (FRONTEND_TEST_SHOW_SERVER_OUTPUT === "1") {
-          process.stdout.write(string);
-        }
 
         const parsed = JSON.parse(string);
         const { port } = parsed.context;

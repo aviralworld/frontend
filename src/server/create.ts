@@ -1,13 +1,14 @@
 import type { AddressInfo } from "net";
+import type { Server } from "http";
 
 import sirv from "sirv";
 import express from "express";
-import proxy from "express-http-proxy";
 import compression from "compression";
 import * as sapper from "@sapper/server";
 
-import type { IFrontendSettings } from "./frontendSettings";
 import type { Logger } from "../logger";
+import type { IFrontendSettings } from "./frontendSettings";
+import createProxy from "./proxy";
 import type { ISettings } from "./settings";
 
 export function createServer(
@@ -21,56 +22,38 @@ export function createServer(
 ): express.Express {
   const server = express();
 
-  server.use(compression({ threshold: 0 }));
+  if (settings.compression) {
+    logger.debug("Adding compression...");
+    server.use(compression({ threshold: 0 }));
+  }
 
-  server.use(async (req, res, next) => {
+  logger.debug("Adding logging and settings middleware...");
+  server.use((req, _res, next) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (req as any).settings = settings;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (req as any).logger = logger;
     logger.info({ path: req.path, params: req.params }, "Received request");
 
-    if (req.path.indexOf("/admin") === 0 && !frontendSettings.enableAdminMode) {
-      res.status(403).send();
-    } else {
-      next();
-    }
+    next();
   });
 
+  if (!settings.enableAdminMode) {
+    logger.debug("Adding guard for /admin...");
+    server.use("/admin", (_req, res) => {
+      res.status(403).send();
+    });
+  }
+
   if (settings.serveStatic) {
+    logger.debug("Adding sirv...");
     server.use("/static", sirv("static", { dev }));
   }
 
-  server.use(
-    "/api",
-    proxy(settings.apiUrl.toString(), {
-      proxyErrorHandler: (
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        err: any,
-        res: express.Response,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        next: (err: any) => void,
-      ) => {
-        switch (err && err.code) {
-          case "ECONNRESET":
-          case "ECONNREFUSED": {
-            const { req } = res;
-            logger.warn(
-              { path: req.path, params: req.params, err },
-              "Error communicating with backend: %s",
-              err,
-            );
-            res.status(502).send("Unable to communicate with backend");
-            break;
-          }
-          default: {
-            next(err);
-          }
-        }
-      },
-    }),
-  );
+  logger.debug("Adding API proxy...");
+  server.use("/api", createProxy(logger, settings));
 
+  logger.debug("Adding Sapper...");
   server.use(
     sapper.middleware({
       session: () => ({
@@ -79,11 +62,12 @@ export function createServer(
     }),
   );
 
+  logger.debug("Binding to port %s...", port);
   const app = server.listen(port);
 
-  const address = app.address() as AddressInfo;
-  const listeningPort = address.port;
-  const listeningAddress = address.address;
+  logger.debug("Getting address...");
+  const [listeningAddress, listeningPort] = getAddress(app);
+
   logger.info(
     {
       address: listeningAddress,
@@ -97,4 +81,12 @@ export function createServer(
   );
 
   return server;
+}
+
+function getAddress(app: Server): [string, number] {
+  const address = app.address() as AddressInfo;
+  const listeningPort = address.port;
+  const listeningAddress = address.address;
+
+  return [listeningAddress, listeningPort];
 }
