@@ -14,7 +14,7 @@
 </script>
 
 <script lang="ts">
-  import RecordingSummary from "../components/RecordingSummary.svelte";
+  import RecordingList from "../components/RecordingList.svelte";
 
   export let recordings;
 </script>
@@ -25,9 +25,5 @@
 <main>
   <h2>Randomly-curated stories</h2>
 
-    <ul>
-      {#each recordings as recording}
-        <li><RecordingSummary recording={recording} /></li>
-      {/each}
-    </ul>
+  <RecordingList recordings={recordings} />
 </main>

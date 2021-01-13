@@ -16,10 +16,6 @@
 <style>
   main {
     font-size: 1.2rem;
-    padding: 2rem;
-  }
-
-  .p {
   }
 
   .intro {
@@ -29,9 +25,6 @@
   .invitation {
     grid-area: 1 / 2 / auto / auto;
     text-align: center;
-  }
-
-  .about {
   }
 
   @supports (hyphens: auto) {
@@ -46,14 +39,6 @@
   }
 
   h2 + p {
-    margin-top: 1rem;
-  }
-
-  ul, li {
-    list-style: none;
-  }
-
-  li {
     margin-top: 1rem;
   }
 
@@ -84,7 +69,7 @@
 </style>
 
 <script lang="ts">
-  import RecordingSummary from "../components/RecordingSummary.svelte";
+  import RecordingList from "../components/RecordingList.svelte";
 
   export let recordings;
 </script>
@@ -109,11 +94,7 @@
   <section class="invitation p">
     <h2>Randomly-curated stories</h2>
 
-    <ul>
-      {#each recordings as recording}
-        <li><RecordingSummary recording={recording} /></li>
-      {/each}
-    </ul>
+    <RecordingList recordings={recordings} />
   </section>
 
   <section class="about p">
