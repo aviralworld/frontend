@@ -112,93 +112,7 @@ describe("The server", function () {
       const data = JSON.parse(
         readFileSync("./test/data.json", { encoding: "utf-8" }),
       );
-
-      const {
-        mimeTypes,
-        audioFormats,
-        ages,
-        categories,
-        genders,
-        recordings,
-        recordingTokens,
-      } = data;
-
-      await client.query("TRUNCATE mime_types CASCADE;");
-
-      for (const mimeType of mimeTypes) {
-        await client.query(
-          "INSERT INTO mime_types (id, essence) VALUES ($1, $2);",
-          mimeType,
-        );
-      }
-
-      await client.query("TRUNCATE audio_formats CASCADE;");
-
-      for (const format of audioFormats) {
-        await client.query(
-          "INSERT INTO audio_formats (id, container, codec, extension, mime_type_id) VALUES ($1, $2, $3, $4, $5);",
-          format,
-        );
-      }
-
-      for (const [k, v] of Object.entries({ ages, categories, genders })) {
-        await client.query(`TRUNCATE ${k} CASCADE;`);
-
-        for (const row of v) {
-          await client.query(
-            `INSERT INTO ${k} (id, label, enabled) VALUES ($1, $2, TRUE, $3);`,
-            row,
-          );
-        }
-      }
-
-      await client.query("TRUNCATE recordings CASCADE;");
-
-      for (const {
-        id,
-        createdAt,
-        updatedAt,
-        deletedAt,
-        url,
-        mimeTypeId,
-        parentId,
-        categoryId,
-        name,
-        ageId,
-        genderId,
-        location,
-        occupation,
-      } of recordings) {
-        await client.query(
-          "INSERT INTO recordings (id, created_at, updated_at, deleted_at, url, mime_type_id, parent_id, category_id, name, age_id, gender_id, location, occupation) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13);",
-          [
-            id,
-            createdAt,
-            updatedAt,
-            deletedAt,
-            url,
-            mimeTypeId,
-            parentId,
-            categoryId,
-            name,
-            ageId,
-            genderId,
-            location,
-            occupation,
-          ],
-        );
-      }
-
-      await client.query("TRUNCATE recording_tokens CASCADE;");
-
-      for (const { id, parentId } of recordingTokens) {
-        await client.query(
-          "INSERT INTO recording_tokens (id, parent_id) VALUES ($1, $2);",
-          [id, parentId],
-        );
-      }
-
-      await client.query("SELECT setseed($1);", [SEED]);
+      await initializeDatabase(client, data);
     } finally {
       await client.end();
     }
@@ -468,4 +382,102 @@ function withPage(
       await page.close();
     }
   };
+}
+
+async function initializeDatabase(client: Client, data: any) {
+  const {
+    mimeTypes,
+    audioFormats,
+    ages,
+    categories,
+    genders,
+    recordings,
+    recordingTokens,
+  } = data;
+
+  await insert(client, "mime_types", "id, essence", "$1, $2", mimeTypes);
+  await insert(
+    client,
+    "audio_formats",
+    "id, container, codec, extension, mime_type_id",
+    "$1, $2, $3, $4, $5",
+    audioFormats,
+  );
+  await insert(client, "ages", "id, label, enabled", "$1, $2, TRUE", ages);
+  await insert(
+    client,
+    "categories",
+    "id, label, enabled, description",
+    "$1, $2, TRUE, $3",
+    categories.map(([a, b, c]) => [a, b, c]),
+  );
+  await insert(
+    client,
+    "genders",
+    "id, label, enabled",
+    "$1, $2, TRUE",
+    genders,
+  );
+  await insert(
+    client,
+    "recordings",
+    "id, created_at, updated_at, deleted_at, url, mime_type_id, parent_id, category_id, name, age_id, gender_id, location, occupation",
+    "$1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13",
+    recordings.map(
+      ({
+        id,
+        createdAt,
+        updatedAt,
+        deletedAt,
+        url,
+        mimeTypeId,
+        parentId,
+        categoryId,
+        name,
+        ageId,
+        genderId,
+        location,
+        occupation,
+      }) => [
+        id,
+        createdAt,
+        updatedAt,
+        deletedAt,
+        url,
+        mimeTypeId,
+        parentId,
+        categoryId,
+        name,
+        ageId,
+        genderId,
+        location,
+        occupation,
+      ],
+    ),
+  );
+
+  await insert(
+    client,
+    "recording_tokens",
+    "id, parent_id",
+    "$1, $2",
+    recordingTokens.map(({ id, parentId }) => [id, parentId]),
+  );
+}
+
+async function insert(
+  client: Client,
+  table: string,
+  columns: string,
+  values: string,
+  data: any[][],
+) {
+  await client.query(`TRUNCATE ${table} CASCADE`);
+
+  for (const row of data) {
+    await client.query(
+      `INSERT INTO ${table} (${columns}) VALUES (${values});`,
+      row,
+    );
+  }
 }
