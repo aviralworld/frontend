@@ -14,6 +14,10 @@
   /* } */
 </style>
 
+<svelte:head>
+  <link rel="preload" href="https://aviral.world/static/fonts/FuturaStd-Book.woff2" as="font" type="font/woff2" />
+</svelte:head>
+
 <Nav {segment} />
 
 <slot />
