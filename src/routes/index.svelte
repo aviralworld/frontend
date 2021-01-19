@@ -16,10 +16,6 @@
 <style>
   main {
     font-size: 1.2rem;
-    padding: 2rem;
-  }
-
-  .p {
   }
 
   .intro {
@@ -29,9 +25,6 @@
   .invitation {
     grid-area: 1 / 2 / auto / auto;
     text-align: center;
-  }
-
-  .about {
   }
 
   @supports (hyphens: auto) {
@@ -46,14 +39,6 @@
   }
 
   h2 + p {
-    margin-top: 1rem;
-  }
-
-  ul, li {
-    list-style: none;
-  }
-
-  li {
     margin-top: 1rem;
   }
 
@@ -84,7 +69,7 @@
 </style>
 
 <script lang="ts">
-  import RecordingSummary from "../components/RecordingSummary.svelte";
+  import RecordingList from "../components/RecordingList.svelte";
 
   export let recordings;
 </script>
@@ -101,19 +86,16 @@
       pandemic whilst simultaneously creating connections between us.
     </p>
     <p>
-      If you would like to start a thread of your own, please get in touch with
-      us.
+      If you would like to start a thread of your own,
+      please <a href="mailto:info@aviral.world">get in touch with
+      us</a>.
     </p>
   </section>
 
   <section class="invitation p">
     <h2>Randomly-curated stories</h2>
 
-    <ul>
-      {#each recordings as recording}
-        <li><RecordingSummary recording={recording} /></li>
-      {/each}
-    </ul>
+    <RecordingList recordings={recordings} />
   </section>
 
   <section class="about p">
@@ -168,14 +150,25 @@
     </p>
     <p>
       This initiative was created by a team of professionals currently residing
-      in Germany, India, and the UAE. Our background is in design, philosophy,
-      software development, and management, and we were drawn to this topic by
-      curiosity. At first, we were thinking about how the global lockdown might
-      create tensions in households, thus creating a need for people to vent
-      their frustrations somehow. After a couple of discussions, however, we
-      quickly realized asking people to share with us audio recordings of them
-      talking about their frustrations would result in voyeurism, which is why
-      we shifted our focus.
+      in Germany, India, and the UAE:
+    </p>
+    <ul class="team">
+      <li>Alessia Cadamuro</li>
+      <li>Gionata Gatto</li>
+      <li>Shiv Jha-Mathur</li>
+      <li>Miikka J. Lehtonen</li>
+      <li>Leonard Lutz</li>
+    </ul>
+    <p>
+      Our background is in design, philosophy, software development,
+      and management, and we were drawn to this topic by curiosity. At
+      first, we were thinking about how the global lockdown might
+      create tensions in households, thus creating a need for people
+      to vent their frustrations somehow. After a couple of
+      discussions, however, we quickly realized asking people to share
+      with us audio recordings of them talking about their
+      frustrations would result in voyeurism, which is why we shifted
+      our focus.
     </p>
   </section>
 </main>

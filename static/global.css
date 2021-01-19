@@ -1,31 +1,31 @@
 @font-face {
-    font-family: "Futura Std";
-    src: local("Futura Std Book Oblique"), local("FuturaStd-BookOblique"),
-        url("/static/fonts/FuturaStd-BookOblique.woff2") format("woff2"),
-        url("/static/fonts/FuturaStd-BookOblique.woff") format("woff");
-    font-weight: normal;
-    font-style: italic;
-    font-display: swap;
+  font-family: "Futura Std";
+  src: local("Futura Std Book Oblique"), local("FuturaStd-BookOblique"),
+       url("/static/fonts/FuturaStd-BookOblique.woff2") format("woff2"),
+       url("/static/fonts/FuturaStd-BookOblique.woff") format("woff");
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: "Futura Std";
-    src: local("Futura Std Bold"), local("FuturaStd-Bold"),
-        url("/static/fonts/FuturaStd-Bold.woff2") format("woff2"),
-        url("/static/fonts/FuturaStd-Bold.woff") format("woff");
-    font-weight: bold;
-    font-style: normal;
-    font-display: swap;
+  font-family: "Futura Std";
+  src: local("Futura Std Bold"), local("FuturaStd-Bold"),
+       url("/static/fonts/FuturaStd-Bold.woff2") format("woff2"),
+       url("/static/fonts/FuturaStd-Bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: "Futura Std";
-    src: local("Futura Std Book"), local("FuturaStd-Book"),
-        url("/static/fonts/FuturaStd-Book.woff2") format("woff2"),
-        url("/static/fonts/FuturaStd-Book.woff") format("woff");
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
+  font-family: "Futura Std";
+  src: local("Futura Std Book"), local("FuturaStd-Book"),
+       url("/static/fonts/FuturaStd-Book.woff2") format("woff2"),
+       url("/static/fonts/FuturaStd-Book.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
 :root {
@@ -59,25 +59,26 @@ p + p {
 }
 
 main {
-    max-width: 56em;
-    margin: 0 auto;
+  padding: 2rem;
+  max-width: 56em;
+  margin: 0 auto;
 }
 
 .button {
-    border: none;
-    background-color: transparent;
-    font-family: inherit;
-    padding: 0;
-    cursor: pointer;
+  border: none;
+  background-color: transparent;
+  font-family: inherit;
+  padding: 0;
+  cursor: pointer;
 
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
-    background-color: var(--button-background);
-    color: var(--button-foreground);
-    padding: var(--button-padding);
-    font-weight: bold;
+  background-color: var(--button-background);
+  color: var(--button-foreground);
+  padding: var(--button-padding);
+  font-weight: bold;
 }
 
 .button:disabled {
