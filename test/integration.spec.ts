@@ -283,17 +283,17 @@ describe("The server", function () {
         const nameInput = await document.getByLabelText("What is your name?");
         await nameInput.type("Car");
 
-        const categoryOption = await document.getByText(
-          "Forward yellow haptic",
-        );
-        await categoryOption.click();
-
         assert.notEqual(
           await document.queryByText("haptic yellow Forward extensible", {
             exact: false,
           }),
           null,
         );
+
+        const categoryOption = await document.getByText(
+          "Forward yellow haptic",
+        );
+        await categoryOption.click();
 
         await recordButton.click();
         await page.waitForFunction(
