@@ -15,7 +15,7 @@
 </style>
 
 <svelte:head>
-  <link rel="preload" href="https://aviral.world/static/fonts/FuturaStd-Book.woff2" as="font" type="font/woff2" />
+  <link rel="preload" href="/static/fonts/FuturaStd-Book.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
 </svelte:head>
 
 <Nav {segment} />
