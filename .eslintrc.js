@@ -4,8 +4,9 @@ module.exports = {
   parserOptions: {
     tsconfigRootDir: __dirname,
     project: ["./tsconfig.json"],
+    extraFileExtensions: [".svelte"],
   },
-  plugins: ["@typescript-eslint", "svelte3"],
+  plugins: ["svelte3", "@typescript-eslint"],
   rules: {
     // copied from
     // <https://dev.to/mhaecker/use-airbnb-s-eslint-config-with-typescript-prettier-in-svelte-apps-4fb7>,
@@ -22,6 +23,8 @@ module.exports = {
     "plugin:promise/recommended",
     "prettier",
     "prettier/@typescript-eslint",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
   ],
   overrides: [
     {
@@ -37,4 +40,8 @@ module.exports = {
       plugins: ["@typescript-eslint"],
     },
   ],
+  settings: {
+    "svelte3/typescript": require("typescript"),
+    // ...
+  },
 };
