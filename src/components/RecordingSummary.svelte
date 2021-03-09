@@ -29,10 +29,16 @@
     line-height: 1.6;
   }
 
-  a:hover, a:active, a:focus {
+  a:hover,
+  a:active,
+  a:focus {
     color: var(--link-hover);
     border-bottom: 1px solid;
   }
 </style>
 
-<a href={`/recording/${recording.id}/`}>{recording.name}{#if recording.location !== null}{" "}<span class="from">from</span> {recording.location}{/if}</a>
+<a
+  href={`/recording/${recording.id}/`}>{recording.name}{#if recording.location !== null}
+    {' '}<span class="from">from</span>
+    {recording.location}
+  {/if}</a>

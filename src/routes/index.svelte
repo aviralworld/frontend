@@ -1,16 +1,26 @@
 <script context="module" lang="ts">
   export async function preload(page: any, session: any) {
-    const { randomStoryCount } = session.frontendSettings;
+    const { baseUrl, randomStoryCount } = session.frontendSettings;
 
     const res = await this.fetch(`/api/recordings/random/${randomStoryCount}/`);
 
     if (res.status !== 200) {
-      return { recordings: [] };
+      return { baseUrl, recordings: [] };
     }
 
     const json = await res.json();
-    return { recordings: json.recordings };
+    return { baseUrl, recordings: json.recordings };
   }
+</script>
+
+<script lang="ts">
+  import RecordingList from "../components/RecordingList.svelte";
+
+  export let baseUrl;
+  export let recordings;
+
+  let description =
+    "Make history. Or just rant. Share your Covid-19 story and highlight the positive elements of virality. Create and explore connections between us.";
 </script>
 
 <style>
@@ -68,14 +78,17 @@
   }
 </style>
 
-<script lang="ts">
-  import RecordingList from "../components/RecordingList.svelte";
-
-  export let recordings;
-</script>
-
 <svelte:head>
   <title>A Viral World</title>
+  <meta name="description" content={description} />
+  <meta name="twitter:card" value="summary" />
+  <meta property="og:title" content="A Viral World" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={baseUrl} />
+  <meta
+    property="og:image"
+    content="{baseUrl}static/favicon/ms-icon-310x310.png" />
+  <meta property="og:description" content={description} />
 </svelte:head>
 
 <main>
@@ -86,16 +99,15 @@
       pandemic whilst simultaneously creating connections between us.
     </p>
     <p>
-      If you would like to start a thread of your own,
-      please <a href="mailto:info@aviral.world">get in touch with
-      us</a>.
+      If you would like to start a thread of your own, please
+      <a href="mailto:info@aviral.world">get in touch with us</a>.
     </p>
   </section>
 
   <section class="invitation p">
     <h2>Randomly-curated stories</h2>
 
-    <RecordingList recordings={recordings} />
+    <RecordingList {recordings} />
   </section>
 
   <section class="about p">
@@ -160,15 +172,14 @@
       <li>Leonard Lutz</li>
     </ul>
     <p>
-      Our background is in design, philosophy, software development,
-      and management, and we were drawn to this topic by curiosity. At
-      first, we were thinking about how the global lockdown might
-      create tensions in households, thus creating a need for people
-      to vent their frustrations somehow. After a couple of
-      discussions, however, we quickly realized asking people to share
-      with us audio recordings of them talking about their
-      frustrations would result in voyeurism, which is why we shifted
-      our focus.
+      Our background is in design, philosophy, software development, and
+      management, and we were drawn to this topic by curiosity. At first, we
+      were thinking about how the global lockdown might create tensions in
+      households, thus creating a need for people to vent their frustrations
+      somehow. After a couple of discussions, however, we quickly realized
+      asking people to share with us audio recordings of them talking about
+      their frustrations would result in voyeurism, which is why we shifted our
+      focus.
     </p>
   </section>
 </main>

@@ -35,6 +35,7 @@ function parseFrontendSettings(
   const getValue = (k: string) => env[`${prefix}${k}`];
 
   return {
+    baseUrl: getValue("BASE_URL"),
     dev,
     debounceDelayMs: parseInt(getValue("DEBOUNCE_DELAY_MS"), 10),
     randomStoryCount: parseInt(getValue("RANDOM_STORY_COUNT"), 10),

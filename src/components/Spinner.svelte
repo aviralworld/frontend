@@ -11,7 +11,10 @@
     --animation-duration: 1.5s;
   }
 
-  .ring::before, .ring::after, .ring > i::before, .ring > i::after {
+  .ring::before,
+  .ring::after,
+  .ring > i::before,
+  .ring > i::after {
     content: " ";
     box-sizing: border-box;
     display: block;
@@ -23,7 +26,8 @@
     margin: calc(var(--spinner-size) / 10);
     border: calc(var(--spinner-size) / 10) solid var(--spinner-color);
     border-radius: 50%;
-    animation: ring var(--animation-duration) cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    animation: ring var(--animation-duration) cubic-bezier(0.5, 0, 0.5, 1)
+      infinite;
     border-color: var(--spinner-color) transparent transparent transparent;
   }
 
@@ -51,6 +55,4 @@
   }
 </style>
 
-<span class="ring">
-  <i></i>
-</span>
+<span class="ring"> <i /> </span>

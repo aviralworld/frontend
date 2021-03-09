@@ -41,9 +41,24 @@
   }
 </style>
 
-<label class="required-metadata-item name" for="user-name">What is your name? <input type="text" name="name" id="user-name" bind:value={name} pattern=".*\S.*" on:change={updateName} bind:this={nameInput} /></label>
+<label class="required-metadata-item name" for="user-name">What is your name?
+  <input
+    type="text"
+    name="name"
+    id="user-name"
+    bind:value={name}
+    pattern=".*\S.*"
+    on:change={updateName}
+    bind:this={nameInput} /></label>
 
 <!-- TODO use radio buttons with descriptions -->
-<p class="required-metadata-item">What is your story about?
-  <Choices options={categories} id="user-category" name="category" optional={false} bind:selection={categoryId} readonly={categoryIsReadonly} />
+<p class="required-metadata-item">
+  What is your story about?
+  <Choices
+    options={categories}
+    id="user-category"
+    name="category"
+    optional={false}
+    bind:selection={categoryId}
+    readonly={categoryIsReadonly} />
 </p>

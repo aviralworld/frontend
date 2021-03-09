@@ -42,7 +42,7 @@ devDependencies:
   eslint-plugin-eslint-comments: 3.2.0_eslint@7.17.0
   eslint-plugin-import: 2.22.1_eslint@7.17.0
   eslint-plugin-promise: 4.2.1
-  eslint-plugin-svelte3: 2.7.3_eslint@7.17.0+svelte@3.31.2
+  eslint-plugin-svelte3: 3.1.0_eslint@7.17.0+svelte@3.31.2
   fast-glob: 3.2.4
   mocha: 8.2.1
   parse5-html-rewriting-stream: 6.0.1
@@ -2018,7 +2018,7 @@ packages:
     dependencies:
       ms: 2.1.2
       supports-color: 7.2.0
-    deprecated: 'Debug versions >=3.2.0 <3.2.7 || >=4 <4.3.1 have a low-severity ReDos regression when used in a Node.js environment. It is recommended you upgrade to 3.2.7 or 4.3.1. (https://github.com/visionmedia/debug/issues/797)'
+    deprecated: Debug versions >=3.2.0 <3.2.7 || >=4 <4.3.1 have a low-severity ReDos regression when used in a Node.js environment. It is recommended you upgrade to 3.2.7 or 4.3.1. (https://github.com/visionmedia/debug/issues/797)
     dev: true
     engines:
       node: '>=6.0'
@@ -2317,16 +2317,18 @@ packages:
       node: '>=6'
     resolution:
       integrity: sha512-VoM09vT7bfA7D+upt+FjeBO5eHIJQBUWki1aPvB+vbNiHS3+oGIJGIeyBtKQTME6UPXXy3vV07OL1tHd3ANuDw==
-  /eslint-plugin-svelte3/2.7.3_eslint@7.17.0+svelte@3.31.2:
+  /eslint-plugin-svelte3/3.1.0_eslint@7.17.0+svelte@3.31.2:
     dependencies:
       eslint: 7.17.0
       svelte: 3.31.2
     dev: true
+    engines:
+      node: '>=10'
     peerDependencies:
       eslint: '>=6.0.0'
       svelte: ^3.2.0
     resolution:
-      integrity: sha512-p6HhxyICX9x/x+8WSy6AVk2bmv9ayoznoTSyCvK47th/k/07ksuJixMwbGX9qxJVAmPBaYMjEIMSEZtJHPIN7w==
+      integrity: sha512-SV78vuJIEO6PB6K2DBINGzCi/0a+YuWZ0LobRX8MdkEOA5EsNoe02DzkRc/4YmNtx/wbqHdcAqatUVW1b7TzsA==
   /eslint-scope/5.1.1:
     dependencies:
       esrecurse: 4.3.0
@@ -4960,7 +4962,7 @@ specifiers:
   eslint-plugin-eslint-comments: ^3.2.0
   eslint-plugin-import: ^2.22.1
   eslint-plugin-promise: ^4.2.1
-  eslint-plugin-svelte3: ^2.7.3
+  eslint-plugin-svelte3: ^3.1.0
   express: ^4.17.1
   express-http-proxy: ^1.6.2
   fast-glob: ^3.2.4

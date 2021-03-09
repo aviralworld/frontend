@@ -45,6 +45,7 @@ test:
     BACKEND_TOKENS_PER_RECORDING: "2"
 
     FRONTEND_API_URL: "http://127.0.0.1:3030/"
+    FRONTEND_BASE_URL: "https://example.com/"
     FRONTEND_DEBOUNCE_DELAY_MS: "300"
     FRONTEND_ENABLE_ADMIN_MODE: "1"
     FRONTEND_RANDOM_STORY_COUNT: "3"
@@ -75,7 +76,9 @@ test:
     - npm i -g pnpm
     - pnpm i -s --frozen-lockfile
   script:
-    - pnpm run lint --silent
+    - pnpm run format:prettier:check
+    # ESLint, Svelte, and TypeScript still don't quite seem to gel
+    # - pnpm run lint --silent
     - pnpm test
   only:
     - merge_requests

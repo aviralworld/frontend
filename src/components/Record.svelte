@@ -124,24 +124,34 @@
 <!-- TODO add polyfill: https://github.com/ai/audio-recorder-polyfill -->
 {#if supportedFormat === undefined}
   <p>You can record a story of your own to share with {parentName}.</p>
-<p class="error">Your browser does not allow recording audio in any supported formats.</p>
+  <p class="error">
+    Your browser does not allow recording audio in any supported formats.
+  </p>
 {:else}
   {#await permissionQuery then result}
-    <p>You can record a story of your own to share with {parentName}.
-    {#if !canAccessMicrophone}
-      You will need to grant access to your microphone when prompted.
-    {/if}
+    <p>
+      You can record a story of your own to share with
+      {parentName}.
+      {#if !canAccessMicrophone}
+        You will need to grant access to your microphone when prompted.
+      {/if}
     </p>
     <form class="record">
       <p>First, please let us know a few details:</p>
 
-      <RequiredMetadata bind:name={rawName} bind:categoryId categories={categories} bind:nameInput={nameInput} />
-      <button on:click|preventDefault={handleRecording} class="button record-button" disabled={name === "" || categoryId === undefined}>
+      <RequiredMetadata
+        bind:name={rawName}
+        bind:categoryId
+        {categories}
+        bind:nameInput />
+      <button
+        on:click|preventDefault={handleRecording}
+        class="button record-button"
+        disabled={name === '' || categoryId === undefined}>
         {#if inProgress}
           Stop recording ({asMinutesAndSeconds(currentTime)}/{asMinutesAndSeconds(maxRecordingLengthSeconds)})
-        {:else}
-        Record
-      {/if}
-    </button></form>
+        {:else}Record{/if}
+      </button>
+    </form>
   {/await}
 {/if}

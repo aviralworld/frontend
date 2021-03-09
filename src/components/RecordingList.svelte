@@ -5,7 +5,8 @@
 </script>
 
 <style>
-  ul, li {
+  ul,
+  li {
     list-style: none;
   }
 
@@ -16,6 +17,8 @@
 
 <ul>
   {#each recordings as recording}
-    <li><RecordingSummary recording={recording} /></li>
+    <li>
+      <RecordingSummary {recording} />
+    </li>
   {/each}
 </ul>

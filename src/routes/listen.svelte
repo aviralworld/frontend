@@ -25,5 +25,5 @@
 <main>
   <h2>Randomly-curated stories</h2>
 
-  <RecordingList recordings={recordings} />
+  <RecordingList {recordings} />
 </main>
