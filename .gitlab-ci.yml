@@ -76,6 +76,7 @@ test:
     - npm i -g pnpm
     - pnpm i -s --frozen-lockfile
   script:
+    - pnpm run format:prettier:check
     # ESLint, Svelte, and TypeScript still don't quite seem to gel
     # - pnpm run lint --silent
     - pnpm test

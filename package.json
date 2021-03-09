@@ -7,6 +7,7 @@
     "build": "sapper build --legacy",
     "export": "sapper export --legacy",
     "format:prettier": "npx prettier --write --plugin-search-dir=. src/**/*.ts src/**/*.svelte",
+    "format:prettier:check": "npx prettier --check --plugin-search-dir=. src/**/*.ts src/**/*.svelte",
     "format:eslint": "npm run lint:fix",
     "format": "npm run format:prettier && npm run format:eslint",
     "hash": "node -r ts-node/register tools/hashCss.ts",
