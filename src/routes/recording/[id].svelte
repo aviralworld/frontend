@@ -1,7 +1,8 @@
 <script context="module" lang="ts">
   import { verifyToken } from "./_token";
 
-  export async function preload({ params, query }) {
+  export async function preload({ params, query }, session) {
+    const { baseUrl } = session.frontendSettings;
     const { id } = params;
 
     const res = await this.fetch(`/api/recordings/id/${id}`);
@@ -40,12 +41,14 @@
       return;
     }
 
-    return { ages, categories, genders, formats, recording: await res.json(), token: verificationResult?.token };
+    return { ages, baseUrl, categories, genders, formats, recording: await res.json(), token: verificationResult?.token };
   }
 </script>
 
 <script lang="ts">
   import Reply from "../../components/Reply.svelte";
+
+  export let baseUrl;
 
   export let ages;
   export let categories;
@@ -55,9 +58,14 @@
   export let recording;
   export let token;
 
+  let location;
   let title;
+  let description;
 
-  $: title = `A story by ${recording.name}` + ((recording.location !== null) ? ` from ${recording.location}` : "");
+  $: location = (recording.location !== null) ? ` from ${recording.location}` : "";
+
+  $: title = `A story by ${recording.name}${location}`;
+  $: description = `Listen to the story of ${recording.name}${location}.`;
 </script>
 
 <style>
@@ -90,6 +98,13 @@
 
 <svelte:head>
   <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="twitter:card" value="summary" />
+  <meta property="og:title" content={title} />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="{baseUrl}recording/{recording.id}/" />
+  <meta property="og:image" content="{baseUrl}static/favicon/ms-icon-310x310.png" />
+  <meta property="og:description" content={description}>
 </svelte:head>
 
 <main>
@@ -100,11 +115,11 @@
 <h2 class="listen">Listen</h2>
   <p>
 Listening to the story of {recording.name}{#if recording.location !== null}{" "}from {recording.location}{/if}. Thank you for taking the time to become part of this shared
-    story.
+  story.
   </p>
 
   <!-- TODO custom pause/play buttons and scrubber -->
   <audio controls="controls" src="{recording.url}">Your browser does not support embedded audio!</audio>
 
   <Reply ages={ages} categories={categories} formats={formats} genders={genders} token={token} recording={recording} />
-  </main>
+</main>
