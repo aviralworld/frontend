@@ -3,5 +3,6 @@
 </script>
 
 <main>
-  Loading… <Spinner />
+  Loading…
+  <Spinner />
 </main>

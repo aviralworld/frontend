@@ -17,7 +17,8 @@
     padding: var(--button-padding);
   }
 
-  h1, a {
+  h1,
+  a {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -25,7 +26,7 @@
 </style>
 
 <nav>
-  <h1><a href="/"><img src="/static/logo.svg" alt="A Viral World"></a></h1>
+  <h1><a href="/"><img src="/static/logo.svg" alt="A Viral World" /></a></h1>
 
   <a href="/listen" class="listen button">Listen to other stories</a>
 </nav>

@@ -40,12 +40,37 @@
 </script>
 
 {#if publishedRecording !== undefined && document.location.href !== publishedLink}
-  <Remember username={publishedName} link={publishedLink} location={publishedLocation} forget={forget} recording={publishedRecording} />
+  <Remember
+    username={publishedName}
+    link={publishedLink}
+    location={publishedLocation}
+    {forget}
+    recording={publishedRecording} />
 {:else if completedRecording}
-  <Publish categories={categories} ages={ages} blob={blob} genders={genders} token={token} bind:publishedLink={publishedLink} username={initialName} categoryId={categoryId} bind:location={publishedLocation} bind:publishedRecording={publishedRecording} bind:publishedName={publishedName} />
+  <Publish
+    {categories}
+    {ages}
+    {blob}
+    {genders}
+    {token}
+    bind:publishedLink
+    username={initialName}
+    {categoryId}
+    bind:location={publishedLocation}
+    bind:publishedRecording
+    bind:publishedName />
 {:else if token !== undefined}
   <section class="after reply">
     <h2>Reply</h2>
-    <Record categories={categories} formats={formats} bind:inProgress={currentlyRecording} bind:blob bind:supportedFormat maxRecordingLengthSeconds={5 * 60} bind:name={initialName} bind:categoryId={categoryId} parentName={recording.name} />
+    <Record
+      {categories}
+      {formats}
+      bind:inProgress={currentlyRecording}
+      bind:blob
+      bind:supportedFormat
+      maxRecordingLengthSeconds={5 * 60}
+      bind:name={initialName}
+      bind:categoryId
+      parentName={recording.name} />
   </section>
 {/if}

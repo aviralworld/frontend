@@ -19,7 +19,8 @@
     width: 100%;
   }
 
-  input, button {
+  input,
+  button {
     padding: 0.5rem;
   }
 
@@ -41,6 +42,14 @@
 </style>
 
 <form>
-  <input type="text" readonly value={href} on:click={() => input.setSelectionRange(0, input.value.length)} bind:this={input} />
-  <button on:click|preventDefault={copy} class:copied class="button">{#if copied}Copied!{:else}Copy{/if}</button>
+  <input
+    type="text"
+    readonly
+    value={href}
+    on:click={() => input.setSelectionRange(0, input.value.length)}
+    bind:this={input} />
+  <button
+    on:click|preventDefault={copy}
+    class:copied
+    class="button">{#if copied}Copied!{:else}Copy{/if}</button>
 </form>
