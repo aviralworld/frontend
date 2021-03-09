@@ -1,7 +1,5 @@
 <script context="module" lang="ts">
-  import type { Preload } from "@sapper/common";
-
-  export const preload: Preload = async function (this, page, session) {
+  export async function preload(page: any, session: any) {
     const { baseUrl, randomStoryCount } = session.frontendSettings;
 
     const res = await this.fetch(`/api/recordings/random/${randomStoryCount}/`);
@@ -12,7 +10,7 @@
 
     const json = await res.json();
     return { baseUrl, recordings: json.recordings };
-  };
+  }
 </script>
 
 <script lang="ts">
