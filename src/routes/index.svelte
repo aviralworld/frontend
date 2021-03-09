@@ -1,15 +1,17 @@
 <script context="module" lang="ts">
-  export async function preload(page: any, session: any) {
-    const { randomStoryCount } = session.frontendSettings;
+  import type { Preload } from "@sapper/common";
+
+  export const preload: Preload = async function(this, page, session) {
+    const { baseUrl, randomStoryCount } = session.frontendSettings;
 
     const res = await this.fetch(`/api/recordings/random/${randomStoryCount}/`);
 
     if (res.status !== 200) {
-      return { recordings: [] };
+      return { baseUrl, recordings: [] };
     }
 
     const json = await res.json();
-    return { recordings: json.recordings };
+    return { baseUrl, recordings: json.recordings };
   }
 </script>
 
@@ -71,11 +73,21 @@
 <script lang="ts">
   import RecordingList from "../components/RecordingList.svelte";
 
+  export let baseUrl;
   export let recordings;
+
+  let description = "Make history. Or just rant. Share your Covid-19 story and highlight the positive elements of virality. Create and explore connections between us.";
 </script>
 
 <svelte:head>
   <title>A Viral World</title>
+  <meta name="description" content={description} />
+  <meta name="twitter:card" value="summary" />
+  <meta property="og:title" content="A Viral World" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="{baseUrl}" />
+  <meta property="og:image" content="{baseUrl}static/favicon/ms-icon-310x310.png" />
+  <meta property="og:description" content={description}>
 </svelte:head>
 
 <main>
