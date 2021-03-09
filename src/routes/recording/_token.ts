@@ -1,6 +1,6 @@
 // TODO this causes what seems to be an extraneous error (cannot use a namespace
 // as a type)
-import type { Preload } from "@sapper/common";
+//import type { Preload } from "@sapper/common";
 
 export type IVerificationResult =
   | IVerifiedToken
@@ -17,7 +17,7 @@ export interface ITokenVerificationError {
 }
 
 export async function verifyToken(
-  preload: Preload,
+  preload: any, // should be Preload
   value: string,
   currentId: string,
 ): Promise<IVerificationResult> {
