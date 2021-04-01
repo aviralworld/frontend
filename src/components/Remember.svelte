@@ -13,6 +13,12 @@
   $: links = recording.tokens.map((t) =>
     new URL(`/recording/${recording.id}/?token=${t}`, base).toString(),
   );
+
+  let key;
+  $: key = recording.key;
+
+  let managementLink;
+  $: managementLink = new URL(`/lookup/${key}/`, base).toString();
 </script>
 
 <style>
@@ -46,5 +52,7 @@
       </li>
     {/each}
   </ul>
+  <p>And you can use this private link to manage the recording (do not share it with anyone):</p>
+  <a href={managementLink}><kbd>{managementLink}</kbd></a>
   <p>Thank you for participating!</p>
 </section>
