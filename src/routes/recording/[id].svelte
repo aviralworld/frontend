@@ -166,11 +166,11 @@
       {' '}from
       {recording.location}
     {/if}.
-{#if isOwner}
-  Thank you for taking the time to share this story.
-{:else}
-Thank you for taking the time to become part of this shared story.
-{/if}
+    {#if isOwner}
+      Thank you for taking the time to share this story.
+    {:else}
+      Thank you for taking the time to become part of this shared story.
+    {/if}
   </p>
 
   <!-- TODO custom pause/play buttons and scrubber -->

@@ -7,7 +7,10 @@
 
     if (res.status === 200 || res.status === 410) {
       const recording = await res.json();
-      return this.redirect(302, new URL(`/recording/${recording.id}/?key=${token}`, baseUrl).toString());
+      return this.redirect(
+        302,
+        new URL(`/recording/${recording.id}/?key=${token}`, baseUrl).toString(),
+      );
     }
 
     this.error(404, `No such key: ${token}`);

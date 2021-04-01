@@ -52,7 +52,10 @@
       </li>
     {/each}
   </ul>
-  <p>And you can use this private link to manage the recording (do not share it with anyone):</p>
+  <p>
+    And you can use this private link to manage the recording (do not share it
+    with anyone):
+  </p>
   <a href={managementLink}><kbd>{managementLink}</kbd></a>
   <p>Thank you for participating!</p>
 </section>
