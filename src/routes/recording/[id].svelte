@@ -50,12 +50,35 @@
       return;
     }
 
+    const { key } = query;
+
+    let isOwner = false;
+
+    if (key !== undefined) {
+      const response = await this.fetch(`/api/recordings/lookup/${key}/`);
+
+      if (response.status !== 200) {
+        this.error(400, `Not a valid key: ${key}`);
+        return;
+      }
+
+      const { id: keyId } = await response.json();
+
+      if (id !== keyId) {
+        this.error(400, `Not a valid key: ${key}`);
+        return;
+      }
+
+      isOwner = true;
+    }
+
     return {
       ages,
       baseUrl,
       categories,
       genders,
       formats,
+      isOwner,
       recording: await res.json(),
       token: verificationResult?.token,
     };
@@ -74,6 +97,8 @@
 
   export let recording;
   export let token;
+
+  export let isOwner;
 
   let location;
   let title;
@@ -140,7 +165,12 @@
     {recording.name}{#if recording.location !== null}
       {' '}from
       {recording.location}
-    {/if}. Thank you for taking the time to become part of this shared story.
+    {/if}.
+    {#if isOwner}
+      Thank you for taking the time to share this story.
+    {:else}
+      Thank you for taking the time to become part of this shared story.
+    {/if}
   </p>
 
   <!-- TODO custom pause/play buttons and scrubber -->

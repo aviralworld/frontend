@@ -14,7 +14,6 @@ const {
   PG_CONNECTION_STRING,
   SHOW_PUPPETEER_BROWSER,
   FRONTEND_API_URL,
-  FRONTEND_BASE_URL,
   FRONTEND_COMPRESSION,
   FRONTEND_DEBOUNCE_DELAY_MS,
   FRONTEND_TEST_NAVIGATION_TIMEOUT: _FRONTEND_TEST_NAVIGATION_TIMEOUT,
@@ -28,8 +27,6 @@ const FRONTEND_TEST_NAVIGATION_TIMEOUT = parseInt(
   _FRONTEND_TEST_NAVIGATION_TIMEOUT,
   10,
 );
-
-const SEED = 0.7;
 
 const START_PORT = 50000;
 const END_PORT = 55000;
@@ -55,7 +52,7 @@ before(() => {
     env: {
       PORT: serverPort.toString(),
       FRONTEND_API_URL,
-      FRONTEND_BASE_URL,
+      FRONTEND_BASE_URL: `http://localhost:${serverPort}/`,
       FRONTEND_COMPRESSION,
       FRONTEND_DEBOUNCE_DELAY_MS,
       FRONTEND_ENABLE_ADMIN_MODE,
@@ -329,7 +326,15 @@ describe("The server", function () {
         await page.waitForXPath("//p[contains(., 'already a recording')]");
 
         const nameInput2 = await document.getByLabelText("What is your name?");
+        await document.evaluate((i) => {
+          (i as any).value = "";
+        }, nameInput2);
         await nameInput2.type("Another Car");
+
+        const emailInput = await document.getByLabelText("email address", {
+          exact: false,
+        });
+        await emailInput.type("foo@bar.com");
 
         await page.waitForTimeout(100);
         await page.setRequestInterception(true);
@@ -343,12 +348,19 @@ describe("The server", function () {
 
         await publishButton.click();
 
-        // TODO there's an issue with Puppeteer where the `clipboard-write`
-        // permission seems to be ignored and the copy fails, so we skip testing
-        // that part for now
         const input = await page.waitForXPath("//li/form/input");
         const text: string = await page.evaluate((input) => input.value, input);
         assert(text.indexOf("/recording/") > -1);
+
+        const managementLink = await page.$('a[href*="/lookup/"]');
+        await managementLink.click();
+        await page.waitForFunction(
+          () => (document as any).title.indexOf("Another Car") > -1,
+        );
+
+        // TODO there's an issue with Puppeteer where the `clipboard-write`
+        // permission seems to be ignored and the copy fails, so we skip testing
+        // that part for now
 
         // await page
         //   .browserContext()
