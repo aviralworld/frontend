@@ -110,7 +110,7 @@
       bind:value={location} /></label>
 
   <label class="label" for="user-email">What is your email address?
-    <input type="text" name="email" id="user-email" bind:value={email} />
+    <input type="email" name="email" id="user-email" bind:value={email} />
     <span class="addendum">(If you share this, we will
       <strong>only</strong>
       use it to email you the link to manage your recording, as a reminder, and
