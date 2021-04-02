@@ -162,10 +162,7 @@
   <h2 class="listen">Listen</h2>
   <p>
     Listening to the story of
-    {recording.name}{#if recording.location !== null}
-      {' '}from
-      {recording.location}
-    {/if}.
+    {recording.name}{location}.
     {#if isOwner}
       Thank you for taking the time to share this story.
     {:else}

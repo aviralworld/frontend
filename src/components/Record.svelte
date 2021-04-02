@@ -136,7 +136,7 @@
         You will need to grant access to your microphone when prompted.
       {/if}
     </p>
-    <form class="record">
+    <form class="record" on:submit|preventDefault={handleRecording}>
       <p>First, please let us know a few details:</p>
 
       <RequiredMetadata
@@ -145,8 +145,8 @@
         {categories}
         bind:nameInput />
       <button
-        on:click|preventDefault={handleRecording}
         class="button record-button"
+        type="submit"
         disabled={name === '' || categoryId === undefined}>
         {#if inProgress}
           Stop recording ({asMinutesAndSeconds(currentTime)}/{asMinutesAndSeconds(maxRecordingLengthSeconds)})

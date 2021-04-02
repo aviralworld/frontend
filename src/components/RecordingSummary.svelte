@@ -20,21 +20,6 @@
     width: var(--width);
     display: inline-block;
   }
-
-  a {
-    text-decoration: none;
-    border-bottom: 1px dashed;
-    padding-bottom: 0.25rem;
-    color: var(--link-foreground);
-    line-height: 1.6;
-  }
-
-  a:hover,
-  a:active,
-  a:focus {
-    color: var(--link-hover);
-    border-bottom: 1px solid;
-  }
 </style>
 
 <a
