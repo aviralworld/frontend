@@ -164,8 +164,7 @@
     Listening to the story of
     {recording.name}{#if recording.location !== null}
       {' '}from
-      {recording.location}
-    {/if}.
+      {recording.location}{/if}.
     {#if isOwner}
       Thank you for taking the time to share this story.
     {:else}
