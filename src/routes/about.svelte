@@ -11,7 +11,8 @@
     }
   }
 
-  p + ul, ul + p {
+  p + ul,
+  ul + p {
     margin-top: 1rem;
   }
 

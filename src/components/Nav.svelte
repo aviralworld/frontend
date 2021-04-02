@@ -34,7 +34,11 @@
 </style>
 
 <nav>
-  <h1><a href="/" class="logo"><img src="/static/logo.svg" alt="A Viral World" /></a></h1>
+  <h1>
+    <a href="/" class="logo"><img
+        src="/static/logo.svg"
+        alt="A Viral World" /></a>
+  </h1>
 
   <a href="/listen" class="listen button">Listen to other stories</a>
 </nav>

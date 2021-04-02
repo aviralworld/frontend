@@ -136,8 +136,7 @@
         You will need to grant access to your microphone when prompted.
       {/if}
     </p>
-    <form class="record"
-          on:submit|preventDefault={handleRecording}>
+    <form class="record" on:submit|preventDefault={handleRecording}>
       <p>First, please let us know a few details:</p>
 
       <RequiredMetadata

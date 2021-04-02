@@ -54,7 +54,8 @@
     }
   }
 
-  .about, .tagline {
+  .about,
+  .tagline {
     text-align: center;
   }
 
@@ -77,7 +78,7 @@
 
     .tagline {
       grid-area: 1 / 1 / auto / 3;
-    font-size: 2.6rem;
+      font-size: 2.6rem;
     }
 
     .p {
@@ -108,7 +109,9 @@
 </svelte:head>
 
 <main>
-  <p class="tagline p">Make history. Or just rant. Share your Covid-19 story.</p>
+  <p class="tagline p">
+    Make history. Or just rant. Share your Covid-19 story.
+  </p>
 
   <section class="intro p">
     <h2>Explore connections through stories.</h2>
