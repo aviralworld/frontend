@@ -39,7 +39,27 @@ export function createServer(
     next();
   });
 
-  if (!settings.enableAdminMode) {
+  if (settings.enableAdminMode) {
+    logger.debug("Adding extra /admin routes...");
+
+    const admin = import("../admin");
+
+    server.use("/admin/new/", async (_req, res) => {
+      const { fetchOpenToken } = await admin;
+      const { parent_id, id } = await fetchOpenToken();
+
+      res
+        .status(302)
+        .header(
+          "Location",
+          new URL(
+            `/recording/${parent_id}/?token=${id}`,
+            frontendSettings.baseUrl,
+          ).toString(),
+        )
+        .send();
+    });
+  } else {
     logger.debug("Adding guard for /admin...");
     server.use("/admin", (_req, res) => {
       res.status(403).send();
