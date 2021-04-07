@@ -1,7 +1,6 @@
 <script lang="ts">
   import Publish from "./Publish.svelte";
   import Record from "./Record.svelte";
-  import Remember from "./Remember.svelte";
 
   export let ages;
   export let categories;
@@ -26,27 +25,9 @@
   let supportedFormat;
 
   $: completedRecording = !currentlyRecording && blob !== undefined;
-
-  // TODO why is this necessary?
-  function forget() {
-    publishedLink = undefined;
-    publishedLocation = undefined;
-    publishedRecording = undefined;
-    blob = undefined;
-    username = undefined;
-    categoryId = undefined;
-    currentlyRecording = undefined;
-  }
 </script>
 
-{#if publishedRecording !== undefined && document.location.href !== publishedLink}
-  <Remember
-    username={publishedName}
-    link={publishedLink}
-    location={publishedLocation}
-    {forget}
-    recording={publishedRecording} />
-{:else if completedRecording}
+{#if completedRecording}
   <Publish
     {categories}
     {ages}

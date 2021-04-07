@@ -1,8 +1,9 @@
 <script lang="ts">
-  import Metadata from "./Metadata.svelte";
-  import RequiredMetadata from "./RequiredMetadata.svelte";
+  import { goto } from "@sapper/app";
 
   import { publish as _publish } from "../routes/_publish";
+  import Metadata from "./Metadata.svelte";
+  import RequiredMetadata from "./RequiredMetadata.svelte";
 
   const FORBIDDEN = 403;
 
@@ -81,12 +82,13 @@
       publishedRecording = await _publish(blob, merged);
       publishedLink = `/recording/${publishedRecording.id}/`;
       publishedName = username;
+      await goto(`/lookup/${publishedRecording.key}/`);
     } catch (e) {
       publishErrorCode = e;
       console.error("Failed to publish with status", e);
+    } finally {
+      uploading = false;
     }
-
-    uploading = false;
   }
 </script>
 
