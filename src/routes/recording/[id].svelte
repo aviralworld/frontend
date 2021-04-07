@@ -53,6 +53,7 @@
     const { key } = query;
 
     let isOwner = false;
+    let recordingTokens = [];
 
     if (key !== undefined) {
       const response = await this.fetch(`/api/recordings/lookup/${key}/`);
@@ -62,12 +63,15 @@
         return;
       }
 
-      const { id: keyId } = await response.json();
+      const data = await response.json();
+      const keyId = data.id;
 
       if (id !== keyId) {
         this.error(400, `Not a valid key: ${key}`);
         return;
       }
+
+      recordingTokens = data.tokens;
 
       isOwner = true;
     }
@@ -80,12 +84,14 @@
       formats,
       isOwner,
       recording: await res.json(),
+      recordingTokens,
       token: verificationResult?.token,
     };
   }
 </script>
 
 <script lang="ts">
+  import Remember from "../../components/Remember.svelte";
   import Reply from "../../components/Reply.svelte";
 
   export let baseUrl;
@@ -96,9 +102,16 @@
   export let genders;
 
   export let recording;
+  export let recordingTokens;
   export let token;
 
   export let isOwner;
+
+  let base;
+  $: base = new URL(baseUrl);
+
+  let permalink;
+  $: permalink = new URL(`/recording/${recording.id}`, base);
 
   let location;
   let title;
@@ -174,5 +187,15 @@
   <audio controls="controls" src={recording.url}>Your browser does not support
     embedded audio!</audio>
 
-  <Reply {ages} {categories} {formats} {genders} {token} {recording} />
+  {#if isOwner}
+    <Remember
+      username={recording.name}
+      link={permalink}
+      location={recording.location}
+      base={new URL(baseUrl)}
+      {recording}
+      tokens={recordingTokens} />
+  {:else}
+    <Reply {ages} {categories} {formats} {genders} {token} {recording} />
+  {/if}
 </main>
