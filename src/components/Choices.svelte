@@ -48,7 +48,7 @@
         {value}
         disabled={readonly} />
       {#if description !== null}
-        <span class="label">{label}:</span>
+        <span class="label">{label}</span>
         <span class="description">{description}</span>
       {:else}{label}{/if}</label>
   {/each}
