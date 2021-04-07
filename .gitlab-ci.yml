@@ -97,8 +97,8 @@ docker-base:
     - export build_timestamp=`date +%Y%m%d%H%M%S`
     - export tag="v$build_timestamp"
     - echo $tag > .gitlab-ci-timestamp
-    - echo $tag
     - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile.base --cache=true --destination=$CI_REGISTRY_IMAGE/base:$tag --destination=$CI_REGISTRY_IMAGE/base:latest --build-arg NODE_VERSION=$NODE_VERSION --build-arg REVISION=$CI_COMMIT_SHA --build-arg TIMESTAMP=$build_timestamp
+    - echo $tag
   only:
     - master
 
