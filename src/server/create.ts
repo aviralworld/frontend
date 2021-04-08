@@ -1,11 +1,12 @@
 import type { AddressInfo } from "net";
 import type { Server } from "http";
 
-import sirv from "sirv";
-import express from "express";
 import compression from "compression";
-import * as sapper from "@sapper/server";
+import express from "express";
+import "newrelic";
+import sirv from "sirv";
 
+import * as sapper from "@sapper/server";
 import type { Logger } from "../logger";
 import type { IFrontendSettings } from "./frontendSettings";
 import healthCheck from "./healthCheck";
