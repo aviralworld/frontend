@@ -4,6 +4,11 @@ import { serializeError } from "serialize-error";
 
 export const NAMESPACE_SEPARATOR = ".";
 
+const IN_BROWSER = typeof window !== "undefined";
+
+const HOSTNAME = IN_BROWSER ? window.location.host : require("os").hostname();
+const PID = process?.pid;
+
 // A wrapper around the [`Roarr.Logger`] type minus the call
 // signatures. Adds the [`withChildNamespace`] method.
 export class Logger {
@@ -61,6 +66,8 @@ export function createLogger(
     log
       .child({
         application: "frontend",
+        hostname: HOSTNAME,
+        pid: PID,
         ...values,
       })
       .child((message) => {
