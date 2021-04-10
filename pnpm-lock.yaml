@@ -55,6 +55,7 @@ devDependencies:
   prettier-plugin-svelte: 1.4.2_prettier@2.2.1+svelte@3.31.2
   puppeteer: 5.5.0
   rollup: 2.36.1
+  rollup-plugin-prettier: 2.1.0_prettier@2.2.1+rollup@2.36.1
   rollup-plugin-svelte: 6.1.1_rollup@2.36.1+svelte@3.31.2
   rollup-plugin-terser: 7.0.2_rollup@2.36.1
   sapper: 0.28.10_svelte@3.31.2
@@ -3095,7 +3096,7 @@ packages:
       he: 1.2.0
       param-case: 2.1.1
       relateurl: 0.2.7
-      uglify-js: 3.12.4
+      uglify-js: 3.13.3
     dev: true
     engines:
       node: '>=6'
@@ -3481,6 +3482,22 @@ packages:
     dev: false
     resolution:
       integrity: sha1-soqmKIorn8ZRA1x3EfZathkDMaY=
+  /lodash.hasin/4.5.2:
+    dev: true
+    resolution:
+      integrity: sha1-+R41I3jSHvcJC552h8LKNcW01So=
+  /lodash.isempty/4.4.0:
+    dev: true
+    resolution:
+      integrity: sha1-b4bL7di+TsmHvpqvM8loTbGzHn4=
+  /lodash.isnil/4.0.0:
+    dev: true
+    resolution:
+      integrity: sha1-SeKM1VkBNFjIFMVHnTxmOiG/qmw=
+  /lodash.omitby/4.6.0:
+    dev: true
+    resolution:
+      integrity: sha1-XBX/R1StVVAWtTwEExHo8HkgR5E=
   /lodash/4.17.20:
     resolution:
       integrity: sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
@@ -4396,6 +4413,24 @@ packages:
       node: '>=8.0'
     resolution:
       integrity: sha512-CHhPh+UNHD2GTXNYhPWLnU8ONHdI+5DI+4EYIAOaiD63rHeYlZvyh8P+in5999TTSFgUYuKUAjzRI4mdh/p+2A==
+  /rollup-plugin-prettier/2.1.0_prettier@2.2.1+rollup@2.36.1:
+    dependencies:
+      diff: 4.0.2
+      lodash.hasin: 4.5.2
+      lodash.isempty: 4.4.0
+      lodash.isnil: 4.0.0
+      lodash.omitby: 4.6.0
+      magic-string: 0.25.7
+      prettier: 2.2.1
+      rollup: 2.36.1
+    dev: true
+    engines:
+      node: '>=6.0.0'
+    peerDependencies:
+      prettier: ^1.0.0 || ^2.0.0
+      rollup: ^1.0.0 || ^2.0.0
+    resolution:
+      integrity: sha512-2uPhHkBMVBZeb4cruQrYrjOTtoqHNvnUB5UIzmMu8JBXCfQ+0/JxDclEmnBd44MjO14VmXvfr0GanQaZjCxSbQ==
   /rollup-plugin-svelte/6.1.1_rollup@2.36.1+svelte@3.31.2:
     dependencies:
       require-relative: 0.8.7
@@ -5021,13 +5056,13 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-B3ZIOf1IKeH2ixgHhj6la6xdwR9QrLC5d1VKeCSY4tvkqhF2eqd9O7txNlS0PO3GrBAFIdr3L1ndNwteUbZLYg==
-  /uglify-js/3.12.4:
+  /uglify-js/3.13.3:
     dev: true
     engines:
       node: '>=0.8.0'
     hasBin: true
     resolution:
-      integrity: sha512-L5i5jg/SHkEqzN18gQMTWsZk3KelRsfD1wUVNqtq0kzqWQqcJjyL8yc1o8hJgRrWqrAl2mUFbhfznEIoi7zi2A==
+      integrity: sha512-otIc7O9LyxpUcQoXzj2hL4LPWKklO6LJWoJUzNa8A17Xgi4fOeDC8FBDOLHnC/Slo1CQgsZMcM6as0M76BZaig==
   /unbzip2-stream/1.4.3:
     dependencies:
       buffer: 5.7.1
@@ -5320,6 +5355,7 @@ specifiers:
   puppeteer: ^5.5.0
   roarr: ^2.15.4
   rollup: ^2.36.1
+  rollup-plugin-prettier: ^2.1.0
   rollup-plugin-svelte: ^6.1.1
   rollup-plugin-terser: ^7.0.2
   sapper: ^0.28.10

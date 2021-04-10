@@ -6,6 +6,7 @@ import babel from "@rollup/plugin-babel";
 import { terser } from "rollup-plugin-terser";
 import sveltePreprocess from "svelte-preprocess";
 import typescript from "@rollup/plugin-typescript";
+import prettierPlugin from "rollup-plugin-prettier";
 import config from "sapper/config/rollup.js";
 import pkg from "./package.json";
 import dotenvSafe from "dotenv-safe";
@@ -75,8 +76,12 @@ export default {
 
       !dev &&
         terser({
+          mangle: false,
+          compress: false,
           module: true,
         }),
+
+      !dev && prettierPlugin(),
     ],
 
     preserveEntrySignatures: false,
@@ -122,7 +127,12 @@ export default {
       }),
       commonjs(),
       typescript({ sourceMap: dev }),
-      !dev && terser(),
+      !dev &&
+        terser({
+          mangle: false,
+        }),
+
+      !dev && prettierPlugin(),
     ],
 
     preserveEntrySignatures: false,
