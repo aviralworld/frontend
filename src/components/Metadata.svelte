@@ -57,8 +57,7 @@
     font-size: 1.1em;
   }
 
-  :global(input:invalid),
-  :global(select:invalid) {
+  :global(input:invalid:not(:focus):not(:placeholder-shown)) {
     border-color: red;
   }
 

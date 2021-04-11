@@ -81,11 +81,6 @@ main {
   font-weight: bold;
 }
 
-.button:disabled {
-  background-color: grey;
-  color: white;
-}
-
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-delay: 0ms !important;
