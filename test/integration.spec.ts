@@ -280,7 +280,9 @@ describe("The server", function () {
         const document = await page.getDocument();
         const recordButton = await document.getByText("Record");
 
-        const nameInput = await document.getByLabelText("What is your name?");
+        const nameInput = await document.getByLabelText("What is your name?", {
+          exact: false,
+        });
         await nameInput.type("Car");
 
         assert.notEqual(
@@ -326,7 +328,9 @@ describe("The server", function () {
 
         await page.waitForXPath("//p[contains(., 'already a recording')]");
 
-        const nameInput2 = await document.getByLabelText("What is your name?");
+        const nameInput2 = await document.getByLabelText("What is your name?", {
+          exact: false,
+        });
         await document.evaluate((i) => {
           (i as any).value = "";
         }, nameInput2);

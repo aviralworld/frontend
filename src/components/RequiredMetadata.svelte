@@ -38,7 +38,7 @@
   }
 </style>
 
-<label class="required-metadata-item name" for="user-name">What is your name?
+<label class="required-metadata-item name" for="user-name">What is your name? (This must be unique.)
   <input
     type="text"
     name="name"
@@ -47,9 +47,9 @@
     pattern=".*\S.*"
     on:change={updateName}
     required
-    bind:this={nameInput} /></label>
+    bind:this={nameInput} />
+</label>
 
-<!-- TODO use radio buttons with descriptions -->
 <p class="required-metadata-item">
   What is your story about?
   <Choices
