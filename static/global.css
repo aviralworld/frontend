@@ -113,3 +113,7 @@ a:focus {
 label:not(.readonly), input[type="checkbox"]:not(:disabled), input[type="radio"]:not(:disabled) {
   cursor: pointer;
 }
+
+input[type="checkbox"]:focus, input[type="radio"]:focus {
+  outline: 1px solid;
+}
