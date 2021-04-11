@@ -57,10 +57,6 @@
     font-size: 1.1em;
   }
 
-  :global(input:invalid:not(:focus):not(:placeholder-shown)) {
-    border-color: var(--input-border-colour);
-  }
-
   .addendum {
     font-size: 0.9em;
     display: block;
