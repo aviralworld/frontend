@@ -1,6 +1,6 @@
 <script lang="ts">
   import Choices from "./Choices.svelte";
-  import { normalizeName } from "../routes/_publish";
+  import { normalizeName } from "../publish";
 
   export let categories;
   export let categoryIsReadonly;
