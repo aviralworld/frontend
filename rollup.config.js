@@ -115,27 +115,4 @@ export default {
     preserveEntrySignatures: "strict",
     onwarn,
   },
-
-  serviceworker: {
-    input: config.serviceworker.input().replace(/.js$/, ".ts"),
-    output: config.serviceworker.output(),
-    plugins: [
-      resolve(),
-      replace({
-        "process.browser": true,
-        "process.env.NODE_ENV": JSON.stringify(mode),
-      }),
-      commonjs(),
-      typescript({ sourceMap: dev }),
-      !dev &&
-        terser({
-          mangle: false,
-        }),
-
-      !dev && prettierPlugin(),
-    ],
-
-    preserveEntrySignatures: false,
-    onwarn,
-  },
 };
