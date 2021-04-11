@@ -36,7 +36,7 @@
 <section>
   <h2>Remember</h2>
   <p>Congratulations! Your recording has been published:</p>
-  <a href={link} on:click={forget}>Listen to the story of
+  <a href={link} on:click={forget} sapper:prefetch>Listen to the story of
     {username}{#if location !== undefined}{' '}{location}{/if}</a>
   <p>
     You can invite people to listen and reply to your story using the following

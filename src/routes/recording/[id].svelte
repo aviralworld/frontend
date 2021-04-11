@@ -168,7 +168,7 @@
 <main>
   {#if recording.parent}
     <p class="parent">
-      <a href="/recording/{recording.parent}">See this recording’s parent</a>
+      <a href="/recording/{recording.parent}" sapper:prefetch>See this recording’s parent</a>
     </p>
   {/if}
 
