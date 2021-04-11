@@ -146,8 +146,7 @@
         bind:nameInput />
       <button
         class="button record-button"
-        type="submit"
-        disabled={name === '' || categoryId === undefined}>
+        type="submit">
         {#if inProgress}
           Stop recording ({asMinutesAndSeconds(currentTime)}/{asMinutesAndSeconds(maxRecordingLengthSeconds)})
         {:else}Record{/if}

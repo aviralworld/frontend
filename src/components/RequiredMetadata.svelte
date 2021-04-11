@@ -49,6 +49,7 @@
     bind:value={name}
     pattern=".*\S.*"
     on:change={updateName}
+    required
     bind:this={nameInput} /></label>
 
 <!-- TODO use radio buttons with descriptions -->

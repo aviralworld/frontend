@@ -46,6 +46,7 @@
         {name}
         bind:group={selection}
         {value}
+        required
         disabled={readonly} />
       {#if description !== null}
         <span class="label">{label}</span>
