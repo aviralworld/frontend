@@ -28,9 +28,6 @@
     flex-direction: column;
   }
 
-  .required-metadata-item.name {
-  }
-
   input {
     margin-top: 0.5rem;
     padding: 0.5rem;

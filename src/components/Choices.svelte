@@ -32,7 +32,7 @@
 
 <fieldset>
   {#if optional}
-    <label><input
+    <label class:readonly><input
         type="radio"
         {name}
         bind:group={selection}
@@ -41,7 +41,7 @@
       Prefer not to say</label>
   {/if}
   {#each options as [value, label, description], index (value)}
-    <label><input
+    <label class:readonly><input
         type="radio"
         {name}
         bind:group={selection}
