@@ -1,7 +1,7 @@
 <script lang="ts">
   import { goto } from "@sapper/app";
 
-  import { publish as _publish } from "../routes/_publish";
+  import { publish as _publish } from "../publish";
   import Metadata from "./Metadata.svelte";
   import RequiredMetadata from "./RequiredMetadata.svelte";
 

@@ -57,11 +57,6 @@
     font-size: 1.1em;
   }
 
-  :global(input:invalid),
-  :global(select:invalid) {
-    border-color: red;
-  }
-
   .addendum {
     font-size: 0.9em;
     display: block;

@@ -7,6 +7,7 @@
   import Choices from "./Choices.svelte";
   import RequiredMetadata from "./RequiredMetadata.svelte";
   import { asMinutesAndSeconds } from "../time";
+  import { normalizeName } from "../publish";
 
   let recorder = writable(undefined);
   let currentTime: number;
@@ -19,7 +20,7 @@
 
   export let parentName;
 
-  $: name = rawName === undefined ? "" : rawName.trim();
+  $: name = rawName === undefined ? "" : normalizeName(rawName);
 
   // these are provided by the parent component
   export let formats;
@@ -145,9 +146,10 @@
         {categories}
         bind:nameInput />
       <button
+        aria-live="polite"
+        aria-relevant="text"
         class="button record-button"
-        type="submit"
-        disabled={name === '' || categoryId === undefined}>
+        type="submit">
         {#if inProgress}
           Stop recording ({asMinutesAndSeconds(currentTime)}/{asMinutesAndSeconds(maxRecordingLengthSeconds)})
         {:else}Record{/if}

@@ -33,11 +33,11 @@
     flex: 1 0 1ch;
     margin-left: -1px; /* hide the doubled border */
     transition: color 0.5s;
-    color: rgba(255, 255, 255, 1);
+    color: var(--copy-button-foreground);
   }
 
   .copied {
-    color: rgba(255, 255, 255, 0.75);
+    color: var(--copy-button-copied-color);
   }
 </style>
 
