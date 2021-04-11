@@ -29,6 +29,8 @@
 }
 
 :root {
+  --logo-foreground: #ed1c24;
+
   --button-background: orange;
   --button-foreground: white;
   --button-padding: 0.5rem 1rem;
@@ -37,7 +39,14 @@
 
   /*--link-hover: #d50000;*/
   --link-foreground: #0000e0;
-  --link-hover: #ed1c24;
+  --link-hover: var(--logo-foreground);
+
+  --spinner-foreground: #000;
+
+  --input-border-colour: var(--logo-foreground);
+
+  --copy-button-foreground: rgba(255, 255, 255, 1);
+  --copy-button-copied-colour: rgba(255, 255, 255, 0.75);
 }
 
 * {
@@ -66,9 +75,7 @@ main {
 
 .button {
   border: none;
-  background-color: transparent;
   font-family: inherit;
-  padding: 0;
   cursor: pointer;
 
   display: inline-flex;

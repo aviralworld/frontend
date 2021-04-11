@@ -58,7 +58,7 @@
   }
 
   :global(input:invalid:not(:focus):not(:placeholder-shown)) {
-    border-color: red;
+    border-color: var(--input-border-colour);
   }
 
   .addendum {

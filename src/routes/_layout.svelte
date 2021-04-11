@@ -4,16 +4,6 @@
   export let segment: string;
 </script>
 
-<style>
-  /* main { */
-  /*   max-width: 56em; */
-  /*   background-color: white; */
-  /*   padding: 2em; */
-  /*   margin: 0 auto; */
-  /*   box-sizing: border-box; */
-  /* } */
-</style>
-
 <svelte:head>
   <link
     rel="preload"

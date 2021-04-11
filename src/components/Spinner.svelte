@@ -7,7 +7,6 @@
     height: var(--spinner-size);
 
     --spinner-size: 1em;
-    --spinner-color: #000;
     --animation-duration: 1.5s;
   }
 
@@ -24,11 +23,11 @@
     width: calc(var(--spinner-size) * 0.8);
     height: calc(var(--spinner-size) * 0.8);
     margin: calc(var(--spinner-size) / 10);
-    border: calc(var(--spinner-size) / 10) solid var(--spinner-color);
+    border: calc(var(--spinner-size) / 10) solid var(--spinner-foreground);
     border-radius: 50%;
     animation: ring var(--animation-duration) cubic-bezier(0.5, 0, 0.5, 1)
       infinite;
-    border-color: var(--spinner-color) transparent transparent transparent;
+    border-color: var(--spinner-foreground) transparent transparent transparent;
   }
 
   .ring::before {
