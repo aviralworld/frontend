@@ -146,6 +146,8 @@
         {categories}
         bind:nameInput />
       <button
+        aria-live="polite"
+        aria-relevant="text"
         class="button record-button"
         type="submit">
         {#if inProgress}
