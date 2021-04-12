@@ -88,7 +88,7 @@ main {
   font-weight: bold;
 }
 
-@media (prefers-reduced-motion: reduce) {
+@media not all and (prefers-reduced-motion: no-preference) {
   * {
     animation-delay: 0ms !important;
     animation-duration: 1ms !important;
