@@ -27,25 +27,14 @@
   $: completedRecording = !currentlyRecording && blob !== undefined;
 </script>
 
-{#if completedRecording}
-  <Publish
-    {categories}
-    {ages}
-    {blob}
-    {genders}
-    {token}
-    bind:publishedLink
-    username={initialName}
-    {categoryId}
-    bind:location={publishedLocation}
-    bind:publishedRecording
-    bind:publishedName />
-{:else if token !== undefined}
   <section class="after reply">
     <h2>Reply</h2>
     <Record
-      {categories}
       {formats}
+    {categories}
+    {ages}
+    {genders}
+    {token}
       bind:inProgress={currentlyRecording}
       bind:blob
       bind:supportedFormat
@@ -54,4 +43,3 @@
       bind:categoryId
       parentName={recording.name} />
   </section>
-{/if}

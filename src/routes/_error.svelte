@@ -1,14 +1,15 @@
-<script lang="ts" context="module">
-  export async function preload(_request, session) {
-    return { dev: session.frontendSettings.dev };
-  }
-</script>
-
 <script lang="ts">
+  import { stores } from "@sapper/app";
+
+  const { session } = stores();
+  const { dev } = $session.frontendSettings;
+
   export let status: number;
   export let error: Error;
 
-  export let dev;
+  if (dev) {
+    console.error("Error", error);
+  }
 </script>
 
 <style>

@@ -1,20 +1,27 @@
 <script lang="ts">
-  export let name;
-  export let options;
-  export let optional;
-  export let readonly;
+  import type { Option } from "../types";
 
-  export let selection = undefined;
+  export let className: string;
+  export let name: string;
+  export let options: readonly Option[];
+  export let optional: boolean;
+  export let label: string;
+
+  export let selection: string = undefined;
 </script>
 
 <style>
   fieldset {
     border: 0;
-    margin-left: 1rem;
   }
 
   label {
-    display: block;
+    display: flex;
+    margin-left: 1rem;
+    margin-top: 0.75rem;
+    flex-direction: row;
+    flex-flow: nowrap;
+    align-items: center;
   }
 
   label + label {
@@ -27,27 +34,27 @@
 
   .label {
     font-weight: bold;
+    margin-right: 0.5ch;
   }
 </style>
 
-<fieldset>
+<fieldset class={className}>
+  <legend>{label}</legend>
   {#if optional}
-    <label class:readonly><input
+    <label><input
         type="radio"
         {name}
         bind:group={selection}
-        value={undefined}
-        disabled={readonly} />
+        value={undefined} />
       Prefer not to say</label>
   {/if}
   {#each options as [value, label, description], index (value)}
-    <label class:readonly><input
+    <label><input
         type="radio"
         {name}
         bind:group={selection}
         {value}
-        required
-        disabled={readonly} />
+        required />
       {#if description !== null}
         <span class="label">{label}</span>
         <span class="description">{description}</span>

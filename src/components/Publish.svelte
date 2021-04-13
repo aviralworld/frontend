@@ -3,7 +3,6 @@
 
   import { publish as _publish } from "../publish";
   import Metadata from "./Metadata.svelte";
-  import RequiredMetadata from "./RequiredMetadata.svelte";
 
   const FORBIDDEN = 403;
 
@@ -37,23 +36,6 @@
 
   $: isNameInUse =
     publishErrorCode === FORBIDDEN && lastPublishName === username;
-  $: reportNameError(isNameInUse);
-
-  function reportNameError(inUse) {
-    if (nameInput === undefined) {
-      return;
-    }
-
-    if (inUse) {
-      nameInput.setCustomValidity(
-        "There is already a recording under that name.",
-      );
-      nameInput.reportValidity();
-    } else {
-      nameInput.setCustomValidity("");
-      nameInput.reportValidity();
-    }
-  }
 
   function makeRecordingUrl() {
     return URL.createObjectURL(blob);

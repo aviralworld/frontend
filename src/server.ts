@@ -38,6 +38,14 @@ function parseFrontendSettings(
     baseUrl: getValue("BASE_URL"),
     dev,
     debounceDelayMs: parseInt(getValue("DEBOUNCE_DELAY_MS"), 10),
+    maxRecordingLengthSeconds: parseInt(
+      getValue("MAX_RECORDING_LENGTH_SECONDS"),
+      10,
+    ),
+    minRecordingLengthSeconds: parseInt(
+      getValue("MIN_RECORDING_LENGTH_SECONDS"),
+      10,
+    ),
     randomStoryCount: parseInt(getValue("RANDOM_STORY_COUNT"), 10),
   };
 }

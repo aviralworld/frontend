@@ -18,13 +18,6 @@ export function respond(
   response.end(data);
 }
 
-export interface IRecording {
-  name: string;
-  location?: string;
-  parent?: string;
-  url: string;
-}
-
 export interface IFrontendRequest extends Request {
   frontendSettings: ISettings;
 }

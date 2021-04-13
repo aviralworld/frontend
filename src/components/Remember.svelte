@@ -7,14 +7,12 @@
   export let recording;
   export let tokens;
   export let base;
+  export let key;
 
   let links;
   $: links = tokens.map((t) =>
     new URL(`/recording/${recording.id}/?token=${t}`, base).toString(),
   );
-
-  let key;
-  $: key = recording.key;
 
   let managementLink;
   $: managementLink = new URL(`/lookup/${key}/`, base).toString();

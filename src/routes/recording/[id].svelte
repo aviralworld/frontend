@@ -1,12 +1,15 @@
 <script context="module" lang="ts">
-  import { verifyToken } from "./_token";
+  import type { Preload } from "@sapper/app";
 
-  export async function preload({ params, query }, session) {
-    const { baseUrl } = session.frontendSettings;
+  import { verifyToken } from "../../token";
+  import type { IFrontendSettings } from "../../server/frontendSettings";
+
+  export const preload: Preload = async function({ params, query }, session) {
+    const { baseUrl, minRecordingLengthSeconds, maxRecordingLengthSeconds } = session.frontendSettings as IFrontendSettings;
     const { id } = params;
 
-    const res = await this.fetch(`/api/recordings/id/${id}`);
-    const promises = Promise.all(
+    const res: Response = await this.fetch(`/api/recordings/id/${id}`);
+    const promises: readonly Response[] = Promise.all(
       ["formats", "ages", "categories", "genders"].map((s) =>
         this.fetch(`/api/recordings/${s}`),
       ),
@@ -82,7 +85,10 @@
       categories,
       genders,
       formats,
+      key,
       isOwner,
+      minRecordingLength: minRecordingLengthSeconds,
+      maxRecordingLength: maxRecordingLengthSeconds,
       recording: await res.json(),
       recordingTokens,
       token: verificationResult?.token,
@@ -91,21 +97,25 @@
 </script>
 
 <script lang="ts">
+  import Form from "../../components/Form.svelte";
   import Remember from "../../components/Remember.svelte";
-  import Reply from "../../components/Reply.svelte";
+  import type { IRecording, IOption } from "../../types";
 
-  export let baseUrl;
+  export let baseUrl: string;
+  export let minRecordingLength: number;
+  export let maxRecordingLength: number;
 
-  export let ages;
-  export let categories;
-  export let formats;
-  export let genders;
+  export let ages: readonly Option[];
+  export let categories: readonly Option[];
+  export let formats: readonly String[];
+  export let genders: readonly Option[];
 
-  export let recording;
-  export let recordingTokens;
-  export let token;
+  export let recording: IRecording;
+  export let recordingTokens: readonly string[];
+  export let token: string;
+  export let key: string;
 
-  export let isOwner;
+  export let isOwner: boolean;
 
   let base;
   $: base = new URL(baseUrl);
@@ -184,18 +194,31 @@
   </p>
 
   <!-- TODO custom pause/play buttons and scrubber -->
-  <audio controls="controls" src={recording.url}>Your browser does not support
+  <!-- svelte-ignore a11y-media-has-caption -->
+  <audio controls="controls"
+         src={recording.url}>Your browser does not support
     embedded audio!</audio>
 
+  <section>
   {#if isOwner}
     <Remember
+      {key}
       username={recording.name}
       link={permalink}
       location={recording.location}
       base={new URL(baseUrl)}
       {recording}
       tokens={recordingTokens} />
-  {:else}
-    <Reply {ages} {categories} {formats} {genders} {token} {recording} />
+  {:else if token !== undefined}
+    <Form
+      {ages}
+      {categories}
+      {formats}
+      {genders}
+      parent={recording.name}
+      {minRecordingLength}
+      {maxRecordingLength}
+      {token} />
   {/if}
+  </section>
 </main>

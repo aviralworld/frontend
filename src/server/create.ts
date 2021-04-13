@@ -53,7 +53,9 @@ export function createServer(
 
     const admin = import("../admin");
 
-    // this ought to be typed properly by @awaitjs/express
+    // TODO this ought to be typed properly by @awaitjs/express,
+    // see <https://github.com/vkarpov15/awaitjs-express/pull/25>
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     server.useAsync("/admin/new/", async (_req, res) => {
       const { fetchOpenToken } = await admin;
       const { parent_id, id } = await fetchOpenToken();
@@ -66,6 +68,19 @@ export function createServer(
             `/recording/${parent_id}/?token=${id}`,
             frontendSettings.baseUrl,
           ).toString(),
+        )
+        .send();
+    });
+
+    server.useAsync("/admin/key/", async (_req, res) => {
+      const { fetchFirstKey } = await admin;
+      const id = await fetchFirstKey();
+
+      res
+        .status(302)
+        .header(
+          "Location",
+          new URL(`/lookup/${id}/`, frontendSettings.baseUrl).toString(),
         )
         .send();
     });
