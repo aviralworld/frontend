@@ -11,7 +11,7 @@
   import { createRecordingMachine } from "../machines/recording";
   import type { Option, ISubmission } from "../types";
   import { publish as _publish, FORBIDDEN_CODE } from "../publish";
-  import { findSupportedFormat } from "../recorder";
+  import { findSupportedFormat, makeRecordingUrl } from "../recorder";
 
   // passed from route or settings
   export let ages: readonly Option[];
@@ -144,7 +144,7 @@
     padding: 0.5rem;
   }
 
-  :global(fieldset) {
+  :global(fieldset), .thanks {
     margin-top: 1rem;
   }
 
@@ -202,7 +202,7 @@
   }
 </style>
 
-<h2>Reply</h2>
+<h2>{#if $machine.matches("completed")}Share{:else}Reply{/if}</h2>
 {#if $canAccessMicrophone === MicrophoneStatus.DENIED}
   <p>Recording a story of your own requires accessing your microphone.</p>
 {:else if $machine.matches("disabled")}
@@ -243,12 +243,16 @@
       bind:selection={categoryId} />
 
     {#if $machine.matches("completed")}
-      <section class="optional">
-        <p class="addendum">
-          The remaining fields are optional. They will only be used for research
-          purposes and will never be shared publicly.
-        </p>
+      <p class="thanks">Thank you for recording your story:</p>
+      <!-- TODO custom pause/play buttons and scrubber -->
+      <audio controls="controls" src={makeRecordingUrl(data)}>Your browser does not
+        support embedded audio!</audio>
 
+    <p>You can publish it and make it visible to all visitors below.  
+          The remaining fields are optional. They will only be used for research
+          purposes and will never be shared publicly.</p>
+
+      <section class="optional">
         <label for="user-occupation" class="label">What is your occupation?
           <input
             type="text"
@@ -300,7 +304,7 @@
         try again.
       </p>
     {/if}
-      <button on:click|preventDefault={publish} type="submit" class="button publish-button" disabled={uploading} aria-live="polite" aria-relevant="text">{#if uploading}Publish and share my story{:else}Publish and share my story{/if}</button>
+      <button on:click|preventDefault={publish} type="submit" class="button publish-button" disabled={uploading} aria-live="polite" aria-relevant="text">{#if uploading}Publishing…{:else}Publish and share my story{/if}</button>
     {:else}
       {#if noData}<p class="error">The last recording was a bit short. Please try recording for at least {minRecordingLength.toLocaleString()} seconds.</p>{/if}
       <button

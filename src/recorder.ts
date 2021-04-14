@@ -11,3 +11,7 @@ export function findSupportedFormat(
 ): string | undefined {
   return candidates.find((f) => MediaRecorder.isTypeSupported(f));
 }
+
+export function makeRecordingUrl(blob: Blob): string {
+  return URL.createObjectURL(blob);
+}
