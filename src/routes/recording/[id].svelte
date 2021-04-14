@@ -97,9 +97,12 @@
 </script>
 
 <script lang="ts">
-  import Form from "../../components/Form.svelte";
+  import {asLocationString} from "../../components/story";
+  import Listen from "../../components/story/Listen.svelte";
+  import Publish from "../../components/story/Publish.svelte";
+  import Record from "../../components/story/Record.svelte";
   import Remember from "../../components/Remember.svelte";
-  import type { IRecording, IOption } from "../../types";
+  import type { IRecording, Option } from "../../types";
 
   export let baseUrl: string;
   export let minRecordingLength: number;
@@ -107,7 +110,7 @@
 
   export let ages: readonly Option[];
   export let categories: readonly Option[];
-  export let formats: readonly String[];
+  export let formats: readonly string[];
   export let genders: readonly Option[];
 
   export let recording: IRecording;
@@ -116,6 +119,10 @@
   export let key: string;
 
   export let isOwner: boolean;
+
+  let blob;
+  let categoryId;
+  let name;
 
   let base;
   $: base = new URL(baseUrl);
@@ -128,7 +135,7 @@
   let description;
 
   $: location =
-    recording.location !== null ? ` from ${recording.location}` : "";
+  asLocationString(recording.location);
 
   $: title = `A story by ${recording.name}${location}`;
   $: description = `Listen to the story of ${recording.name}${location}.`;
@@ -139,26 +146,8 @@
     padding: 1rem;
   }
 
-  :global(audio) {
-    margin: 1rem 0;
-    width: 100%;
-  }
-
   :global(section) {
     margin-top: 1rem;
-  }
-
-  .listen {
-    margin-top: 1rem;
-  }
-
-  .parent {
-    text-align: center;
-    font-size: 1.1em;
-  }
-
-  .parent > a {
-    text-decoration: none;
   }
 </style>
 
@@ -176,28 +165,7 @@
 </svelte:head>
 
 <main>
-  {#if recording.parent}
-    <p class="parent">
-      <a href="/recording/{recording.parent}" sapper:prefetch>See this recording’s parent</a>
-    </p>
-  {/if}
-
-  <h2 class="listen">Listen</h2>
-  <p>
-    Listening to the story of
-    {recording.name}{location}.
-    {#if isOwner}
-      Thank you for taking the time to share this story.
-    {:else}
-      Thank you for taking the time to become part of this shared story.
-    {/if}
-  </p>
-
-  <!-- TODO custom pause/play buttons and scrubber -->
-  <!-- svelte-ignore a11y-media-has-caption -->
-  <audio controls="controls"
-         src={recording.url}>Your browser does not support
-    embedded audio!</audio>
+  <Listen {recording} {isOwner} />
 
   <section>
   {#if isOwner}
@@ -210,15 +178,29 @@
       {recording}
       tokens={recordingTokens} />
   {:else if token !== undefined}
-    <Form
-      {ages}
+    {#if blob === undefined} 
+    <Record
+      bind:blob
       {categories}
+      bind:categoryId
       {formats}
-      {genders}
       parent={recording.name}
+      bind:name
       {minRecordingLength}
       {maxRecordingLength}
       {token} />
+    {:else}
+      <Publish
+        {ages}
+        {categories}
+        {genders}
+        initialName={name}
+        initialCategoryId={categoryId}
+        parent={recording.name}
+        recording={blob}
+        token={token}
+        />
+    {/if}
   {/if}
   </section>
 </main>

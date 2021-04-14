@@ -17,7 +17,6 @@
 
   label {
     display: flex;
-    margin-left: 1rem;
     margin-top: 0.75rem;
     flex-direction: row;
     flex-flow: nowrap;

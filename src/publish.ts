@@ -17,6 +17,7 @@ export async function publish(
 
   await runXhrAsPromise(xhr, fd);
 
+  // TODO properly type response by parsing
   return JSON.parse(xhr.responseText);
 }
 

@@ -325,7 +325,7 @@ describe("The server", function () {
         await stopRecordingButton.click();
 
         assert.notEqual(
-          await document.queryByText("recording your story", { exact: false }),
+          await document.queryByText("recording your reply", { exact: false }),
           null,
         );
 
