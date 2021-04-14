@@ -3,9 +3,10 @@
     border-bottom: 1px solid rgba(255, 62, 0, 0.1);
     font-weight: 300;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: stretch;
     width: 100%;
+    flex-wrap: wrap;
   }
 
   img {
@@ -30,6 +31,21 @@
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .logo, .listen {
+    width: 100%;
+  }
+
+  @media (min-width: 34em) {
+    nav {
+      flex-wrap: nowrap;
+      justify-content: space-between;
+    }
+
+    .logo, .listen {
+      width: auto;
+    }
   }
 </style>
 
