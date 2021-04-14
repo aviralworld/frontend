@@ -3,6 +3,7 @@
   import { writable } from "svelte/store";
 
   import RequiredInformation from "../form/RequiredInformation.svelte";
+  import Microphone from "../icons/Microphone.svelte";
   import { asMinutesAndSeconds } from "../../time";
   import { MicrophoneStatus, microphonePermission } from "../../store/microphone";
   import { createRecordingMachine } from "../../machines/record";
@@ -60,20 +61,22 @@
       machine.send({ type: "PREPARE", format: findSupportedFormat(formats)});
     }
   }
+
+  $: inProgress = $machine.matches("recording");
 </script>
 
 <style>
-
   .record {
     margin-top: 1rem;
   }
 
   /* https://moderncss.dev/css-button-styling-guide/ */
   .button {
-    font-size: 1.1em;
+    font-size: 1.4em;
     display: flex;
     margin: 0 auto;
     margin-top: 1rem;
+    padding: 1rem;
   }
 
   @media screen and (-ms-high-contrast: active) {
@@ -88,6 +91,24 @@
     margin-top: 1rem;
     color: var(--error-foreground);
   }
+
+  :global(svg) {
+    --size: 1em;
+    display: block;
+    width: var(--size);
+    height: var(--size);
+    fill: currentColor;
+    margin-right: 0.25ch;
+  }
+
+  :global(.microphone-fill) {
+    transition: opacity 1s ease-out;
+    opacity: 0;
+  }
+
+  :global(.inProgress) :global(.microphone-fill) {
+    opacity: 1;
+  }
 </style>
 
 <h2>Reply</h2>
@@ -100,7 +121,7 @@
   Your browser does not allow recording audio in any supported formats.
 </p>
 {:else}
-  <form class="record" on:submit|preventDefault={handleRecordButton}>
+  <form class="record" class:inProgress on:submit|preventDefault={handleRecordButton}>
     <p>
       You can record a story of your own to share with
       {parent}.
@@ -117,6 +138,7 @@
           aria-relevant="text"
           class="button record-button"
           type="submit">
+          <Microphone />
           {#if $machine.matches("recording")}
             Stop recording ({asMinutesAndSeconds(currentTime)}/{asMinutesAndSeconds(maxRecordingLength)})
           {:else}Record{/if}

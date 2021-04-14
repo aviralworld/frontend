@@ -1,7 +1,6 @@
 <style>
   nav {
-    border-bottom: 1px solid rgba(255, 62, 0, 0.1);
-    font-weight: 300;
+    border-bottom: 1px solid var(--nav-border);
     display: flex;
     justify-content: center;
     align-items: stretch;
@@ -18,8 +17,9 @@
     padding: var(--button-padding);
   }
 
-  a {
+  a, a:hover, a:active, a:focus {
     border: 0;
+    color: var(--button-foreground);
   }
 
   .logo {

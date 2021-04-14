@@ -47,6 +47,8 @@
 
   --copy-button-foreground: rgba(255, 255, 255, 1);
   --copy-button-copied-colour: rgba(255, 255, 255, 0.75);
+
+  --nav-border: rgba(255, 62, 0, 0.1);
 }
 
 * {
@@ -88,10 +90,15 @@ main {
   font-weight: bold;
 }
 
+.button:hover {
+  background: var(--logo-foreground);
+}
+
 @media not all and (prefers-reduced-motion: no-preference) {
   * {
     animation-delay: 0ms !important;
     animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
   }
 }
 
