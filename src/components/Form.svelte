@@ -4,11 +4,11 @@
   import { readable, writable } from "svelte/store";
 
   import Choices from "./Choices.svelte";
-  import { normalizeName } from "../normalize";
+  import { normalizeName, trim } from "../normalize";
   import { checkName } from "../actions/checkName";
   import { asMinutesAndSeconds } from "../time";
   import { MicrophoneStatus, microphonePermission } from "../store/microphone";
-  import { createRecordingMachine } from "../machines/recording";
+  import { createRecordingMachine } from "../machines/record";
   import type { Option, ISubmission } from "../types";
   import { publish as _publish, FORBIDDEN_CODE } from "../publish";
   import { findSupportedFormat, makeRecordingUrl } from "../recorder";
@@ -31,20 +31,6 @@
   let genderId: string = undefined;
   let location: string = undefined;
   let email: string = undefined;
-
-  function trim(v: string | undefined): string | undefined {
-    if (v === undefined) {
-      return v;
-    }
-
-    const trimmed = v.trim();
-
-    if (trimmed === "") {
-      return undefined;
-    }
-
-    return trimmed;
-  }
 
   let currentCategory: Option;
   $: currentCategory = categories.find(([id]) => id === categoryId);
@@ -245,6 +231,7 @@
     {#if $machine.matches("completed")}
       <p class="thanks">Thank you for recording your story:</p>
       <!-- TODO custom pause/play buttons and scrubber -->
+      <!-- svelte-ignore a11y-media-has-caption -->
       <audio controls="controls" src={makeRecordingUrl(data)}>Your browser does not
         support embedded audio!</audio>
 
@@ -306,7 +293,7 @@
     {/if}
       <button on:click|preventDefault={publish} type="submit" class="button publish-button" disabled={uploading} aria-live="polite" aria-relevant="text">{#if uploading}Publishing…{:else}Publish and share my story{/if}</button>
     {:else}
-      {#if noData}<p class="error">The last recording was a bit short. Please try recording for at least {minRecordingLength.toLocaleString()} seconds.</p>{/if}
+      {#if noData}<p class="error">The last recording was a bit too short. Please try recording for at least {minRecordingLength.toLocaleString()} seconds.</p>{/if}
       <button
         aria-live="polite"
         aria-relevant="text"

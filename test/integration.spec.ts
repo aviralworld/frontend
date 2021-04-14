@@ -8,6 +8,8 @@ import { Client } from "pg";
 import puppeteer from "puppeteer";
 import "pptr-testing-library/extend";
 
+import { parseDecimalInt } from "../src/normalize";
+
 dotenvSafe.config();
 
 const {
@@ -17,6 +19,8 @@ const {
   FRONTEND_COMPRESSION,
   FRONTEND_DEBOUNCE_DELAY_MS,
   FRONTEND_TEST_NAVIGATION_TIMEOUT: _FRONTEND_TEST_NAVIGATION_TIMEOUT,
+  FRONTEND_MAX_RECORDING_LENGTH_SECONDS,
+  FRONTEND_MIN_RECORDING_LENGTH_SECONDS,
   FRONTEND_ENABLE_ADMIN_MODE,
   FRONTEND_RANDOM_STORY_COUNT,
   FRONTEND_SERVE_STATIC,
@@ -58,6 +62,8 @@ before(() => {
       FRONTEND_ENABLE_ADMIN_MODE,
       FRONTEND_RANDOM_STORY_COUNT,
       FRONTEND_SERVE_STATIC,
+      FRONTEND_MAX_RECORDING_LENGTH_SECONDS,
+      FRONTEND_MIN_RECORDING_LENGTH_SECONDS,
       FRONTEND_ADMIN_PORT: (serverPort + 1).toString(),
       FRONTEND_HEALTH_CHECK_TIMEOUT_MS: "1",
       ROARR_LOG: "true",
@@ -298,19 +304,23 @@ describe("The server", function () {
         await categoryOption.click();
 
         await recordButton.click();
-        await page.waitForFunction(
-          () =>
-            (document as any)
-              .querySelector("button")
-              .textContent.indexOf("0:00") > -1,
-          {
-            timeout: 500,
-          },
+        const stopRecordingButton = await page.waitForXPath(
+          "//button[contains(., '0:00')]",
+          { timeout: 500 },
         );
 
-        const stopRecordingButton = await document.getByText("Stop recording", {
-          exact: false,
-        });
+        await stopRecordingButton.click();
+
+        assert.notEqual(
+          await document.queryByText("too short", { exact: false }),
+          null,
+        );
+
+        await recordButton.click();
+
+        await page.waitForTimeout(
+          parseDecimalInt(FRONTEND_MIN_RECORDING_LENGTH_SECONDS) * 1000 + 100,
+        );
 
         await stopRecordingButton.click();
 

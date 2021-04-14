@@ -25,7 +25,7 @@ interface IChunkSchema {
   };
 }
 
-export function chunksRecordingMachine(
+export function chunksMachine(
   maxLength: number,
 ): StateMachine<IContext, IChunkSchema, ChunkEvent, ChunkState> {
   return createMachine<IContext, ChunkEvent, ChunkState>(

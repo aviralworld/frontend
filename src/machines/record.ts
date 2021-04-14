@@ -10,7 +10,7 @@ import {
 } from "xstate";
 
 import { createRecorder } from "../recorder";
-import { ChunkEvent, chunksRecordingMachine } from "./chunksRecording";
+import { ChunkEvent, chunksMachine } from "./chunks";
 
 const { log, send } = actions;
 
@@ -274,7 +274,7 @@ function recordingMachine(
         }),
         spawnChunksMachine: assign({
           machine: () =>
-            spawn(chunksRecordingMachine(maxLength), {
+            spawn(chunksMachine(maxLength), {
               name: "chunks-recorder",
             }),
         }),
