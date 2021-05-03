@@ -114,6 +114,8 @@
 <h2>Reply</h2>
 {#if $canAccessMicrophone === MicrophoneStatus.DENIED}
   <p>You must grant access to your microphone in order to record a story.</p>
+{:else if $canAccessMicrophone === MicrophoneStatus.UNAVAILABLE}
+  <p>Unfortunately, your browser does not support recording a reply.</p>
 {:else if $machine.matches("disabled")}
   <!-- TODO add polyfill: https://github.com/ai/audio-recorder-polyfill -->
 <p>You can record a story of your own to share with {parent}.</p>
