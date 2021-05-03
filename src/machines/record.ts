@@ -177,7 +177,7 @@ function recordingMachine(
           on: {
             PREPARE: [
               {
-                cond: "passedSupportFormat",
+                cond: "passedSupportedFormat",
                 target: "preparing",
                 actions: "setFormat",
               },
@@ -301,7 +301,7 @@ function recordingMachine(
       },
       guards: {
         hasData: (context) => context.time >= minLength,
-        passedSupportFormat: (_context, event) => {
+        passedSupportedFormat: (_context, event) => {
           return event.type === "PREPARE" && event.format !== undefined;
         },
       },
