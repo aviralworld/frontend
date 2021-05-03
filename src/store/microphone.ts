@@ -4,6 +4,7 @@ export const enum MicrophoneStatus {
   DENIED,
   GRANTED,
   PROMPT,
+  UNAVAILABLE,
   UNKNOWN,
 }
 
@@ -11,15 +12,22 @@ export function microphonePermission(): Readable<MicrophoneStatus> {
   return readable<MicrophoneStatus>(MicrophoneStatus.UNKNOWN, (set) => {
     let result: PermissionStatus;
 
+    const { permissions } = navigator;
+
+    if (!permissions) {
+      set(MicrophoneStatus.UNAVAILABLE);
+      return;
+    }
+
     const listener = function (this: PermissionStatus) {
-      set(isPermitted(this.state));
+      set(parsePermissionState(this.state));
     };
 
     void (async () => {
       result = await navigator.permissions.query({ name: "microphone" });
       result.addEventListener("change", listener);
 
-      set(isPermitted(result.state));
+      set(parsePermissionState(result.state));
     })();
 
     return () => {
@@ -28,7 +36,7 @@ export function microphonePermission(): Readable<MicrophoneStatus> {
   });
 }
 
-function isPermitted(state: string): MicrophoneStatus {
+function parsePermissionState(state: string): MicrophoneStatus {
   switch (state) {
     case "granted":
       return MicrophoneStatus.GRANTED;
