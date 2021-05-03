@@ -7,6 +7,11 @@
   export let isOwner: boolean;
 
   export const location = asLocationString(recording.location);
+
+  $: metadata = {
+    artist: `${recording.name}${location}`,
+    title: "A Viral World story"
+  };
 </script>
 
 <style>
@@ -33,7 +38,7 @@
     {recording.name}{location}.
   </p>
 
-  <Audio url={recording.url} />
+  <Audio url={recording.url} metadata={metadata} />
 
   {#if isOwner}
     Thank you for taking the time to share this story.
