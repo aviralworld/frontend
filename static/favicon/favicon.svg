@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512">
+  <style>
+    .st4{fill:none;stroke:#fff;stroke-width:13.3352}
+  </style>
+  <g id="Layer_1">
+    <path d="M343.2 100.5l97.4 311h55.5v80H267.3v-80h59.6l-22.2-80H184.1l-24.7 80h62.1v80H15.9v-80h57.4l90.3-311h-62.1v-80H405v80h-61.8zm-96.9 19l-41.6 142.2h80.9l-39.3-142.2z" fill="#ed1c24"/>
+    <path class="st4" d="M67.3 433.5L240.6 91.3H334M302.9 91.3L334 435M36.1 435h117M294 435h102.2M140.9 288.1h179.7"/>
+  </g>
+</svg>
