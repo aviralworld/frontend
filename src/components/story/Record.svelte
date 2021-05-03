@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { writable } from "svelte/store";
+  import { fade } from "svelte/transition";
 
   import RequiredInformation from "../form/RequiredInformation.svelte";
   import Microphone from "../icons/Microphone.svelte";
@@ -111,6 +112,7 @@
   }
 </style>
 
+<section>
 <h2>Reply</h2>
 {#if $canAccessMicrophone === MicrophoneStatus.DENIED}
   <p>You must grant access to your microphone in order to record a story.</p>
@@ -131,19 +133,20 @@
         You will need to grant access to your microphone when prompted.
       {/if}
     </p>
-    <p>First, please let us know a few details:</p>
+    <p>First, please let us know a few details. Once you publish your recording, these will be visible to all visitors of the website.</p>
     <RequiredInformation {categories} bind:name bind:categoryId />
 
-      {#if noData}<p class="error">The last recording was a bit too short. Please try recording for at least {minRecordingLength.toLocaleString()} seconds.</p>{/if}
-        <button
-          aria-live="polite"
-          aria-relevant="text"
-          class="button record-button"
-          type="submit">
-          <Microphone />
-          {#if $machine.matches("recording")}
-            Stop recording ({asMinutesAndSeconds(currentTime)}/{asMinutesAndSeconds(maxRecordingLength)})
-          {:else}Record{/if}
-            </button>
+    {#if noData}<p class="error">The last recording was a bit too short. Please try recording for at least {minRecordingLength.toLocaleString()} seconds.</p>{/if}
+    <button
+      aria-live="polite"
+      aria-relevant="text"
+      class="button record-button"
+      type="submit">
+      <Microphone />
+      {#if $machine.matches("recording")}
+        Stop recording ({asMinutesAndSeconds(currentTime)}/{asMinutesAndSeconds(maxRecordingLength)})
+      {:else}Record{/if}
+      </button>
   </form>
 {/if}
+</section>

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { goto } from "@sapper/app";
+  import { slide } from "svelte/transition";
 
   import { trim } from "../../normalize";
   import { FORBIDDEN_CODE, publish as _publish } from "../../publish";
@@ -82,14 +83,14 @@
   <h2>Publish</h2>
   <p class="thanks">Thank you for recording your reply to {parent}.</p>
   <Audio url={makeRecordingUrl(recording)} />
-  <p>You can confirm your details and publish your story below.</p>
+  <p>You can confirm your details and publish your story below. Only your name and location, as well as the subject of your story, will be visible on the website.</p>
 
   <form class="record" on:submit|preventDefault={publish}>
     <RequiredInformation {categories} {initialName} {initialCategoryId} bind:name bind:categoryId />
 
-    <p class="optional">The remaining fields are optional. They will
-      only be used for research purposes and will never be shared
-      publicly.</p>
+    <p class="optional">The remaining fields are optional. Only your
+      location will be shared publicly. The rest will only be used for
+      research purposes and will never be shared publicly.</p>
 
     <OptionalInformation {ages} {genders} bind:ageId bind:email bind:genderId bind:location bind:occupation />
 
