@@ -290,6 +290,8 @@ describe("The server", function () {
         });
         await nameInput.type("Car");
 
+        await page.waitForXPath("//span[contains(., 'already a recording')]");
+
         assert.notEqual(
           await document.queryByText("haptic yellow Forward extensible", {
             exact: false,
@@ -340,6 +342,10 @@ describe("The server", function () {
           (i as any).value = "";
         }, nameInput2);
         await nameInput2.type("Another Car");
+
+        await page.waitForXPath("//span[contains(., 'already a recording')]", {
+          hidden: true,
+        });
 
         const emailInput = await document.getByLabelText("email address", {
           exact: false,
