@@ -4,7 +4,7 @@ import type { ISubmission } from "./types";
 
 export const FORBIDDEN_CODE = 403;
 
-const ENDPOINT = `${API_PATH}/recordings/`;
+const ENDPOINT = `${API_PATH}/`;
 
 export async function publish(
   blob: Blob,
