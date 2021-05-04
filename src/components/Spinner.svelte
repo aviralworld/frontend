@@ -1,3 +1,7 @@
+<script lang="ts">
+  export let label = undefined;
+</script>
+
 <style type="text/css">
   /* adapted from https://loading.io/css/ */
   .ring {
@@ -54,4 +58,4 @@
   }
 </style>
 
-<span class="ring"> <i /> </span>
+<span class="ring" aria-label={label}> <i /> </span>

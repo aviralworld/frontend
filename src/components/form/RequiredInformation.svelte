@@ -18,6 +18,16 @@
 
   const isAvailable = isNameAvailableDebounced(name, 200);
 
+  let nameInput;
+
+  $: if (nameInput !== undefined) {
+    if (!$isAvailable.available) {
+      nameInput.setCustomValidity("Sorry, there is already a recording under that name. Please enter a different name.");
+    } else {
+      nameInput.setCustomValidity("");
+    }
+  }
+
   function updateName() {
     if ($name !== null) {
       $name = normalizeName($name);
@@ -62,8 +72,9 @@
     bind:value={$name}
     pattern=".*\S.*"
     on:change={updateName}
+    bind:this={nameInput}
     required />
-  <span class="error" aria-live="polite">{#if !$isAvailable.available}Sorry, there is already a recording under that name. Please enter a different name.{/if} {#if $isAvailable.checking}<Spinner />{/if}</span>
+  <span class="error" aria-live="polite">{#if nameInput && nameInput.validity.customError}{nameInput.validationMessage}{/if} {#if $isAvailable.checking}<Spinner label="Checking…" />{/if}</span>
 </label>
 
 <Choices
