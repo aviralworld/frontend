@@ -64,6 +64,7 @@ specifiers:
   sirv: ^1.0.11
   svelte: ^3.38.2
   svelte-check: ^1.5.2
+  svelte-persistent-store: ^0.1.6
   svelte-preprocess: ^4.7.3
   ts-node: ^9.1.1
   tslib: ^2.2.0
@@ -86,6 +87,7 @@ dependencies:
   roarr: 2.15.4
   serialize-error: 7.0.1
   sirv: 1.0.11
+  svelte-persistent-store: 0.1.6_svelte@3.38.2
   xstate: 4.19.0
 
 devDependencies:
@@ -4636,6 +4638,14 @@ packages:
       - stylus
       - sugarss
     dev: true
+
+  /svelte-persistent-store/0.1.6_svelte@3.38.2:
+    resolution: {integrity: sha512-QIiKRKfeWfxi3Mva83BBSvETT9/a6EBiFVv0yPxNHt9/uFCgbBa0Mewe4+1Koat4y8NG4XJEqtqH2UEzj8FH5A==}
+    peerDependencies:
+      svelte: ^3.9.1
+    dependencies:
+      svelte: 3.38.2
+    dev: false
 
   /svelte-preprocess/4.7.3_408eae26b1566848a16b57b2f95412c6:
     resolution: {integrity: sha512-Zx1/xLeGOIBlZMGPRCaXtlMe4ZA0faato5Dc3CosEqwu75MIEPuOstdkH6cy+RYTUYynoxzNaDxkPX4DbrPwRA==}

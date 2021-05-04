@@ -33,6 +33,7 @@
     "roarr": "^2.15.4",
     "serialize-error": "^7.0.1",
     "sirv": "^1.0.11",
+    "svelte-persistent-store": "^0.1.6",
     "xstate": "^4.19.0"
   },
   "devDependencies": {

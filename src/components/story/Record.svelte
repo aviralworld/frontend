@@ -9,7 +9,7 @@
   import { MicrophoneStatus, microphonePermission } from "../../store/microphone";
   import { createRecordingMachine } from "../../machines/record";
   import type { Option } from "../../types";
-  import { findSupportedFormat } from "../../recorder";
+  import { retrieveSupportedFormat } from "../../recorder";
   import { reply } from "../../store/replies";
 
   // passed from route or settings
@@ -20,21 +20,19 @@
   export let parent: string;
   export let parentId: string;
 
-  export let name: string = undefined;
-  export let categoryId: string = undefined;
-
   const canAccessMicrophone = writable(MicrophoneStatus.UNKNOWN);
-  let blob: Blob;
+  const machine = createRecordingMachine(minRecordingLength, maxRecordingLength);
+  const blob = reply(parentId);
 
-  onMount(async () => {
+  $: if ($blob === undefined && $machine.matches("completed")) {
+    machine.send("RETRY");
+  }
+
+  onMount(() => {
     microphonePermission().subscribe((v) => {
       canAccessMicrophone.set(v);
     });
-
-    blob = await reply(parentId);
   });
-
-  const machine = createRecordingMachine(minRecordingLength, maxRecordingLength);
 
   let noData = false;
   $: if ($machine.matches("ready.noData")) {
@@ -58,10 +56,10 @@
   function handleRecordButton() {
     if ($machine.matches("recording")) {
       machine.send("STOP");
-    } else if ($machine.matches("ready.noData")) {
+    } else if ($machine.matches("ready.noData") || $machine.matches("ready.retry")) {
       machine.send("START");
     } else {
-      machine.send({ type: "PREPARE", format: findSupportedFormat(formats)});
+      machine.send({ type: "PREPARE", format: retrieveSupportedFormat(formats)});
     }
   }
 
@@ -136,7 +134,7 @@
       {/if}
     </p>
     <p>First, please let us know a few details. Once you publish your recording, these will be visible to all visitors of the website.</p>
-    <RequiredInformation {categories} bind:name bind:categoryId />
+    <RequiredInformation {categories} parentId={parentId} />
 
     {#if noData}<p class="error">The last recording was a bit too short. Please try recording for at least {minRecordingLength.toLocaleString()} seconds.</p>{/if}
     <button

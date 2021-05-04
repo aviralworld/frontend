@@ -10,30 +10,28 @@
   import type { ISubmission, Option } from "../../types";
   import OptionalInformation from "../form/OptionalInformation.svelte";
   import RequiredInformation from "../form/RequiredInformation.svelte";
-  import { reply, readOnlyReply } from "../../store/replies";
+  import { reply } from "../../store/replies";
+  import { simple } from "../../store/local";
   import Audio from "../Audio.svelte";
 
   // supplied by parent
   export let ages: readonly Option[];
   export let categories: readonly Option[];
   export let genders: readonly Option[];
-  export let initialName: string;
-  export let initialCategoryId: string;
   export let parent: string;
   export let parentId: string;
   export let token: string;
 
-  // this component cannot be rendered on the server
-  const stored = readOnlyReply(reply(parentId));
+  const stored = reply(parentId);
 
-  let name: string;
-  let categoryId: string;
+  const name = simple(parentId, "name", null);
+  const categoryId = simple(parentId, "categoryId", null);
 
-  let ageId: string;
-  let email: string;
-  let genderId: string;
-  let location: string;
-  let occupation: string;
+  const ageId = simple(parentId, "ageId", null);
+  const email = simple(parentId, "email", null);
+  const genderId = simple(parentId, "genderId", null);
+  const location = simple(parentId, "location", null);
+  const occupation = simple(parentId, "occupation", null);
 
   let uploading = false;
   let publishErrorCode: number;
@@ -41,14 +39,14 @@
 
   async function publish(): Promise<void> {
     const details: ISubmission = {
-      name,
-      category_id: categoryId,
+      name: $name,
+      category_id: $categoryId,
       token,
-      occupation: trim(occupation),
-      age_id: ageId,
-      gender_id: genderId,
-      location: trim(location),
-      email: trim(email),
+      occupation: trim($occupation),
+      age_id: $ageId,
+      gender_id: $genderId,
+      location: trim($location),
+      email: trim($email),
     };
 
     uploading = true;
@@ -56,21 +54,24 @@
     publishErrorCode = undefined;
 
     try {
-      const published = await _publish(get(await stored), details);
+      const published = await _publish(get(stored), details);
       await goto(`/lookup/${published.key}/`);
+
+      for (const f of [name, categoryId, ageId, email, genderId, location, occupation]) {
+        f.set(null);
+      }
     } catch (e) {
       if (typeof e === "number") {
         publishErrorCode = e;
       }
 
-      console.error("Failed to publish with status", e);
     } finally {
       uploading = false;
     }
   }
 
   async function clear() {
-    (await stored).set(undefined);
+    stored.set(undefined);
   }
 </script>
 
@@ -98,13 +99,13 @@
   <p>You can confirm your details and publish your story below. Only your name and location, as well as the subject of your story, will be visible on the website.</p>
 
   <form class="record" on:submit|preventDefault={publish}>
-    <RequiredInformation {categories} {initialName} {initialCategoryId} bind:name bind:categoryId />
+    <RequiredInformation {categories} {parentId} />
 
     <p class="optional">The remaining fields are optional. Only your
       location will be shared publicly. The rest will only be used for
       research purposes and will never be shared publicly.</p>
 
-    <OptionalInformation {ages} {genders} bind:ageId bind:email bind:genderId bind:location bind:occupation />
+    <OptionalInformation {ages} {genders} {parentId} />
 
     {#if publishErrorCode === FORBIDDEN_CODE}
       <p class="error">

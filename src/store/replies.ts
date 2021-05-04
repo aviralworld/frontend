@@ -1,5 +1,5 @@
-import type { Subscriber, Readable, Writable } from "svelte/store";
-import { get, readable, writable } from "svelte/store";
+import type { Subscriber, Writable } from "svelte/store";
+import { writable } from "svelte/store";
 import type { IReply } from "../types";
 import { open } from "./db";
 
@@ -7,62 +7,58 @@ const STORE = "replies";
 
 const CACHE = new Map();
 
-export function readOnlyReply(
-  reply: Promise<Writable<IReply>>,
-): Readable<IReply | undefined> {
-  return readable(undefined, (set) => {
-    reply.then((v) => {
-      set(get(v));
-
-      v.subscribe(set);
-    });
-  });
-}
-
-export async function reply(recordingId: string): Promise<Writable<IReply>> {
+export function reply(recordingId: string): Writable<IReply> {
   if (!CACHE.has(recordingId)) {
-    CACHE.set(recordingId, replyFor(recordingId));
+    CACHE.set(recordingId, newReply(recordingId));
   }
 
   return CACHE.get(recordingId);
 }
 
-async function replyFor(recordingId: string): Promise<Writable<IReply>> {
-  const store = writable(undefined);
+function newReply(recordingId: string): Writable<IReply | undefined> {
+  let value = undefined;
+
+  if (!(process as any).browser) {
+    return writable(undefined);
+  }
 
   if (!window.indexedDB) {
     console.warn("IndexedDB not available, persistence disabled");
-    return store;
+    return writable(undefined);
   }
 
-  const db = await open();
-
-  try {
-    store.set(await db.get(STORE, recordingId));
-  } catch (e) {
-    console.error(e);
-  }
-
-  const listeners: Subscriber<IReply>[] = [];
-  const pending: Promise<void>[] = [];
+  let db = open();
 
   const set = async (v: IReply) => {
-    const p = db.put(STORE, v, recordingId).then(() => {});
+    const p = (await db).put(STORE, v, recordingId).then(() => {});
     pending.push(p);
     await p;
     pending.splice(
       pending.findIndex((p2) => p === p2),
       1,
     );
-    store.set(v);
+    value = v;
+
     listeners.forEach((l) => {
       l(v);
     });
   };
 
+  db.then(async (db) => {
+    try {
+      set(await db.get(STORE, recordingId));
+    } catch (e) {
+      console.error(e);
+    }
+  });
+
+  const listeners: Subscriber<IReply>[] = [];
+  const pending: Promise<void>[] = [];
+
   return {
     subscribe: (l) => {
       listeners.push(l);
+      l(value);
       return () => {
         listeners.splice(
           listeners.findIndex((l2) => l === l2),
@@ -72,7 +68,7 @@ async function replyFor(recordingId: string): Promise<Writable<IReply>> {
     },
     update: async (updater) => {
       await Promise.all(pending);
-      set(updater(get(store)));
+      set(updater(value));
     },
     set,
   };

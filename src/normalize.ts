@@ -8,15 +8,15 @@ export function normalizeName(name: string): string {
   return normalized.replace(WHITESPACE_RE, " ");
 }
 
-export function trim(v: string | undefined): string | undefined {
-  if (v === undefined) {
+export function trim(v: string | null): string | null {
+  if (v === null) {
     return v;
   }
 
   const trimmed = v.trim();
 
   if (trimmed === "") {
-    return undefined;
+    return null;
   }
 
   return trimmed;

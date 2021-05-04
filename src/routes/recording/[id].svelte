@@ -122,14 +122,7 @@
 
   export let isOwner: boolean;
 
-  let blob;
-
-  onMount(async () => {
-    blob = await reply(recording.id);
-  });
-
-  let categoryId;
-  let name;
+  const blob = reply(recording.id);
 
   let base;
   $: base = new URL(baseUrl);
@@ -188,11 +181,9 @@
     {#if $blob === undefined}
       <Record
         {categories}
-        bind:categoryId
         {formats}
         parent={recording.name}
         parentId={recording.id}
-        bind:name
         {minRecordingLength}
         {maxRecordingLength} />
     {:else}
@@ -200,8 +191,6 @@
         {ages}
         {categories}
         {genders}
-        initialName={name}
-        initialCategoryId={categoryId}
         parent={recording.name}
         parentId={recording.id}
         token={token}

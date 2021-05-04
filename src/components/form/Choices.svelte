@@ -7,7 +7,7 @@
   export let optional: boolean;
   export let label: string;
 
-  export let selection: string = undefined;
+  export let selection: string = null;
 </script>
 
 <style>
@@ -44,7 +44,7 @@
         type="radio"
         {name}
         bind:group={selection}
-        value={undefined} />
+             value={null} />
       Prefer not to say</label>
   {/if}
   {#each options as [value, label, description], index (value)}

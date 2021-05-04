@@ -5,21 +5,20 @@
   import { checkName } from "../../actions/checkName";
   import { normalizeName } from "../../normalize";
   import type { Option } from "../../types";
-
-  // you can't bind a variable and supply a value in the parent at the
-  // same time, so we need separate initial and current variables
+  import { simple } from "../../store/local";
 
   // supplied by parent
   export let categories: readonly Option[];
-  export let initialName: string | undefined = undefined;
-  export let initialCategoryId: string | undefined = undefined;
+  export let parentId: string;
 
   // provided by component
-  export let name: string | undefined = initialName;
-  export let categoryId: string | undefined = initialCategoryId;
+  const name = simple(parentId, "name", null);
+  const categoryId = simple(parentId, "categoryId", null);
 
-  function updateName(): void {
-    name = name && normalizeName(name);
+  function updateName() {
+    if ($name !== null) {
+      $name = normalizeName($name);
+    }
   }
 </script>
 
@@ -46,11 +45,11 @@
     name="name"
     autocomplete="name"
     id="user-name"
-    bind:value={name}
+    bind:value={$name}
     pattern=".*\S.*"
     on:change={updateName}
     required
-    use:checkName={readable(undefined, () => () => undefined)} />
+    use:checkName={readable(null, () => () => null)} />
 </label>
 
 <Choices
@@ -59,4 +58,4 @@
   options={categories}
   name="category"
   optional={false}
-  bind:selection={categoryId} />
+  bind:selection={$categoryId} />
