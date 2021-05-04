@@ -26,6 +26,7 @@
     "dotenv-safe": "^8.2.0",
     "express": "^4.17.1",
     "express-http-proxy": "^1.6.2",
+    "idb": "^6.0.0",
     "lodash": "^4.17.21",
     "newrelic": "^7.3.1",
     "pg": "^8.6.0",

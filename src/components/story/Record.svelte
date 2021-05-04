@@ -10,6 +10,7 @@
   import { createRecordingMachine } from "../../machines/record";
   import type { Option } from "../../types";
   import { findSupportedFormat } from "../../recorder";
+  import { reply } from "../../store/replies";
 
   // passed from route or settings
   export let categories: readonly Option[];
@@ -17,19 +18,20 @@
   export let minRecordingLength: number;
   export let maxRecordingLength: number;
   export let parent: string;
+  export let parentId: string;
 
-  // provided by component
-  export let blob: Blob = undefined;
-
-  export let name: string;
-  export let categoryId: string;
+  export let name: string = undefined;
+  export let categoryId: string = undefined;
 
   const canAccessMicrophone = writable(MicrophoneStatus.UNKNOWN);
+  let blob: Blob;
 
-  onMount(() => {
+  onMount(async () => {
     microphonePermission().subscribe((v) => {
       canAccessMicrophone.set(v);
     });
+
+    blob = await reply(parentId);
   });
 
   const machine = createRecordingMachine(minRecordingLength, maxRecordingLength);
@@ -49,7 +51,7 @@
     }
 
     if (state.value === "completed") {
-      blob = state.context.data;
+      blob.set(state.context.data);
     }
   });
 
@@ -112,7 +114,7 @@
   }
 </style>
 
-<section>
+<section out:fade>
 <h2>Reply</h2>
 {#if $canAccessMicrophone === MicrophoneStatus.DENIED}
   <p>You must grant access to your microphone in order to record a story.</p>

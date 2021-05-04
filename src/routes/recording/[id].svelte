@@ -1,4 +1,5 @@
 <script context="module" lang="ts">
+  import { onMount } from "svelte";
   import type { Preload } from "@sapper/app";
 
   import { verifyToken } from "../../token";
@@ -103,6 +104,7 @@
   import Record from "../../components/story/Record.svelte";
   import Remember from "../../components/Remember.svelte";
   import type { IRecording, Option } from "../../types";
+  import { reply } from "../../store/replies";
 
   export let baseUrl: string;
   export let minRecordingLength: number;
@@ -121,6 +123,11 @@
   export let isOwner: boolean;
 
   let blob;
+
+  onMount(async () => {
+    blob = await reply(recording.id);
+  });
+
   let categoryId;
   let name;
 
@@ -178,17 +185,16 @@
       {recording}
       tokens={recordingTokens} />
   {:else if token !== undefined}
-    {#if blob === undefined} 
-    <Record
-      bind:blob
-      {categories}
-      bind:categoryId
-      {formats}
-      parent={recording.name}
-      bind:name
-      {minRecordingLength}
-      {maxRecordingLength}
-      {token} />
+    {#if $blob === undefined}
+      <Record
+        {categories}
+        bind:categoryId
+        {formats}
+        parent={recording.name}
+        parentId={recording.id}
+        bind:name
+        {minRecordingLength}
+        {maxRecordingLength} />
     {:else}
       <Publish
         {ages}
@@ -197,7 +203,7 @@
         initialName={name}
         initialCategoryId={categoryId}
         parent={recording.name}
-        recording={blob}
+        parentId={recording.id}
         token={token}
         />
     {/if}

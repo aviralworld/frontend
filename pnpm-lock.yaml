@@ -44,6 +44,7 @@ specifiers:
   express: ^4.17.1
   express-http-proxy: ^1.6.2
   fast-glob: ^3.2.5
+  idb: ^6.0.0
   lodash: ^4.17.21
   mocha: ^8.3.2
   newrelic: ^7.3.1
@@ -78,6 +79,7 @@ dependencies:
   dotenv-safe: 8.2.0
   express: 4.17.1
   express-http-proxy: 1.6.2
+  idb: 6.0.0
   lodash: 4.17.21
   newrelic: 7.3.1
   pg: 8.6.0
@@ -3105,6 +3107,10 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       safer-buffer: 2.1.2
+    dev: false
+
+  /idb/6.0.0:
+    resolution: {integrity: sha512-+M367poGtpzAylX4pwcrZIa7cFQLfNkAOlMMLN2kw/2jGfJP6h+TB/unQNSVYwNtP8XqkLYrfuiVnxLQNP1tjA==}
     dev: false
 
   /ieee754/1.2.1:

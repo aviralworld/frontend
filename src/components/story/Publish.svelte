@@ -1,5 +1,7 @@
 <script lang="ts">
   import { goto } from "@sapper/app";
+  import { onMount } from "svelte";
+  import { get } from "svelte/store";
   import { slide } from "svelte/transition";
 
   import { trim } from "../../normalize";
@@ -8,6 +10,7 @@
   import type { ISubmission, Option } from "../../types";
   import OptionalInformation from "../form/OptionalInformation.svelte";
   import RequiredInformation from "../form/RequiredInformation.svelte";
+  import { reply, readOnlyReply } from "../../store/replies";
   import Audio from "../Audio.svelte";
 
   // supplied by parent
@@ -17,8 +20,11 @@
   export let initialName: string;
   export let initialCategoryId: string;
   export let parent: string;
-  export let recording: Blob;
+  export let parentId: string;
   export let token: string;
+
+  // this component cannot be rendered on the server
+  const stored = readOnlyReply(reply(parentId));
 
   let name: string;
   let categoryId: string;
@@ -50,7 +56,7 @@
     publishErrorCode = undefined;
 
     try {
-      const published = await _publish(recording, details);
+      const published = await _publish(get(await stored), details);
       await goto(`/lookup/${published.key}/`);
     } catch (e) {
       if (typeof e === "number") {
@@ -61,6 +67,10 @@
     } finally {
       uploading = false;
     }
+  }
+
+  async function clear() {
+    (await stored).set(undefined);
   }
 </script>
 
@@ -79,10 +89,12 @@
   }
 </style>
 
-<section class="publish">
+<section class="publish" in:slide>
   <h2>Publish</h2>
   <p class="thanks">Thank you for recording your reply to {parent}.</p>
-  <Audio url={makeRecordingUrl(recording)} />
+  {#if $stored !== undefined}
+  <Audio url={makeRecordingUrl($stored)} />
+  {/if}
   <p>You can confirm your details and publish your story below. Only your name and location, as well as the subject of your story, will be visible on the website.</p>
 
   <form class="record" on:submit|preventDefault={publish}>

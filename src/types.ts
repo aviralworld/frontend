@@ -21,3 +21,7 @@ export interface IOptionalSubmissionDetails {
   location: string;
   email: string;
 }
+
+export interface IReply {
+  blob: Blob;
+}
