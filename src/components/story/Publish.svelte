@@ -137,6 +137,6 @@
       </p>
     {/if}
 
-  <button on:click|preventDefault={publish} type="submit" class="button publish-button" disabled={uploading} aria-live="polite" aria-relevant="text">{#if uploading}Publishing…{:else}Publish and share my story{/if}</button>
+  <button type="submit" class="button publish-button" disabled={uploading} aria-live="polite" aria-relevant="text">{#if uploading}Publishing…{:else}Publish and share my story{/if}</button>
     </form>
 </section>
