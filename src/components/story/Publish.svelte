@@ -12,6 +12,7 @@
   import { reply } from "../../store/replies";
   import { simple } from "../../store/local";
   import Audio from "../Audio.svelte";
+  import { PublishFailedError } from "../../errors";
 
   // supplied by parent
   export let ages: readonly Option[];
@@ -59,8 +60,10 @@
       forgetMetadata();
       await forgetRecording();
     } catch (e) {
-      if (typeof e === "number") {
-        publishErrorCode = e;
+      if (e instanceof PublishFailedError) {
+        publishErrorCode = e.code;
+      } else {
+        throw e;
       }
     } finally {
       uploading = false;
