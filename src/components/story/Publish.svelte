@@ -70,10 +70,15 @@
     }
   }
 
-  function forgetRecording(): Promise<void> {
+  function askToForgetRecording(): Promise<void> {
     if (confirm("Are you sure you want to discard the existing recording and try again?")) {
-      return stored.set(undefined);
+      forgetMetadata();
+      return forgetRecording();
     }
+  }
+
+  function forgetRecording(): Promise<void> {
+      return stored.set(undefined);
   }
 
   function forgetMetadata(): void {
@@ -108,7 +113,7 @@
 <section class="publish" in:slide out:fade>
   <h2>Publish</h2>
   <p class="thanks">Thank you for recording your reply to {parent}.</p>
-  <form class="reset"><Audio url={$stored && makeRecordingUrl($stored)} /><button type="submit" on:click|preventDefault={forgetRecording} class="button reset-button">Try again</button></form>
+  <form class="reset"><Audio url={$stored && makeRecordingUrl($stored)} /><button type="submit" on:click|preventDefault={askToForgetRecording} class="button reset-button">Try again</button></form>
   <p>You can confirm your details and publish your story below. Only your name and location, as well as the subject of your story, will be visible on the website.</p>
 
   <form class="record" on:submit|preventDefault={publish}>
