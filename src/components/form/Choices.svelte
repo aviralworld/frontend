@@ -42,20 +42,11 @@
 <fieldset class={fullClassName}>
   <legend>{label}</legend>
   {#if optional}
-    <label><input
-        type="radio"
-        {name}
-        bind:group={selection}
-             value={null} />
+    <label><input type="radio" {name} bind:group={selection} value={null} />
       Prefer not to say</label>
   {/if}
   {#each options as [value, label, description], index (value)}
-    <label><input
-        type="radio"
-        {name}
-        bind:group={selection}
-        {value}
-        required />
+    <label><input type="radio" {name} bind:group={selection} {value} required />
       {#if description !== null}
         <span class="label">{label}</span>
         <span class="description">{description}</span>

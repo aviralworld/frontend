@@ -6,7 +6,10 @@
   import RequiredInformation from "../form/RequiredInformation.svelte";
   import Microphone from "../icons/Microphone.svelte";
   import { asMinutesAndSeconds } from "../../time";
-  import { MicrophoneStatus, microphonePermission } from "../../store/microphone";
+  import {
+    MicrophoneStatus,
+    microphonePermission,
+  } from "../../store/microphone";
   import { createRecordingMachine } from "../../machines/record";
   import type { Option } from "../../types";
   import { retrieveSupportedFormat } from "../../recorder";
@@ -21,7 +24,10 @@
   export let parentId: string;
 
   const canAccessMicrophone = writable(MicrophoneStatus.UNKNOWN);
-  const machine = createRecordingMachine(minRecordingLength, maxRecordingLength);
+  const machine = createRecordingMachine(
+    minRecordingLength,
+    maxRecordingLength,
+  );
   const blob = reply(parentId);
 
   $: if ($blob === undefined && $machine.matches("completed")) {
@@ -62,10 +68,16 @@
 
     if ($machine.matches("recording")) {
       machine.send("STOP");
-    } else if ($machine.matches("ready.noData") || $machine.matches("ready.retry")) {
+    } else if (
+      $machine.matches("ready.noData") ||
+      $machine.matches("ready.retry")
+    ) {
       machine.send("START");
     } else {
-      machine.send({ type: "PREPARE", format: retrieveSupportedFormat(formats)});
+      machine.send({
+        type: "PREPARE",
+        format: retrieveSupportedFormat(formats),
+      });
     }
   }
 
@@ -119,40 +131,54 @@
 </style>
 
 <section class="recording-section" out:fade>
-<h2>Reply</h2>
-{#if $canAccessMicrophone === MicrophoneStatus.DENIED}
-  <p>You must grant access to your microphone in order to record a story.</p>
-{:else if $canAccessMicrophone === MicrophoneStatus.UNAVAILABLE}
-  <p>Unfortunately, your browser does not support recording a reply.</p>
-{:else if $machine.matches("disabled")}
-  <!-- TODO add polyfill: https://github.com/ai/audio-recorder-polyfill -->
-<p>You can record a story of your own to share with {parent}.</p>
-<p class="error">
-  Your browser does not allow recording audio in any supported formats.
-</p>
-{:else}
-  <form class="record" class:inProgress on:submit|preventDefault={handleRecordButton} bind:this={form}>
-    <p>
-      You can record a story of your own to share with
-      {parent}.
-      {#if !canAccessMicrophone}
-        You will need to grant access to your microphone when prompted.
-      {/if}
+  <h2>Reply</h2>
+  {#if $canAccessMicrophone === MicrophoneStatus.DENIED}
+    <p>You must grant access to your microphone in order to record a story.</p>
+  {:else if $canAccessMicrophone === MicrophoneStatus.UNAVAILABLE}
+    <p>Unfortunately, your browser does not support recording a reply.</p>
+  {:else if $machine.matches('disabled')}
+    <!-- TODO add polyfill: https://github.com/ai/audio-recorder-polyfill -->
+    <p>You can record a story of your own to share with {parent}.</p>
+    <p class="error">
+      Your browser does not allow recording audio in any supported formats.
     </p>
-    <p>First, please let us know a few details. Once you publish your recording, these will be visible to all visitors to A Viral World.</p>
-    <RequiredInformation {categories} parentId={parentId} />
+  {:else}
+    <form
+      class="record"
+      class:inProgress
+      on:submit|preventDefault={handleRecordButton}
+      bind:this={form}>
+      <p>
+        You can record a story of your own to share with
+        {parent}.
+        {#if !canAccessMicrophone}
+          You will need to grant access to your microphone when prompted.
+        {/if}
+      </p>
+      <p>
+        First, please let us know a few details. Once you publish your
+        recording, these will be visible to all visitors to A Viral World.
+      </p>
+      <RequiredInformation {categories} {parentId} />
 
-    {#if noData}<p class="error">The last recording was a bit too short. Please try recording for at least {minRecordingLength.toLocaleString()} seconds.</p>{/if}
-    <button
-      aria-live="polite"
-      aria-relevant="text"
-      class="button record-button"
-      type="submit">
-      <Microphone />
-      {#if $machine.matches("recording")}
-        Stop recording ({asMinutesAndSeconds(currentTime)}/{asMinutesAndSeconds(maxRecordingLength)})
-      {:else}Record{/if}
+      {#if noData}
+        <p class="error">
+          The last recording was a bit too short. Please try recording for at
+          least
+          {minRecordingLength.toLocaleString()}
+          seconds.
+        </p>
+      {/if}
+      <button
+        aria-live="polite"
+        aria-relevant="text"
+        class="button record-button"
+        type="submit">
+        <Microphone />
+        {#if $machine.matches('recording')}
+          Stop recording ({asMinutesAndSeconds(currentTime)}/{asMinutesAndSeconds(maxRecordingLength)})
+        {:else}Record{/if}
       </button>
-  </form>
-{/if}
+    </form>
+  {/if}
 </section>

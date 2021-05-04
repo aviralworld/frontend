@@ -22,7 +22,9 @@
 
   $: if (nameInput !== undefined) {
     if (!$isAvailable.available) {
-      nameInput.setCustomValidity("Sorry, there is already a recording under that name. Please enter a different name.");
+      nameInput.setCustomValidity(
+        "Sorry, there is already a recording under that name. Please enter a different name.",
+      );
     } else {
       nameInput.setCustomValidity("");
     }
@@ -38,7 +40,8 @@
 <style>
 </style>
 
-<label class="required name" for="user-name">What is your name? (You may enter a nickname if you prefer.)
+<label class="required name" for="user-name">What is your name? (You may enter a
+  nickname if you prefer.)
   <input
     type="text"
     name="name"
@@ -49,7 +52,14 @@
     on:change={updateName}
     bind:this={nameInput}
     required />
-  <span class="error" aria-live="polite">{#if nameInput && nameInput.validity.customError}{nameInput.validationMessage}{/if} {#if $isAvailable.checking}<Spinner label="Checking…" />{/if}</span>
+  <span
+    class="error"
+    aria-live="polite">{#if nameInput && nameInput.validity.customError}
+      {nameInput.validationMessage}
+    {/if}
+    {#if $isAvailable.checking}
+      <Spinner label="Checking…" />
+    {/if}</span>
 </label>
 
 <Choices

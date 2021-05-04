@@ -23,7 +23,8 @@
 </style>
 
 <a
-  href={`/recording/${recording.id}/`} sapper:prefetch>{recording.name}{#if recording.location !== null}
+  href={`/recording/${recording.id}/`}
+  sapper:prefetch>{recording.name}{#if recording.location !== null}
     {' '}<span class="from">from</span>
     {recording.location}
   {/if}</a>

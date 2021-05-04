@@ -77,18 +77,30 @@
   }
 
   function askToForgetRecording(): Promise<void> {
-    if (confirm("Are you sure you want to discard the existing recording and try again?")) {
+    if (
+      confirm(
+        "Are you sure you want to discard the existing recording and try again?",
+      )
+    ) {
       forgetMetadata();
       return forgetRecording();
     }
   }
 
   function forgetRecording(): Promise<void> {
-      return stored.set(undefined);
+    return stored.set(undefined);
   }
 
   function forgetMetadata(): void {
-    for (const f of [name, categoryId, ageId, email, genderId, location, occupation]) {
+    for (const f of [
+      name,
+      categoryId,
+      ageId,
+      email,
+      genderId,
+      location,
+      occupation,
+    ]) {
       f.set(null);
     }
   }
@@ -99,7 +111,7 @@
     display: grid;
     grid-template-columns: 1fr auto;
     grid-gap: 1rem;
-    align-items: center
+    align-items: center;
   }
 
   .optional {
@@ -119,15 +131,26 @@
 <section class="recording-section publish" in:slide out:fade>
   <h2>Publish</h2>
   <p class="thanks">Thank you for recording your reply to {parent}.</p>
-  <form class="reset"><Audio url={$stored && makeRecordingUrl($stored)} /><button type="submit" on:click|preventDefault={askToForgetRecording} class="button reset-button">Try again</button></form>
-  <p>You can confirm your details and publish your story below. Only your name and location, as well as the subject of your story, will be visible on A Viral World.</p>
+  <form class="reset">
+    <Audio url={$stored && makeRecordingUrl($stored)} /><button
+      type="submit"
+      on:click|preventDefault={askToForgetRecording}
+      class="button reset-button">Try again</button>
+  </form>
+  <p>
+    You can confirm your details and publish your story below. Only your name
+    and location, as well as the subject of your story, will be visible on A
+    Viral World.
+  </p>
 
   <form class="record" on:submit|preventDefault={publish} bind:this={form}>
     <RequiredInformation {categories} {parentId} />
 
-    <p class="optional">The remaining fields are optional. Only your
-      location will be shared publicly. The rest will only be used for
-      research purposes and will never be shared publicly.</p>
+    <p class="optional">
+      The remaining fields are optional. Only your location will be shared
+      publicly. The rest will only be used for research purposes and will never
+      be shared publicly.
+    </p>
 
     <OptionalInformation {ages} {genders} {parentId} />
 
@@ -143,6 +166,13 @@
       </p>
     {/if}
 
-  <button type="submit" class="button publish-button" disabled={uploading} aria-live="polite" aria-relevant="text">{#if uploading}Publishing…{:else}Publish and share my story{/if}</button>
-    </form>
+    <button
+      type="submit"
+      class="button publish-button"
+      disabled={uploading}
+      aria-live="polite"
+      aria-relevant="text">{#if uploading}
+        Publishing…
+      {:else}Publish and share my story{/if}</button>
+  </form>
 </section>

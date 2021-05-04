@@ -17,7 +17,10 @@
     padding: var(--button-padding);
   }
 
-  a, a:hover, a:active, a:focus {
+  a,
+  a:hover,
+  a:active,
+  a:focus {
     border: 0;
     color: var(--button-foreground);
   }
@@ -33,7 +36,8 @@
     justify-content: center;
   }
 
-  .logo, .listen {
+  .logo,
+  .listen {
     width: 100%;
   }
 
@@ -43,7 +47,8 @@
       justify-content: space-between;
     }
 
-    .logo, .listen {
+    .logo,
+    .listen {
       width: auto;
     }
   }

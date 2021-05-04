@@ -5,8 +5,12 @@
   import { verifyToken } from "../../token";
   import type { IFrontendSettings } from "../../server/frontendSettings";
 
-  export const preload: Preload = async function({ params, query }, session) {
-    const { baseUrl, minRecordingLengthSeconds, maxRecordingLengthSeconds } = session.frontendSettings as IFrontendSettings;
+  export const preload: Preload = async function ({ params, query }, session) {
+    const {
+      baseUrl,
+      minRecordingLengthSeconds,
+      maxRecordingLengthSeconds,
+    } = session.frontendSettings as IFrontendSettings;
     const { id } = params;
 
     const res: Response = await this.fetch(`/api/recordings/id/${id}`);
@@ -94,11 +98,11 @@
       recordingTokens,
       token: verificationResult?.token,
     };
-  }
+  };
 </script>
 
 <script lang="ts">
-  import {asLocationString} from "../../components/story";
+  import { asLocationString } from "../../components/story";
   import Listen from "../../components/story/Listen.svelte";
   import Publish from "../../components/story/Publish.svelte";
   import Record from "../../components/story/Record.svelte";
@@ -134,8 +138,7 @@
   let title;
   let description;
 
-  $: location =
-  asLocationString(recording.location);
+  $: location = asLocationString(recording.location);
 
   $: title = `A story by ${recording.name}${location}`;
   $: description = `Listen to the story of ${recording.name}${location}.`;
@@ -192,8 +195,7 @@
         {genders}
         parent={recording.name}
         parentId={recording.id}
-        token={token}
-        />
+        {token} />
     {/if}
   {/if}
 </main>

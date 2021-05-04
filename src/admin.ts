@@ -42,7 +42,7 @@ export async function fetchFirstKey(): Promise<string> {
 
   const { rows } = (await client.query(
     FIRST_KEY_RECORDING,
-  )) as QueryResult<IKey>;
+  ));
 
   const first = rows.shift();
 

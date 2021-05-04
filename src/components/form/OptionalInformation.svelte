@@ -15,7 +15,6 @@
 </script>
 
 <style type="text/css">
-
   .addendum {
     margin-top: 0.25rem;
     font-style: italic;

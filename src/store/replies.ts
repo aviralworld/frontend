@@ -27,7 +27,7 @@ function newReply(recordingId: string): Writable<IReply | undefined> {
     return writable(undefined);
   }
 
-  let db = open();
+  const db = open();
 
   const set = async (v: IReply) => {
     const p = (await db).put(STORE, v, recordingId).then(() => {});
