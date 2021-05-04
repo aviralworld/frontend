@@ -164,10 +164,9 @@
   <meta property="og:description" content={description} />
 </svelte:head>
 
-<main>
+<main aria-live="polite">
   <Listen {recording} {isOwner} />
 
-  <section>
   {#if isOwner}
     <Remember
       {key}
@@ -197,5 +196,4 @@
         />
     {/if}
   {/if}
-  </section>
 </main>

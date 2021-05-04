@@ -25,7 +25,7 @@
   }
 </style>
 
-<section class="listen">
+<section class="recording-section listen">
   {#if recording.parent}
     <aside class="parent">
       <a href="/recording/{recording.parent}" sapper:prefetch>See this recording’s parent</a>

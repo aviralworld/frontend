@@ -118,7 +118,7 @@
   }
 </style>
 
-<section out:fade>
+<section class="recording-section" out:fade>
 <h2>Reply</h2>
 {#if $canAccessMicrophone === MicrophoneStatus.DENIED}
   <p>You must grant access to your microphone in order to record a story.</p>
@@ -139,7 +139,7 @@
         You will need to grant access to your microphone when prompted.
       {/if}
     </p>
-    <p>First, please let us know a few details. Once you publish your recording, these will be visible to all visitors of the website.</p>
+    <p>First, please let us know a few details. Once you publish your recording, these will be visible to all visitors to A Viral World.</p>
     <RequiredInformation {categories} parentId={parentId} />
 
     {#if noData}<p class="error">The last recording was a bit too short. Please try recording for at least {minRecordingLength.toLocaleString()} seconds.</p>{/if}

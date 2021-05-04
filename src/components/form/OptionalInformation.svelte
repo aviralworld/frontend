@@ -15,10 +15,6 @@
 </script>
 
 <style type="text/css">
-  input {
-    margin-top: 0.5rem;
-    padding: 0.5rem;
-  }
 
   .addendum {
     margin-top: 0.25rem;
@@ -28,10 +24,6 @@
   label {
     display: flex;
     flex-flow: column;
-  }
-
-  label, :global(.choices) {
-    margin-top: 1.5rem;
   }
 </style>
 
@@ -43,7 +35,6 @@
     bind:value={$occupation} /></label>
 
 <Choices
-  className="choices"
   label="What is your age?"
   options={ages}
   name="age"
@@ -51,7 +42,6 @@
   bind:selection={$ageId} />
 
 <Choices
-  className="choices"
   label="What gender do you identify as?"
   options={genders}
   name="gender"

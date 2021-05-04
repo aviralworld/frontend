@@ -8,6 +8,8 @@
   export let label: string;
 
   export let selection: string = null;
+
+  let fullClassName = `${className || ""} choices`;
 </script>
 
 <style>
@@ -17,7 +19,7 @@
 
   label {
     display: flex;
-    margin-top: 0.75rem;
+    margin-top: 1rem;
     flex-direction: row;
     flex-flow: nowrap;
     align-items: center;
@@ -37,7 +39,7 @@
   }
 </style>
 
-<fieldset class={className}>
+<fieldset class={fullClassName}>
   <legend>{label}</legend>
   {#if optional}
     <label><input

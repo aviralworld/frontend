@@ -105,22 +105,22 @@
   .optional {
     font-size: 1.1em;
     font-style: italic;
-    margin: 1.5rem 0;
+    margin: 2rem 0;
     text-align: center;
   }
 
   .publish-button {
     display: block;
-    margin: 1rem auto 1rem;
+    margin: 2rem auto;
     font-size: 1.1em;
   }
 </style>
 
-<section class="publish" in:slide out:fade>
+<section class="recording-section publish" in:slide out:fade>
   <h2>Publish</h2>
   <p class="thanks">Thank you for recording your reply to {parent}.</p>
   <form class="reset"><Audio url={$stored && makeRecordingUrl($stored)} /><button type="submit" on:click|preventDefault={askToForgetRecording} class="button reset-button">Try again</button></form>
-  <p>You can confirm your details and publish your story below. Only your name and location, as well as the subject of your story, will be visible on the website.</p>
+  <p>You can confirm your details and publish your story below. Only your name and location, as well as the subject of your story, will be visible on A Viral World.</p>
 
   <form class="record" on:submit|preventDefault={publish} bind:this={form}>
     <RequiredInformation {categories} {parentId} />

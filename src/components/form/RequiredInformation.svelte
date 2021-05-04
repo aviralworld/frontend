@@ -36,31 +36,6 @@
 </script>
 
 <style>
-  :global(.required) {
-    margin-top: 1.5rem;
-    display: flex;
-    flex-direction: column;
-  }
-
-  :global(.required:first-line) {
-    text-indent: -1em;
-  }
-
-  input {
-    margin-top: 0.5rem;
-    padding: 0.5rem;
-  }
-
-  .error {
-    display: block;
-    color: var(--error-foreground);
-    padding: 0.5rem 0;
-  }
-
-  .error::after {
-    content: " ";
-    display: inline-block;
-  }
 </style>
 
 <label class="required name" for="user-name">What is your name? (You may enter a nickname if you prefer.)

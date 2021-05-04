@@ -59,6 +59,7 @@
 
 body {
 	font-family: "Futura Std", sans-serif;
+  font-size: 1.2rem;
 }
 
 p {
@@ -123,4 +124,30 @@ label:not(.readonly), input[type="checkbox"]:not(:disabled), input[type="radio"]
 
 input[type="checkbox"]:focus, input[type="radio"]:focus {
   outline: 1px solid;
+}
+
+input[type="text"], input[type="email"] {
+  margin-top: 0.5rem;
+  padding: 0.75rem;
+}
+
+.recording-section + .recording-section {
+  margin-top: 3rem;
+}
+
+.required, .choices, label.label {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.required:first-line {
+  text-indent: -1em;
+}
+
+.error {
+  display: block;
+  color: var(--error-foreground);
+  padding: 0.5rem 0;
+  font-size: 0.9em;
 }

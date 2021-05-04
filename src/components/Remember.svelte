@@ -30,7 +30,7 @@
   }
 </style>
 
-<section>
+<section class="recording-section remember">
   <h2>Remember</h2>
   <p>Congratulations! Your recording has been published:</p>
   <a href={link} sapper:prefetch>Listen to the story of
