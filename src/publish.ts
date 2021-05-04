@@ -1,8 +1,9 @@
+import { API_PATH } from "./paths";
 import type { ISubmission } from "./types";
 
 export const FORBIDDEN_CODE = 403;
 
-const ENDPOINT = "/api/recordings/";
+const ENDPOINT = "${API_PATH}/recordings/";
 
 export async function publish(
   blob: Blob,
