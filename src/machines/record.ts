@@ -68,7 +68,8 @@ type RecordingEvent =
   | { type: "CHUNK"; chunk: unknown }
   | { type: "TIME"; time: number }
   | { type: "done.invoke.createRecorder"; data: MediaRecorder }
-  | { type: "DATA"; blob: Blob };
+  | { type: "DATA"; blob: Blob }
+  | { type: "RETRY" };
 
 type RecordingState =
   | {
@@ -217,6 +218,11 @@ function recordingMachine(
                 START: "#recording.recording",
               },
             },
+            retry: {
+              on: {
+                START: "#recording.recording",
+              },
+            },
           },
           exit: "resetTime",
         },
@@ -262,7 +268,12 @@ function recordingMachine(
           type: "final",
         },
         completed: {
-          type: "final",
+          on: {
+            RETRY: {
+              target: "ready",
+              actions: ["clearData", send("CLEAR", { to: "chunks-recorder" })],
+            },
+          },
         },
       },
       strict: true,
@@ -277,6 +288,9 @@ function recordingMachine(
             spawn(chunksMachine(maxLength), {
               name: "chunks-recorder",
             }),
+        }),
+        clearData: assign({
+          data: undefined,
         }),
         setData: assign({
           data: (_context, event) => event.type === "DATA" && event.blob,

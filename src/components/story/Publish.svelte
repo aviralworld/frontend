@@ -1,8 +1,7 @@
 <script lang="ts">
   import { goto } from "@sapper/app";
-  import { onMount } from "svelte";
   import { get } from "svelte/store";
-  import { slide } from "svelte/transition";
+  import { fade, slide } from "svelte/transition";
 
   import { trim } from "../../normalize";
   import { FORBIDDEN_CODE, publish as _publish } from "../../publish";
@@ -57,25 +56,38 @@
       const published = await _publish(get(stored), details);
       await goto(`/lookup/${published.key}/`);
 
-      for (const f of [name, categoryId, ageId, email, genderId, location, occupation]) {
-        f.set(null);
-      }
+      forgetMetadata();
+      await forgetRecording();
     } catch (e) {
       if (typeof e === "number") {
         publishErrorCode = e;
       }
-
     } finally {
       uploading = false;
     }
   }
 
-  async function clear() {
-    stored.set(undefined);
+  function forgetRecording(): Promise<void> {
+    if (confirm("Are you sure you want to discard the existing recording and try again?")) {
+      return stored.set(undefined);
+    }
+  }
+
+  function forgetMetadata(): void {
+    for (const f of [name, categoryId, ageId, email, genderId, location, occupation]) {
+      f.set(null);
+    }
   }
 </script>
 
 <style>
+  .reset {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-gap: 1rem;
+    align-items: center
+  }
+
   .optional {
     font-size: 1.1em;
     font-style: italic;
@@ -90,12 +102,10 @@
   }
 </style>
 
-<section class="publish" in:slide>
+<section class="publish" in:slide out:fade>
   <h2>Publish</h2>
   <p class="thanks">Thank you for recording your reply to {parent}.</p>
-  {#if $stored !== undefined}
-  <Audio url={makeRecordingUrl($stored)} />
-  {/if}
+  <form class="reset"><Audio url={$stored && makeRecordingUrl($stored)} /><button type="submit" on:click|preventDefault={forgetRecording} class="button reset-button">Try again</button></form>
   <p>You can confirm your details and publish your story below. Only your name and location, as well as the subject of your story, will be visible on the website.</p>
 
   <form class="record" on:submit|preventDefault={publish}>
