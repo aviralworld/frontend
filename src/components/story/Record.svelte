@@ -53,7 +53,13 @@
     }
   });
 
+  let form;
+
   function handleRecordButton() {
+    if (!form.checkValidity()) {
+      return;
+    }
+
     if ($machine.matches("recording")) {
       machine.send("STOP");
     } else if ($machine.matches("ready.noData") || $machine.matches("ready.retry")) {
@@ -125,7 +131,7 @@
   Your browser does not allow recording audio in any supported formats.
 </p>
 {:else}
-  <form class="record" class:inProgress on:submit|preventDefault={handleRecordButton}>
+  <form class="record" class:inProgress on:submit|preventDefault={handleRecordButton} bind:this={form}>
     <p>
       You can record a story of your own to share with
       {parent}.

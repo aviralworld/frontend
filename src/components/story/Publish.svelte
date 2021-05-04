@@ -37,7 +37,13 @@
   let publishErrorCode: number;
   let lastPublishedName: string;
 
+  let form;
+
   async function publish(): Promise<void> {
+    if (!form.checkValidity()) {
+      return;
+    }
+
     const details: ISubmission = {
       name: $name,
       category_id: $categoryId,
@@ -116,7 +122,7 @@
   <form class="reset"><Audio url={$stored && makeRecordingUrl($stored)} /><button type="submit" on:click|preventDefault={askToForgetRecording} class="button reset-button">Try again</button></form>
   <p>You can confirm your details and publish your story below. Only your name and location, as well as the subject of your story, will be visible on the website.</p>
 
-  <form class="record" on:submit|preventDefault={publish}>
+  <form class="record" on:submit|preventDefault={publish} bind:this={form}>
     <RequiredInformation {categories} {parentId} />
 
     <p class="optional">The remaining fields are optional. Only your
