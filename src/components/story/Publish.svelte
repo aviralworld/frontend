@@ -82,7 +82,6 @@
         "Are you sure you want to discard the existing recording and try again?",
       )
     ) {
-      forgetMetadata();
       return forgetRecording();
     }
   }
