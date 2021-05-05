@@ -5,8 +5,14 @@ import debouncePromise from "debounce-promise";
 import { API_PATH } from "../paths";
 
 interface IAvailability {
-  available: boolean;
+  available: Availability;
   checking: boolean;
+}
+
+export const enum Availability {
+  AVAILABLE,
+  UNAVAILABLE,
+  ERROR,
 }
 
 export function isNameAvailableDebounced(
@@ -15,7 +21,7 @@ export function isNameAvailableDebounced(
 ): Readable<IAvailability> {
   const debounced = debouncePromise(isNameAvailable, debounceMs);
 
-  let available = true;
+  let available = Availability.AVAILABLE;
 
   return derived(name, (v, set) => {
     if (!(process as any).browser) {
@@ -26,14 +32,22 @@ export function isNameAvailableDebounced(
     set({ available, checking: true });
 
     debounced(v)
-      .then((v) => {
-        available = v;
+      .then(
+        (v) => {
+          console.log("got availability");
+          available = v ? Availability.AVAILABLE : Availability.UNAVAILABLE;
 
-        set({
-          available,
-          checking: false,
-        });
-      })
+          set({
+            available,
+            checking: false,
+          });
+        },
+        (_e) => {
+          available = Availability.ERROR;
+          console.log("availability error");
+          set({ available, checking: false });
+        },
+      )
       .catch(console.error);
   });
 }

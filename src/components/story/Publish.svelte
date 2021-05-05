@@ -69,7 +69,7 @@
       if (e instanceof PublishFailedError) {
         publishErrorCode = e.code;
       } else {
-        throw e;
+        publishErrorCode = 0;
       }
     } finally {
       uploading = false;

@@ -6,7 +6,7 @@
   import { normalizeName } from "../../normalize";
   import type { Option } from "../../types";
   import { simple } from "../../store/local";
-  import { isNameAvailableDebounced } from "../../store/checkNameAvailability";
+  import { Availability, isNameAvailableDebounced } from "../../store/checkNameAvailability";
 
   // supplied by parent
   export let categories: readonly Option[];
@@ -21,7 +21,7 @@
   let nameInput;
 
   $: if (nameInput !== undefined) {
-    if (!$isAvailable.available) {
+    if ($isAvailable.available === Availability.UNAVAILABLE) {
       nameInput.setCustomValidity(
         "Sorry, there is already a recording under that name. Please enter a different name.",
       );
