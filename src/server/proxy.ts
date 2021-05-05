@@ -14,7 +14,6 @@ export default function createProxy(
       res: express.Response,
       next: (err: unknown) => void,
     ) => {
-      /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */
       const code = getCode(err);
       switch (code) {
         case "ECONNRESET":
@@ -23,6 +22,7 @@ export default function createProxy(
           logger.warn(
             { path: req.path, params: req.params, err },
             "Error communicating with backend: %s",
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             err as any,
           );
           res.status(502).send("Unable to communicate with backend");
