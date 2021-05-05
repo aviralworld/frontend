@@ -10,7 +10,9 @@ import prettierPlugin from "rollup-plugin-prettier";
 import config from "sapper/config/rollup.js";
 import pkg from "./package.json";
 import dotenvSafe from "dotenv-safe";
-dotenvSafe.config();
+dotenvSafe.config({
+  path: process.env.DOTENV_FILE,
+});
 
 const mode = process.env.NODE_ENV;
 const dev = mode === "development";

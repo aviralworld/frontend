@@ -9,7 +9,9 @@ import { parseDecimalInt } from "./normalize";
 const logger = createLogger();
 
 logger.debug("Reading environment values...");
-dotenvSafe.config();
+dotenvSafe.config({
+  path: process.env.DOTENV_FILE,
+});
 
 logger.debug("Initializing configuration...");
 const { PORT, NODE_ENV, REVISION, TIMESTAMP } = process.env;
