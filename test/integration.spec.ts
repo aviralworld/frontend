@@ -10,7 +10,9 @@ import "pptr-testing-library/extend";
 
 import { parseDecimalInt } from "../src/normalize";
 
-dotenvSafe.config();
+dotenvSafe.config({
+  path: process.env.DOTENV_FILE,
+});
 
 const {
   PG_CONNECTION_STRING,
