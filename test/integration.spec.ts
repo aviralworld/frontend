@@ -304,37 +304,9 @@ describe("The server", function () {
         );
         await categoryOption.click();
 
-        await record(page, 100);
-
-        assert.notEqual(
-          await document.queryByText("too short", { exact: false }),
-          null,
-        );
-
         await page.goto(url.toString());
 
         document = await page.getDocument();
-
-        const recordingLength =
-          parseDecimalInt(FRONTEND_MIN_RECORDING_LENGTH_SECONDS) * 1000 + 100;
-        await record(page, recordingLength);
-
-        await page.waitForTimeout(100);
-
-        assert.notEqual(
-          await document.queryByText("recording your reply", { exact: false }),
-          null,
-        );
-
-        let publishButtons = await page.$x(
-          "//button[contains(., 'Publish and share')]",
-        );
-        let publishButton = publishButtons[0];
-
-        await publishButton.click();
-
-        await page.waitForXPath("//p[contains(., 'already a recording')]");
-        await page.waitForTimeout(500);
         const nameInput2 = await document.getByLabelText("What is your name?", {
           exact: false,
         });
@@ -347,35 +319,57 @@ describe("The server", function () {
           hidden: true,
         });
 
+        await record(page, 100);
+
+        assert.notEqual(
+          await document.queryByText("too short", { exact: false }),
+          null,
+        );
+
+        const recordingLength =
+          parseDecimalInt(FRONTEND_MIN_RECORDING_LENGTH_SECONDS) * 1000 + 100;
+        await record(page, recordingLength);
+
+        await page.waitForTimeout(100);
+
+        assert.notEqual(
+          await document.queryByText("recording your reply", { exact: false }),
+          null,
+        );
+
+        let publishButton = await getPublishButton(page);
+
         const emailInput = await document.getByLabelText("email address", {
           exact: false,
         });
         await emailInput.type("foo@bar.com");
 
-        await page.waitForTimeout(100);
-        await page.setRequestInterception(true);
-        const listener = (req: puppeteer.Request) => {
-          req.respond({ status: 500 });
-        };
-        page.on("request", listener);
+        await page.setOfflineMode(true);
+        publishButton = await getPublishButton(page);
         await publishButton.click();
+        await page.waitForTimeout(100);
         await page.waitForXPath(
           "//p[@class = 'error' and contains(., 'try again')]",
         );
-        await page.setRequestInterception(false);
+        await page.setOfflineMode(false);
 
-        page.once("dialog", (dialog) => dialog.accept());
-        const tryAgainButton = await document.getByText("Try again");
-        await tryAgainButton.click();
+        let promise = new Promise((resolve, reject) => {
+          let timeout = setTimeout(reject, 5000, undefined);
+          page.once("dialog", (dialog) => {
+            dialog.accept();
+            clearTimeout(timeout);
+            setImmediate(resolve, undefined);
+          });
+        });
+        await page.click(".reset-button");
+        await promise;
 
+        await page.waitForSelector(".reset-button", { hidden: true });
         await record(page, recordingLength);
 
         await page.waitForTimeout(100);
 
-        publishButtons = await page.$x(
-          "//button[contains(., 'Publish and share')]",
-        );
-        publishButton = publishButtons[0];
+        publishButton = await getPublishButton(page);
 
         await publishButton.click();
 
@@ -429,26 +423,22 @@ function withPage(
   };
 }
 
-async function record(
-  page: puppeteer.Page,
-  ms: number,
-): Promise<[puppeteer.ElementHandle, puppeteer.ElementHandle]> {
-  const document = await page.getDocument();
-
-  const recordButton = await document.getByText("Record");
+async function record(page: puppeteer.Page, ms: number): Promise<void> {
+  let recordButton = await page.waitForSelector(".record-button");
 
   await recordButton.click();
-
-  const stopRecordingButton = await page.waitForXPath(
-    "//button[contains(., '0:00')]",
-    { timeout: 5000 },
-  );
-
   await page.waitForTimeout(ms);
 
-  await stopRecordingButton.click();
+  recordButton = await page.waitForSelector(".record-button");
+  await recordButton.click();
 
-  return [recordButton, stopRecordingButton];
+  await page.waitForTimeout(100);
+}
+
+function getPublishButton(
+  page: puppeteer.Page,
+): Promise<puppeteer.ElementHandle> {
+  return page.waitForXPath("//button[contains(., 'Publish')]");
 }
 
 async function initializeDatabase(client: Client, data: any) {
