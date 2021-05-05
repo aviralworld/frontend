@@ -1,6 +1,7 @@
 import type { AddressInfo } from "net";
 import type { Server } from "http";
 
+import { addAsync } from "@awaitjs/express";
 import compression from "compression";
 import express from "express";
 import "newrelic";
@@ -13,6 +14,15 @@ import healthCheck from "./healthCheck";
 import createProxy from "./proxy";
 import type { ISettings } from "./settings";
 
+declare global {
+  /* eslint-disable-next-line @typescript-eslint/no-namespace */
+  namespace Express {
+    interface Request {
+      logger?: Logger;
+    }
+  }
+}
+
 export function createServer(
   logger: Logger,
   port: number,
@@ -22,7 +32,7 @@ export function createServer(
   revision: string,
   timestamp: string,
 ): express.Express {
-  const server = express();
+  const server = addAsync(express());
 
   if (settings.compression) {
     logger.debug("Adding compression...");
@@ -31,10 +41,8 @@ export function createServer(
 
   logger.debug("Adding logging and settings middleware...");
   server.use((req, _res, next) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (req as any).settings = settings;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (req as any).logger = logger;
+    req.settings = settings;
+    req.logger = logger;
     logger.info({ path: req.path, params: req.params }, "Received request");
 
     next();
@@ -45,7 +53,10 @@ export function createServer(
 
     const admin = import("../admin");
 
-    server.use("/admin/new/", async (_req, res) => {
+    // TODO this ought to be typed properly by @awaitjs/express,
+    // see <https://github.com/vkarpov15/awaitjs-express/pull/25>
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    server.useAsync("/admin/new/", async (_req, res) => {
       const { fetchOpenToken } = await admin;
       const { parent_id, id } = await fetchOpenToken();
 
@@ -57,6 +68,19 @@ export function createServer(
             `/recording/${parent_id}/?token=${id}`,
             frontendSettings.baseUrl,
           ).toString(),
+        )
+        .send();
+    });
+
+    server.useAsync("/admin/key/", async (_req, res) => {
+      const { fetchFirstKey } = await admin;
+      const id = await fetchFirstKey();
+
+      res
+        .status(302)
+        .header(
+          "Location",
+          new URL(`/lookup/${id}/`, frontendSettings.baseUrl).toString(),
         )
         .send();
     });
@@ -77,6 +101,7 @@ export function createServer(
 
   logger.debug("Adding Sapper...");
   server.use(
+    /* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
     sapper.middleware({
       session: () => ({
         frontendSettings,
@@ -96,7 +121,7 @@ export function createServer(
     healthCheck(
       revision,
       timestamp,
-      `${settings.apiUrl}recordings/random/1`,
+      `${settings.apiUrl.toString()}recordings/random/1`,
       settings.healthCheckTimeoutMs,
     ),
   );

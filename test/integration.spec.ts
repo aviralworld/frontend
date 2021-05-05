@@ -8,6 +8,8 @@ import { Client } from "pg";
 import puppeteer from "puppeteer";
 import "pptr-testing-library/extend";
 
+import { parseDecimalInt } from "../src/normalize";
+
 dotenvSafe.config();
 
 const {
@@ -17,6 +19,8 @@ const {
   FRONTEND_COMPRESSION,
   FRONTEND_DEBOUNCE_DELAY_MS,
   FRONTEND_TEST_NAVIGATION_TIMEOUT: _FRONTEND_TEST_NAVIGATION_TIMEOUT,
+  FRONTEND_MAX_RECORDING_LENGTH_SECONDS,
+  FRONTEND_MIN_RECORDING_LENGTH_SECONDS,
   FRONTEND_ENABLE_ADMIN_MODE,
   FRONTEND_RANDOM_STORY_COUNT,
   FRONTEND_SERVE_STATIC,
@@ -58,6 +62,8 @@ before(() => {
       FRONTEND_ENABLE_ADMIN_MODE,
       FRONTEND_RANDOM_STORY_COUNT,
       FRONTEND_SERVE_STATIC,
+      FRONTEND_MAX_RECORDING_LENGTH_SECONDS,
+      FRONTEND_MIN_RECORDING_LENGTH_SECONDS,
       FRONTEND_ADMIN_PORT: (serverPort + 1).toString(),
       FRONTEND_HEALTH_CHECK_TIMEOUT_MS: "1",
       ROARR_LOG: "true",
@@ -277,11 +283,14 @@ describe("The server", function () {
           "A story by Car from payment Steel Bike",
         );
 
-        const document = await page.getDocument();
-        const recordButton = await document.getByText("Record");
+        let document = await page.getDocument();
 
-        const nameInput = await document.getByLabelText("What is your name?");
+        const nameInput = await document.getByLabelText("What is your name?", {
+          exact: false,
+        });
         await nameInput.type("Car");
+
+        await page.waitForXPath("//span[contains(., 'already a recording')]");
 
         assert.notEqual(
           await document.queryByText("haptic yellow Forward extensible", {
@@ -295,57 +304,72 @@ describe("The server", function () {
         );
         await categoryOption.click();
 
-        await recordButton.click();
-        await page.waitForFunction(
-          () =>
-            (document as any)
-              .querySelector("button")
-              .textContent.indexOf("0:00") > -1,
-          {
-            timeout: 500,
-          },
-        );
+        await page.goto(url.toString());
 
-        const stopRecordingButton = await document.getByText("Stop recording", {
+        document = await page.getDocument();
+        const nameInput2 = await document.getByLabelText("What is your name?", {
           exact: false,
         });
-
-        await stopRecordingButton.click();
-
-        assert.notEqual(
-          await document.queryByText("recording your story", { exact: false }),
-          null,
-        );
-
-        const publishButtons = await page.$x(
-          "//button[contains(., 'Publish and share')]",
-        );
-        const publishButton = publishButtons[0];
-
-        await publishButton.click();
-
-        await page.waitForXPath("//p[contains(., 'already a recording')]");
-
-        const nameInput2 = await document.getByLabelText("What is your name?");
         await document.evaluate((i) => {
           (i as any).value = "";
         }, nameInput2);
         await nameInput2.type("Another Car");
+
+        await page.waitForXPath("//span[contains(., 'already a recording')]", {
+          hidden: true,
+        });
+
+        await record(page, 100);
+
+        assert.notEqual(
+          await document.queryByText("too short", { exact: false }),
+          null,
+        );
+
+        const recordingLength =
+          parseDecimalInt(FRONTEND_MIN_RECORDING_LENGTH_SECONDS) * 1000 + 100;
+        await record(page, recordingLength);
+
+        await page.waitForTimeout(100);
+
+        assert.notEqual(
+          await document.queryByText("recording your reply", { exact: false }),
+          null,
+        );
+
+        let publishButton = await getPublishButton(page);
 
         const emailInput = await document.getByLabelText("email address", {
           exact: false,
         });
         await emailInput.type("foo@bar.com");
 
-        await page.waitForTimeout(100);
-        await page.setRequestInterception(true);
-        const listener = (req: puppeteer.Request) => {
-          req.respond({ status: 500 });
-        };
-        page.on("request", listener);
+        await page.setOfflineMode(true);
+        publishButton = await getPublishButton(page);
         await publishButton.click();
-        await page.waitForXPath("//p[contains(., 'try again')]");
-        await page.setRequestInterception(false);
+        await page.waitForTimeout(100);
+        await page.waitForXPath(
+          "//p[@class = 'error' and contains(., 'try again')]",
+        );
+        await page.setOfflineMode(false);
+
+        let promise = new Promise((resolve, reject) => {
+          let timeout = setTimeout(reject, 5000, undefined);
+          page.once("dialog", (dialog) => {
+            dialog.accept();
+            clearTimeout(timeout);
+            setImmediate(resolve, undefined);
+          });
+        });
+        await page.click(".reset-button");
+        await promise;
+
+        await page.waitForSelector(".reset-button", { hidden: true });
+        await record(page, recordingLength);
+
+        await page.waitForTimeout(100);
+
+        publishButton = await getPublishButton(page);
 
         await publishButton.click();
 
@@ -397,6 +421,24 @@ function withPage(
       await page.close();
     }
   };
+}
+
+async function record(page: puppeteer.Page, ms: number): Promise<void> {
+  let recordButton = await page.waitForSelector(".record-button");
+
+  await recordButton.click();
+  await page.waitForTimeout(ms);
+
+  recordButton = await page.waitForSelector(".record-button");
+  await recordButton.click();
+
+  await page.waitForTimeout(100);
+}
+
+function getPublishButton(
+  page: puppeteer.Page,
+): Promise<puppeteer.ElementHandle> {
+  return page.waitForXPath("//button[contains(., 'Publish')]");
 }
 
 async function initializeDatabase(client: Client, data: any) {

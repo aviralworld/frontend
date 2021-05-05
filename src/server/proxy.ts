@@ -10,20 +10,20 @@ export default function createProxy(
 ): express.RequestHandler {
   return proxy(settings.apiUrl.toString(), {
     proxyErrorHandler: (
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      err: any,
+      err: unknown,
       res: express.Response,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      next: (err: any) => void,
+      next: (err: unknown) => void,
     ) => {
-      switch (err && err.code) {
+      /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */
+      const code = getCode(err);
+      switch (code) {
         case "ECONNRESET":
         case "ECONNREFUSED": {
           const { req } = res;
           logger.warn(
             { path: req.path, params: req.params, err },
             "Error communicating with backend: %s",
-            err,
+            err as any,
           );
           res.status(502).send("Unable to communicate with backend");
           break;
@@ -34,4 +34,12 @@ export default function createProxy(
       }
     },
   });
+}
+
+function getCode(err: unknown): string | number | undefined {
+  if (typeof err !== "object") {
+    return undefined;
+  }
+
+  return (err as { code: string | number }).code;
 }

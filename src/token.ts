@@ -1,6 +1,4 @@
-// TODO this causes what seems to be an extraneous error (cannot use a namespace
-// as a type)
-//import type { Preload } from "@sapper/common";
+import type { PreloadContext } from "@sapper/common";
 
 export type IVerificationResult =
   | IVerifiedToken
@@ -17,7 +15,7 @@ export interface ITokenVerificationError {
 }
 
 export async function verifyToken(
-  preload: any, // should be Preload
+  preload: PreloadContext.PreloadContext,
   value: string,
   currentId: string,
 ): Promise<IVerificationResult> {
@@ -25,7 +23,9 @@ export async function verifyToken(
     return undefined;
   }
 
-  const r = await preload.fetch(`/api/recordings/token/${value}/`);
+  const r: Response = (await preload.fetch(
+    `/api/recordings/token/${value}/`,
+  )) as Response;
 
   if (r.status === 404 || r.status === 400) {
     return {

@@ -5,6 +5,10 @@ sapper.start({
 });
 
 // we had a default Sapper service worker, which caused a lot of problems
-navigator.serviceWorker
-  .getRegistrations()
-  .then((rs) => rs.forEach((r) => r.unregister()));
+const { serviceWorker } = navigator;
+
+if (serviceWorker !== undefined) {
+  serviceWorker
+    .getRegistrations()
+    .then((rs) => rs.forEach((r) => r.unregister()));
+}

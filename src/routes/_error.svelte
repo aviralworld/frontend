@@ -1,36 +1,20 @@
-<script lang="ts" context="module">
-  export async function preload(_request, session) {
-    return { dev: session.frontendSettings.dev };
-  }
-</script>
-
 <script lang="ts">
+  import { stores } from "@sapper/app";
+
+  const { session } = stores();
+  const { dev } = $session.frontendSettings;
+
   export let status: number;
   export let error: Error;
 
-  export let dev;
+  if (dev) {
+    console.error("Error", error);
+  }
 </script>
 
 <style>
-  h1,
-  p {
-    margin: 0 auto;
-  }
-
-  h1 {
-    font-size: 2.8em;
-    font-weight: 700;
-    margin: 0 0 0.5em 0;
-  }
-
-  p {
-    margin: 1em auto;
-  }
-
-  @media (min-width: 480px) {
-    h1 {
-      font-size: 4em;
-    }
+  pre {
+    whitespace: pre-wrap;
   }
 </style>
 

@@ -1,39 +1,28 @@
-const ENDPOINT = "/api/recordings/";
+import { PublishFailedError } from "./errors";
+import { API_PATH } from "./paths";
+import type { ISubmission } from "./types";
 
-const WHITESPACE_RE = /\s+/g;
+export const FORBIDDEN_CODE = 403;
 
-const NORMALIZE = typeof String.prototype.normalize === "function";
-
-export function normalizeName(name: string): string {
-  const trimmed = name.trim();
-  const normalized = NORMALIZE ? trimmed.normalize() : trimmed;
-  return normalized.replace(WHITESPACE_RE, " ");
-}
+const ENDPOINT = `${API_PATH}/`;
 
 export async function publish(
   blob: Blob,
-  details: Record<string, unknown>,
+  details: ISubmission,
 ): Promise<unknown> {
-  const xhr = new XMLHttpRequest();
-  xhr.open("POST", ENDPOINT, true);
-
-  details["name"] = normalizeName(details["name"] as string);
-
   const fd = new FormData();
   fd.append("audio", blob);
   fd.append("metadata", JSON.stringify(details));
 
-  xhr.send(fd);
-
-  return new Promise((resolve, reject) => {
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState === XMLHttpRequest.DONE) {
-        if (xhr.status === 201) {
-          resolve(JSON.parse(xhr.responseText));
-        } else {
-          reject(xhr.status);
-        }
-      }
-    };
+  const response = await fetch(ENDPOINT, {
+    method: "POST",
+    body: fd,
   });
+
+  if (response.status === 201) {
+    // TODO properly type response by parsing
+    return await response.json();
+  }
+
+  throw new PublishFailedError(response.status);
 }

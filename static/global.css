@@ -47,6 +47,8 @@
 
   --copy-button-foreground: rgba(255, 255, 255, 1);
   --copy-button-copied-colour: rgba(255, 255, 255, 0.75);
+
+  --nav-border: rgba(255, 62, 0, 0.1);
 }
 
 * {
@@ -57,6 +59,7 @@
 
 body {
 	font-family: "Futura Std", sans-serif;
+  font-size: 1.2rem;
 }
 
 p {
@@ -88,10 +91,15 @@ main {
   font-weight: bold;
 }
 
-@media (prefers-reduced-motion: reduce) {
+.button:hover {
+  background: var(--logo-foreground);
+}
+
+@media not all and (prefers-reduced-motion: no-preference) {
   * {
     animation-delay: 0ms !important;
     animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
   }
 }
 
@@ -116,4 +124,30 @@ label:not(.readonly), input[type="checkbox"]:not(:disabled), input[type="radio"]
 
 input[type="checkbox"]:focus, input[type="radio"]:focus {
   outline: 1px solid;
+}
+
+input[type="text"], input[type="email"] {
+  margin-top: 0.5rem;
+  padding: 0.75rem;
+}
+
+.recording-section + .recording-section {
+  margin-top: 3rem;
+}
+
+.required, .choices, label.label {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.required:first-line {
+  text-indent: -1em;
+}
+
+.error {
+  display: block;
+  color: var(--error-foreground);
+  padding: 0.5rem 0;
+  font-size: 0.9em;
 }

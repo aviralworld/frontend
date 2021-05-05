@@ -2,7 +2,8 @@
   "extends": "@tsconfig/svelte/tsconfig.json",
   "compilerOptions": {
     "lib": ["DOM", "ES2017", "WebWorker"],
-    "target": "esnext"
+    "target": "esnext",
+    "types": ["node", "dom-mediacapture-record"]
   },
   "include": ["src/**/*", "src/node_modules/**/*", "test/**/*"],
   "exclude": ["node_modules/*", "__sapper__/*", "static/*"]

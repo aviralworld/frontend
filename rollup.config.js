@@ -25,7 +25,6 @@ const onwarn = (warning, onwarn) =>
   (warning.code === "CIRCULAR_DEPENDENCY" &&
     /[/\\]@sapper[/\\]/.test(warning.message)) ||
   warning.code === "THIS_IS_UNDEFINED" ||
-  warning.pluginCode === "a11y-media-has-caption" || // there won't be captions on user-submitted audio
   onwarn(warning);
 
 export default {
@@ -34,8 +33,11 @@ export default {
     output: config.client.output(),
     plugins: [
       replace({
-        "process.browser": true,
-        "process.env.NODE_ENV": JSON.stringify(mode),
+        values: {
+          "process.browser": true,
+          "process.env.NODE_ENV": JSON.stringify(mode),
+        },
+        preventAssignment: true,
       }),
       svelte({
         dev,
@@ -93,8 +95,11 @@ export default {
     output: config.server.output(),
     plugins: [
       replace({
-        "process.browser": false,
-        "process.env.NODE_ENV": JSON.stringify(mode),
+        values: {
+          "process.browser": false,
+          "process.env.NODE_ENV": JSON.stringify(mode),
+        },
+        preventAssignment: true,
       }),
       svelte({
         generate: "ssr",
