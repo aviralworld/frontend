@@ -11,4 +11,6 @@ WORKDIR /app
 
 COPY . .
 
-RUN npm i -g pnpm && pnpm i -s --frozen-lockfile && DOTENV_FILE=testing.env pnpm run build && pnpm run hash
+RUN npm i -g pnpm && pnpm i -s --frozen-lockfile
+
+RUN DOTENV_FILE=testing.env pnpm run build && pnpm run hash
