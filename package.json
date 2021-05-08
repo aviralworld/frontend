@@ -20,7 +20,6 @@
   },
   "dependencies": {
     "@awaitjs/express": "^0.7.2",
-    "@newrelic/native-metrics": "^6.0.0",
     "axios": "^0.21.1",
     "compression": "^1.7.4",
     "debounce-promise": "^3.1.2",
@@ -29,7 +28,6 @@
     "express-http-proxy": "^1.6.2",
     "idb": "^6.0.0",
     "lodash": "^4.17.21",
-    "newrelic": "^7.3.1",
     "pg": "^8.6.0",
     "roarr": "^2.15.4",
     "serialize-error": "^7.0.1",
@@ -59,7 +57,6 @@
     "@types/express-http-proxy": "^1.6.1",
     "@types/lodash": "^4.14.168",
     "@types/mocha": "^8.2.2",
-    "@types/newrelic": "^7.0.1",
     "@types/node": "^14.14.43",
     "@types/parse5-html-rewriting-stream": "^5.1.2",
     "@types/pg": "^7.14.11",

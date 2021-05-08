@@ -1,5 +1,4 @@
 <script context="module" lang="ts">
-  import { onMount } from "svelte";
   import type { Preload } from "@sapper/app";
 
   import { verifyToken } from "../../token";

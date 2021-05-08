@@ -6,7 +6,10 @@
   import { normalizeName } from "../../normalize";
   import type { Option } from "../../types";
   import { simple } from "../../store/local";
-  import { Availability, isNameAvailableDebounced } from "../../store/checkNameAvailability";
+  import {
+    Availability,
+    isNameAvailableDebounced,
+  } from "../../store/checkNameAvailability";
 
   // supplied by parent
   export let categories: readonly Option[];
