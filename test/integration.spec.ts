@@ -17,6 +17,7 @@ dotenvSafe.config({
 const {
   PG_CONNECTION_STRING,
   SHOW_PUPPETEER_BROWSER,
+  FRONTEND_TEST_SERVER,
   FRONTEND_TEST_NAVIGATION_TIMEOUT: _FRONTEND_TEST_NAVIGATION_TIMEOUT,
   FRONTEND_TEST_SHOW_SERVER_OUTPUT,
   FRONTEND_MIN_RECORDING_LENGTH_SECONDS,
@@ -34,64 +35,69 @@ function randomInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-const serverPort = randomInt(START_PORT, END_PORT);
-
-let server: ChildProcess;
-
-const exitListener = () => {
-  throw new Error("child process exited");
-};
-
 let baseUrl: URL;
 
 let urlPromise: Promise<unknown>;
 
-before(() => {
-  server = fork("./__sapper__/build", [], {
-    env: {
-      DOTENV_FILE: "testing.env",
-      PORT: serverPort.toString(),
-      FRONTEND_BASE_URL: `http://localhost:${serverPort}/`,
-      FRONTEND_ADMIN_PORT: (serverPort + 1).toString(),
-      FRONTEND_HEALTH_CHECK_TIMEOUT_MS: "1",
-      ROARR_LOG: "true",
-      NEW_RELIC_ENABLED: "false",
-    },
-    stdio: "pipe",
-  });
+if (FRONTEND_TEST_SERVER === undefined) {
+  const serverPort = randomInt(START_PORT, END_PORT);
 
-  server.on("error", (e) => {
-    throw new Error(e.toString());
-  });
+  let server: ChildProcess;
 
-  server.on("exit", exitListener);
+  const exitListener = () => {
+    throw new Error("child process exited");
+  };
 
-  if (FRONTEND_TEST_SHOW_SERVER_OUTPUT === "1") {
-    server.stdout.pipe(process.stdout);
-    server.stderr.pipe(process.stderr);
-  }
+  before(() => {
+    server = fork("./__sapper__/build", [], {
+      env: {
+        DOTENV_FILE: "testing.env",
+        PORT: serverPort.toString(),
+        FRONTEND_BASE_URL: `http://localhost:${serverPort}/`,
+        FRONTEND_ADMIN_PORT: (serverPort + 1).toString(),
+        FRONTEND_HEALTH_CHECK_TIMEOUT_MS: "1",
+        ROARR_LOG: "true",
+        NEW_RELIC_ENABLED: "false",
+      },
+      stdio: "pipe",
+    });
 
-  urlPromise = new Promise((resolve) => {
-    server.stdout.on("data", (line: Buffer) => {
-      try {
-        const string = line.toString();
+    server.on("error", (e) => {
+      throw new Error(e.toString());
+    });
 
-        const parsed = JSON.parse(string);
-        const { port } = parsed.context;
-        if (port !== undefined) {
-          baseUrl = new URL(`http://127.0.0.1:${port}/`);
-          resolve(null);
-          return;
-        }
-      } catch (e) {}
+    server.on("exit", exitListener);
+
+    if (FRONTEND_TEST_SHOW_SERVER_OUTPUT === "1") {
+      server.stdout.pipe(process.stdout);
+      server.stderr.pipe(process.stderr);
+    }
+
+    urlPromise = new Promise((resolve) => {
+      server.stdout.on("data", (line: Buffer) => {
+        try {
+          const string = line.toString();
+
+          const parsed = JSON.parse(string);
+          const { port } = parsed.context;
+          if (port !== undefined) {
+            baseUrl = new URL(`http://127.0.0.1:${port}/`);
+            resolve(null);
+            return;
+          }
+        } catch (e) {}
+      });
     });
   });
-});
 
-after(() => {
-  server.off("exit", exitListener);
-  server.kill();
-});
+  after(() => {
+    server.off("exit", exitListener);
+    server.kill();
+  });
+} else {
+  baseUrl = new URL(FRONTEND_TEST_SERVER);
+  urlPromise = Promise.resolve(null);
+}
 
 describe("The server", function () {
   this.timeout(process.env.MOCHA_TIMEOUT);
@@ -310,7 +316,7 @@ describe("The server", function () {
         await record(page, 100);
 
         assert.notEqual(
-          await document.queryByText("too short", { exact: false }),
+          await document.queryByText("for at least", { exact: false }),
           null,
         );
 
