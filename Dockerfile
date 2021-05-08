@@ -25,6 +25,8 @@ LABEL timestamp=$TIMESTAMP revision=$REVISION
 ENV REVISION=$REVISION
 ENV TIMESTAMP=$TIMESTAMP
 
+USER 1000
+
 WORKDIR /app
 
 COPY --from=build /app/__sapper__ ./__sapper__
