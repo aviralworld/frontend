@@ -4,7 +4,6 @@ import type { Server } from "http";
 import { addAsync } from "@awaitjs/express";
 import compression from "compression";
 import express from "express";
-import "newrelic";
 import sirv from "sirv";
 
 import * as sapper from "@sapper/server";
