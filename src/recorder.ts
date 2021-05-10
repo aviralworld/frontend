@@ -10,7 +10,7 @@ const SUPPORTED_FORMAT_KEY = "supported-format";
 
 export function retrieveSupportedFormat(
   candidates: readonly string[],
-): string | undefined {
+): string | null {
   if (localStorage === undefined) {
     return findSupportedFormat(candidates);
   }
@@ -22,10 +22,8 @@ export function retrieveSupportedFormat(
   return localStorage[SUPPORTED_FORMAT_KEY];
 }
 
-function findSupportedFormat(
-  candidates: readonly string[],
-): string | undefined {
-  return candidates.find((f) => MediaRecorder.isTypeSupported(f));
+function findSupportedFormat(candidates: readonly string[]): string | null {
+  return candidates.find((f) => MediaRecorder.isTypeSupported(f)) || null;
 }
 
 export function makeRecordingUrl(blob: Blob): string {
