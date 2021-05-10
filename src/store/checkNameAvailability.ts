@@ -29,12 +29,16 @@ export function isNameAvailableDebounced(
       return;
     }
 
+    if (v === null || v.trim().length === 0) {
+      set({ available, checking: false });
+      return;
+    }
+
     set({ available, checking: true });
 
     debounced(v)
       .then(
         (v) => {
-          console.log("got availability");
           available = v ? Availability.AVAILABLE : Availability.UNAVAILABLE;
 
           set({
@@ -44,7 +48,6 @@ export function isNameAvailableDebounced(
         },
         (_e) => {
           available = Availability.ERROR;
-          console.log("availability error");
           set({ available, checking: false });
         },
       )

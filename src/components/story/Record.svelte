@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import { writable } from "svelte/store";
   import { fade } from "svelte/transition";
 
   import RequiredInformation from "../form/RequiredInformation.svelte";
@@ -23,7 +21,7 @@
   export let parent: string;
   export let parentId: string;
 
-  const canAccessMicrophone = writable(MicrophoneStatus.UNKNOWN);
+  const canAccessMicrophone = microphonePermission();
   const machine = createRecordingMachine(
     minRecordingLength,
     maxRecordingLength,
@@ -33,12 +31,6 @@
   $: if ($blob === undefined && $machine.matches("completed")) {
     machine.send("RETRY");
   }
-
-  onMount(() => {
-    microphonePermission().subscribe((v) => {
-      canAccessMicrophone.set(v);
-    });
-  });
 
   let noData = false;
   $: if ($machine.matches("ready.noData")) {

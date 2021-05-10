@@ -12,10 +12,15 @@ export function microphonePermission(): Readable<MicrophoneStatus> {
   return readable<MicrophoneStatus>(MicrophoneStatus.UNKNOWN, (set) => {
     let result: PermissionStatus;
 
+    set(MicrophoneStatus.UNAVAILABLE);
+
+    if (!(process as any).browser) {
+      return;
+    }
+
     const { permissions } = navigator;
 
     if (!permissions) {
-      set(MicrophoneStatus.UNAVAILABLE);
       return;
     }
 
