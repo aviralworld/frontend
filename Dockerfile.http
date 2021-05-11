@@ -11,5 +11,6 @@ ARG REVISION
 LABEL timestamp=$TIMESTAMP revision=$REVISION
 
 COPY --from=build /app/static /usr/share/nginx/html/static
+COPY --from=build /app/__sapper__/build/client /usr/share/nginx/html/client
 
 COPY nginx/nginx.template.conf /etc/nginx/templates/default.conf.template
