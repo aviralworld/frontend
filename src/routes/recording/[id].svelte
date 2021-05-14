@@ -3,6 +3,8 @@
 
   import { verifyToken } from "../../token";
   import type { IFrontendSettings } from "../../server/frontendSettings";
+  import { fetchMetadata } from "./_fetch";
+  import { API_PATH } from "../../paths";
 
   export const preload: Preload = async function ({ params, query }, session) {
     const {
@@ -12,12 +14,7 @@
     } = session.frontendSettings as IFrontendSettings;
     const { id } = params;
 
-    const res: Response = await this.fetch(`/api/recordings/id/${id}`);
-    const promises: readonly Response[] = Promise.all(
-      ["formats", "ages", "categories", "genders"].map((s) =>
-        this.fetch(`/api/recordings/${s}`),
-      ),
-    );
+    const res: Response = await this.fetch(`${API_PATH}/id/${id}`);
 
     if (res.status === 400 || res.status === 404) {
       this.error(404, `Could not find recording with ID ${id}`);
@@ -37,19 +34,6 @@
       return;
     }
 
-    const responses = await promises;
-
-    for (const r of responses) {
-      if (r.status !== 200) {
-        this.error(500, `Got a ${r.status} response from ${r.url}`);
-        return;
-      }
-    }
-
-    const [formats, ages, categories, genders] = await Promise.all(
-      responses.map(async (r) => r.json()),
-    );
-
     const verificationResult = await verifyToken(this, query.token, id);
 
     if (verificationResult?.status !== undefined) {
@@ -63,7 +47,7 @@
     let recordingTokens = [];
 
     if (key !== undefined) {
-      const response = await this.fetch(`/api/recordings/lookup/${key}/`);
+      const response = await this.fetch(`/${API_PATH}/lookup/${key}/`);
 
       if (response.status !== 200) {
         this.error(400, `Not a valid key: ${key}`);
@@ -83,12 +67,12 @@
       isOwner = true;
     }
 
+    const metadata =
+      query.token !== undefined ? fetchMetadata(this, API_PATH) : {};
+
     return {
-      ages,
+      ...metadata,
       baseUrl,
-      categories,
-      genders,
-      formats,
       key,
       isOwner,
       minRecordingLength: minRecordingLengthSeconds,
