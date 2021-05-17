@@ -41,7 +41,7 @@ export async function fetchMetadata(
       throw new FetchError(r.status, r.url);
     }
 
-    objects[k] = JSON.parse(await r.json()) as readonly Option[];
+    objects[k] = (await r.json()) as readonly Option[];
   }
 
   return objects as IMetadata;
