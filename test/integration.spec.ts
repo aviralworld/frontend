@@ -318,6 +318,7 @@ describe("The server", function () {
         assert.notEqual(
           await document.queryByText("for at least", { exact: false }),
           null,
+          "must show notice about recording being too short",
         );
 
         const recordingLength =
