@@ -68,7 +68,7 @@
     }
 
     const metadata =
-      query.token !== undefined ? fetchMetadata(this, API_PATH) : {};
+      query.token !== undefined ? await fetchMetadata(this, API_PATH) : {};
 
     return {
       ...metadata,
