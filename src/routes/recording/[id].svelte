@@ -47,7 +47,7 @@
     let recordingTokens = [];
 
     if (key !== undefined) {
-      const response = await this.fetch(`/${API_PATH}/lookup/${key}/`);
+      const response = await this.fetch(`${API_PATH}/lookup/${key}/`);
 
       if (response.status !== 200) {
         this.error(400, `Not a valid key: ${key}`);
